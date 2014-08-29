@@ -1,0 +1,16 @@
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\SkyGroundLabs.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\SkyGroundLabs.pdb
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\obj\Release\SkyGroundLabs.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\obj\Release\SkyGroundLabs.pdb
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\obj\Release\SkyGroundLabs.csprojResolveAssemblyReference.cache
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\SkyGroundLabs.dll.config
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\EntityFramework.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\EntityFramework.SqlServer.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\SkyGroundLabs.Data.Entity.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\SkyGroundLabs.Reflection.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\EntityFramework.xml
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\EntityFramework.SqlServer.xml
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\SkyGroundLabs.Data.Entity.pdb
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\SkyGroundLabs.Reflection.pdb
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\SkyGroundLabs.Cryptography.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs\bin\Release\SkyGroundLabs.Cryptography.pdb

@@ -1,0 +1,4 @@
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Tasks\bin\Release\SkyGroundLabs.Tasks.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Tasks\bin\Release\SkyGroundLabs.Tasks.pdb
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Tasks\obj\Release\SkyGroundLabs.Tasks.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Tasks\obj\Release\SkyGroundLabs.Tasks.pdb

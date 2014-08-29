@@ -1,0 +1,5 @@
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Reflection\bin\Debug\SkyGroundLabs.Reflection.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Reflection\bin\Debug\SkyGroundLabs.Reflection.pdb
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Reflection\obj\Debug\SkyGroundLabs.Reflection.csprojResolveAssemblyReference.cache
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Reflection\obj\Debug\SkyGroundLabs.Reflection.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Reflection\obj\Debug\SkyGroundLabs.Reflection.pdb

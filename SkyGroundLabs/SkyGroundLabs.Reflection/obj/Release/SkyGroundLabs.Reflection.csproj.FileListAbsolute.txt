@@ -1,0 +1,4 @@
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Reflection\bin\Release\SkyGroundLabs.Reflection.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Reflection\bin\Release\SkyGroundLabs.Reflection.pdb
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Reflection\obj\Release\SkyGroundLabs.Reflection.dll
+C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Reflection\obj\Release\SkyGroundLabs.Reflection.pdb
