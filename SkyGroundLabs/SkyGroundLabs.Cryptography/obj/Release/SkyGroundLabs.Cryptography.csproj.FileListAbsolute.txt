@@ -2,3 +2,8 @@ C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Cryptography\bin\Release\SkyGr
 C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Cryptography\bin\Release\SkyGroundLabs.Cryptography.pdb
 C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Cryptography\obj\Release\SkyGroundLabs.Cryptography.dll
 C:\Development\VS2012\SkyGroundLabs\SkyGroundLabs.Cryptography\obj\Release\SkyGroundLabs.Cryptography.pdb
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Cryptography\bin\Release\SkyGroundLabs.Cryptography.dll
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Cryptography\bin\Release\SkyGroundLabs.Cryptography.pdb
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Cryptography\obj\Release\SkyGroundLabs.Cryptography.csprojResolveAssemblyReference.cache
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Cryptography\obj\Release\SkyGroundLabs.Cryptography.dll
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Cryptography\obj\Release\SkyGroundLabs.Cryptography.pdb

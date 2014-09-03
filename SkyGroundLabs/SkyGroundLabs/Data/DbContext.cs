@@ -56,6 +56,8 @@ namespace SkyGroundLabs.Data
 		public IDbSet<UserRoleType> UserRoleTypes { get; set; }
 
 		public IDbSet<UserClockingSpecialCode> UserClockingSpecialCodes { get; set; }
+
+		public IDbSet<AppInfo> ApplicationInformation { get; set; }
 		#endregion
 
 		#region Functions
