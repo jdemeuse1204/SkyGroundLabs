@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\Enumeration\PunchType.cs" />
     <Compile Include="Business\Extension\Extensions.cs" />
     <Compile Include="Business\GeoLocation.cs" />
     <Compile Include="Business\Services\ClockingServices.cs" />

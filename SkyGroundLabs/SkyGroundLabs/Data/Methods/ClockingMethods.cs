@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Business;
+using SkyGroundLabs.Business.Enumeration;
 using SkyGroundLabs.Business.Services;
 using SkyGroundLabs.Data.Tables;
 
@@ -24,47 +26,7 @@ namespace SkyGroundLabs.Data.Methods
 
 		#region Methods
 
-		#region Get Punches
-		public UserClocking GetLastPunch(long userID)
-		{
-			return _context.UserClockings.Where(w => w.UserID == userID).OrderByDescending(w => w.ID).FirstOrDefault();
-		}
-
-		public UserClocking GetLastInPunch(long userID)
-		{
-			return _context.UserClockings.Where(w => w.UserID == userID && w.IsInPunch == true).OrderByDescending(w => w.PunchTime).FirstOrDefault();
-		}
-
-		public UserClocking GetLastOutPunch(long userID)
-		{
-			return _context.UserClockings.Where(w => w.UserID == userID && w.IsInPunch == false).OrderByDescending(w => w.PunchTime).FirstOrDefault();
-		}
-
-		public UserClocking GetLastOutPunch(long userID, Guid pairingID)
-		{
-			return _context.UserClockings.Where(w => w.UserID == userID && w.IsInPunch == false && w.PairingID == pairingID).OrderByDescending(w => w.PunchTime).FirstOrDefault();
-		}
-
-		public UserClocking GetPunch(Guid pairingID, bool isInPunch)
-		{
-			return _context.UserClockings.Where(w => w.PairingID == pairingID && w.IsInPunch == isInPunch).FirstOrDefault();
-		}
-
-		#endregion
-
 		#region Punching
-		public bool IsLastClockingInPunch(long userID)
-		{
-			UserClocking clocking = GetLastPunch(userID);
-
-			if (clocking == null)
-			{
-				return false;
-			}
-
-			return clocking.IsInPunch;
-		}
-
 		public void AdjustClocking(long clockingID, long userID, DateTime newTime)
 		{
 			var clocking = _context.UserClockings.Find(clockingID);
@@ -82,49 +44,74 @@ namespace SkyGroundLabs.Data.Methods
 
 		public UserClocking PunchIn(long userID, DateTime dateTime, GeoLocation location, string specialCode = "", long appointmentID = 0)
 		{
-			UserClocking clocking = new UserClocking();
-			clocking.AppointmentID = appointmentID;
-			clocking.IsApproved = false;
-			clocking.IsInPunch = true;
-			clocking.PunchTime = dateTime;
-			clocking.PunchTimeRounded = ClockingServices.Round(dateTime);
-			clocking.SpecialCode = specialCode;
-			clocking.UserID = userID;
-			clocking.PairingID = _getNewGuid();
-			clocking.OriginalPunchTime = dateTime;
-			clocking.IsAdjusted = false;
-			clocking.Longitude = location.Longitude;
-			clocking.Latitude = location.Latitude;
+			UserClocking inPunch = new UserClocking();
+			inPunch.AppointmentID = appointmentID;
+			inPunch.IsApproved = false;
+			inPunch.PunchType = PunchType.In;
+			inPunch.PunchTime = dateTime;
+			inPunch.PunchTimeRounded = ClockingServices.Round(dateTime);
+			inPunch.SpecialCode = specialCode;
+			inPunch.UserID = userID;
+			inPunch.PairingID = _getNewGuid();
+			inPunch.OriginalPunchTime = dateTime;
+			inPunch.IsAdjusted = false;
+			inPunch.Longitude = location.Longitude;
+			inPunch.Latitude = location.Latitude;
 
-			_context.SaveChanges(clocking);
+			_context.SaveChanges(inPunch);
 
-			return clocking;
+			// Save the out punch with no time in it
+			UserClocking outPunch = new UserClocking();
+			outPunch.AppointmentID = appointmentID;
+			outPunch.IsApproved = false;
+			outPunch.PunchType = PunchType.Out;
+			outPunch.PunchTime = Defaults.MinDateTime;
+			outPunch.PunchTimeRounded = Defaults.MinDateTime;
+			outPunch.SpecialCode = specialCode;
+			outPunch.UserID = userID;
+			outPunch.PairingID = inPunch.PairingID;
+			outPunch.OriginalPunchTime = Defaults.MinDateTime;
+			outPunch.IsAdjusted = false;
+			outPunch.Longitude = 0;
+			outPunch.Latitude = 0;
+
+			_context.SaveChanges(outPunch);
+
+			return inPunch;
 		}
 
 		public UserClocking PunchOut(long userID, DateTime dateTime, GeoLocation location, string specialCode = "", long appointmentID = 0)
 		{
-			UserClocking clocking = new UserClocking();
-			clocking.AppointmentID = appointmentID;
-			clocking.IsApproved = false;
-			clocking.IsInPunch = false;
-			clocking.PunchTime = dateTime;
-			clocking.PunchTimeRounded = ClockingServices.Round(dateTime);
-			clocking.SpecialCode = specialCode;
-			clocking.UserID = userID;
-			clocking.PairingID = GetLastInPunch(userID).PairingID;
-			clocking.OriginalPunchTime = dateTime;
-			clocking.IsAdjusted = false;
-			clocking.Longitude = location.Longitude;
-			clocking.Latitude = location.Latitude;
+			UserClocking outPunch = _context.UserClockings.Where(w => w.UserID == userID
+				&& w.PunchType == PunchType.Out
+				&& w.PunchTime == Defaults.MinDateTime).FirstOrDefault();
 
-			_context.SaveChanges(clocking);
+			if (outPunch == null)
+			{
+				throw new Exception(string.Format("Out punch not found for user {0}", userID));
+			}
 
-			return clocking;
+			outPunch.AppointmentID = appointmentID;
+			outPunch.IsApproved = false;
+			outPunch.PunchType = PunchType.Out;
+			outPunch.PunchTime = dateTime;
+			outPunch.PunchTimeRounded = ClockingServices.Round(dateTime);
+			outPunch.SpecialCode = specialCode;
+			outPunch.UserID = userID;
+			outPunch.PairingID = GetLastInPunch(userID).PairingID;
+			outPunch.OriginalPunchTime = dateTime;
+			outPunch.IsAdjusted = false;
+			outPunch.Longitude = location.Longitude;
+			outPunch.Latitude = location.Latitude;
+
+			_context.SaveChanges(outPunch);
+
+			return outPunch;
 		}
 
 		public bool HasOutPunch(Guid pairingID)
 		{
-			return _context.UserClockings.Where(w => w.PairingID == pairingID && w.IsInPunch == false).Count() > 0;
+			return _context.UserClockings.Where(w => w.PairingID == pairingID && w.PunchType == PunchType.Out && w.PunchTime != Defaults.MinDateTime).Count() > 0;
 		}
 
 		private Guid _getNewGuid()
@@ -140,28 +127,110 @@ namespace SkyGroundLabs.Data.Methods
 		}
 		#endregion
 
+		#region Get Punches
+		public UserClocking GetLastPunch(long userID)
+		{
+			return _context.UserClockings.Where(w => w.UserID == userID && w.PunchTime != Defaults.MinDateTime).OrderByDescending(w => w.ID).FirstOrDefault();
+		}
+
+		public PunchType GetLastPunchType(long userID)
+		{
+			return GetLastPunch(userID).PunchType;
+		}
+
+		public UserClocking GetLastInPunch(long userID)
+		{
+			return _context.UserClockings.Where(w => w.UserID == userID && w.PunchType == PunchType.In).OrderByDescending(w => w.PunchTime).FirstOrDefault();
+		}
+
+		public UserClocking GetLastOutPunch(long userID)
+		{
+			return _context.UserClockings.Where(w => w.UserID == userID && w.PunchType == PunchType.Out && w.PunchTime != Defaults.MinDateTime).OrderByDescending(w => w.PunchTime).FirstOrDefault();
+		}
+
+		public UserClocking GetLastOutPunch(long userID, Guid pairingID)
+		{
+			return _context.UserClockings.Where(w => w.UserID == userID && w.PunchType == PunchType.Out && w.PairingID == pairingID && w.PunchTime != Defaults.MinDateTime).OrderByDescending(w => w.PunchTime).FirstOrDefault();
+		}
+
+		public UserClocking GetPunch(Guid pairingID, PunchType punchType)
+		{
+			return _context.UserClockings.Where(w => w.PairingID == pairingID && w.PunchType == punchType).FirstOrDefault();
+		}
+		#endregion
+
 		#region Get Clockings
+		/// <summary>
+		/// Makes sure the clockings have an in and out punch in case 
+		/// one was missed because of the date range
+		/// </summary>
+		/// <param name="clockings"></param>
+		private void _aduitClockingPairs(List<UserClocking> clockings)
+		{
+			var additions = new List<UserClocking>();
+
+			foreach (var item in clockings.Select(w => w.PairingID).Distinct())
+			{
+				if (clockings.Where(w => w.PairingID == item).Count() == 1)
+				{
+					var single = clockings.Where(w => w.PairingID == item).First();
+					var punchType = PunchType.Out;
+
+					if (single.PunchType == PunchType.Out)
+					{
+						// Missing the in punch
+						punchType = PunchType.In;
+					}
+
+					var punch = _context.UserClockings.Where(w => w.PairingID == item && w.PunchType == punchType).First();
+					additions.Add(punch);
+				}
+			}
+
+			clockings.AddRange(additions);
+		}
+
 		public IEnumerable<UserClocking> GetClockings(DateTime start, DateTime end, long userID)
 		{
-			return _context.UserClockings.Where(w => w.UserID == userID &&
-				w.PunchTime >= start && w.PunchTime <= end).OrderBy(w => w.PunchTime).ThenBy(w => w.PairingID).ThenByDescending(w => w.IsInPunch);
+			// make sure to get full pairs
+			var clockings = _context.UserClockings.Where(w => w.UserID == userID
+				&& DbFunctions.TruncateTime(w.PunchTime) >= DbFunctions.TruncateTime(start)
+				&& DbFunctions.TruncateTime(w.PunchTime) <= DbFunctions.TruncateTime(end)).ToList();
+
+			// make sure in punches and out punches have correct pairings
+			_aduitClockingPairs(clockings);
+
+			return clockings.OrderBy(w => w.PunchTime).ThenBy(w => w.PairingID).ThenByDescending(w => w.PunchType);
 		}
 
 		public IEnumerable<UserClocking> GetClockings(DateTime start, DateTime end)
 		{
-			return _context.UserClockings.Where(w => w.PunchTime >= start && w.PunchTime <= end).OrderBy(w => w.PunchTime).ThenBy(w => w.PairingID).ThenByDescending(w => w.IsInPunch);
+			// make sure to get full pairs
+			var clockings = _context.UserClockings.Where(w => DbFunctions.TruncateTime(w.PunchTime) >= DbFunctions.TruncateTime(start)
+				&& DbFunctions.TruncateTime(w.PunchTime) <= DbFunctions.TruncateTime(end)).ToList();
+
+			// make sure in punches and out punches have correct pairings
+			_aduitClockingPairs(clockings);
+
+			return clockings.OrderBy(w => w.PunchTime).ThenBy(w => w.PairingID).ThenByDescending(w => w.PunchType);
 		}
 
 		public IEnumerable<UserClocking> GetAllClockings(long userID)
 		{
-			return _context.UserClockings.Where(w => w.UserID == userID).OrderBy(w => w.PunchTime).ThenBy(w => w.PairingID).ThenByDescending(w => w.IsInPunch);
+			// make sure to get full pairs
+			var clockings = _context.UserClockings.Where(w => w.UserID == userID).ToList();
+
+			// make sure in punches and out punches have correct pairings
+			_aduitClockingPairs(clockings);
+
+			return clockings.OrderBy(w => w.PunchTime).ThenBy(w => w.PairingID).ThenByDescending(w => w.PunchType);
 		}
 
 		private UserClocking _getClocking(dynamic d)
 		{
 			return new UserClocking()
 			{
-				IsInPunch = d.IsInPunch,
+				PunchType = PunchType.In,
 				ID = d.ID,
 				UserID = d.UserID,
 				PunchTime = d.PunchTime,
@@ -214,7 +283,7 @@ namespace SkyGroundLabs.Data.Methods
 							 join u in _context.Users on c.UserID equals u.ID
 							 select new
 							 {
-								 c.IsInPunch,
+								 c.PunchType,
 								 c.ID,
 								 c.UserID,
 								 c.PunchTime,
@@ -232,48 +301,18 @@ namespace SkyGroundLabs.Data.Methods
 
 			var pair = new UserClockingPair();
 
-			foreach (var clocking in clockings.OrderBy(w => w.UserID).ThenBy(w => w.PairingID).ThenByDescending(w => w.IsInPunch).ThenBy(w => w.PunchTime))
+			foreach (var clocking in clockings.OrderBy(w => w.PairingID).ThenBy(w => w.PunchType))
 			{
-				// make sure we only create pairs with in and out punches
-				if (clocking.IsInPunch && !HasOutPunch(clocking.PairingID))
-				{
-					continue;
-				}
-
-				if (clocking.IsInPunch)
+				if (clocking.PunchType == PunchType.In)
 				{
 					pair = new UserClockingPair();
 					pair.InPunch = _getClocking(clocking);
 					pair.UserID = clocking.UserID;
 					pair.ManagerUserID = clocking.ManagerUserID;
 					pair.Name = clocking.Username;
-
-					if (!clockings.Where(w => w.PairingID == clocking.PairingID).Select(w => w.IsInPunch).Contains(false))
-					{
-						// outpunch is outside of datetime parameters, need to add manually
-						pair.OutPunch = _context.UserClockings.Where(w => w.PairingID == clocking.PairingID
-							&& w.IsInPunch == false).FirstOrDefault();
-						pair.UserID = clocking.UserID;
-						pair.ManagerUserID = clocking.ManagerUserID;
-						pair.Name = clocking.Username;
-						results.Add(pair);
-						pair = new UserClockingPair();
-					}
 				}
 				else
 				{
-					// make sure the inpunch was in the list
-					if (!clockings.Where(w => w.PairingID == clocking.PairingID).Select(w => w.IsInPunch).Contains(true))
-					{
-						// inpunch is outside of datetime parameters, need to add manually
-						pair = new UserClockingPair();
-						pair.InPunch = _context.UserClockings.Where(w => w.PairingID == clocking.PairingID
-							&& w.IsInPunch == true).FirstOrDefault();
-						pair.UserID = clocking.UserID;
-						pair.ManagerUserID = clocking.ManagerUserID;
-						pair.Name = clocking.Username;
-					}
-
 					pair.OutPunch = _getClocking(clocking);
 					pair.UserID = clocking.UserID;
 					pair.ManagerUserID = clocking.ManagerUserID;

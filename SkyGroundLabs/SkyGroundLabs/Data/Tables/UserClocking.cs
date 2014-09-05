@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SkyGroundLabs.Business.Enumeration;
 using SkyGroundLabs.Data.Entity.Mapping;
 
 namespace SkyGroundLabs.Data.Tables
@@ -22,7 +23,7 @@ namespace SkyGroundLabs.Data.Tables
 
 		public long UserID { get; set; }
 
-		public bool IsInPunch { get; set; }
+		public PunchType PunchType { get; set; }
 
 		public DateTime PunchTime { get; set; }
 

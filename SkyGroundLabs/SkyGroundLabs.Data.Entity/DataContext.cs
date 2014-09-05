@@ -53,7 +53,7 @@ namespace SkyGroundLabs.Data.Entity
 			where TEntity : DbTableEquatable<IDbTableEquatable<TPKType>>
 			where TPKType : struct
 		{
-			var changedList = Set<TEntity>(); ;
+			var changedList = Set<TEntity>();
 			var ID = entity.GetType().GetProperty("ID").GetValue(entity);
 
 			_preprocessSave<TEntity, TPKType>(entity);
@@ -69,7 +69,7 @@ namespace SkyGroundLabs.Data.Entity
 			else
 			{
 				// Update
-				var item = changedList.Where(w => w.Equals(entity)).FirstOrDefault();
+				var item = changedList.Find(ID);
 				ReflectionManager.SetValuesWithSkip(entity, item, "ID");
 				SaveChanges();
 			}
@@ -85,7 +85,8 @@ namespace SkyGroundLabs.Data.Entity
 			where TEntity : DbTableEquatable<IDbTableEquatable<TPKType>>
 			where TPKType : struct
 		{
-			var item = Set<TEntity>().Where(w => w.Equals(entity)).FirstOrDefault();
+			var ID = entity.GetType().GetProperty("ID").GetValue(entity);
+			var item = Set<TEntity>().Find(ID);
 			Set<TEntity>().Remove((TEntity)item);
 		}
 

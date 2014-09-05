@@ -21,6 +21,16 @@ namespace SkyGroundLabs.Business.Services
 				return string.Empty;
 		}
 
+		public static string BuildAddress(object street, object city, object state, object zip)
+		{
+			street = (street == null ? "" : street);
+			city = (city == null ? "" : city);
+			state = (state == null ? "" : state);
+			zip = (zip == null ? "" : zip);
+
+			return BuildAddress(street.ToString(), city.ToString(), state.ToString(), zip.ToString());
+		}
+
 		public static string BuildAddress(string street, string city, string state, string zip)
 		{
 			string address = "";

@@ -19,6 +19,10 @@ namespace SkyGroundLabs.Business
 		public long UserID { get; set; }
 
 		public long ManagerUserID { get; set; }
+
+		public double Longitude { get; set; }
+
+		public double Latitude { get; set; }
 		#endregion
 
 		#region Methods

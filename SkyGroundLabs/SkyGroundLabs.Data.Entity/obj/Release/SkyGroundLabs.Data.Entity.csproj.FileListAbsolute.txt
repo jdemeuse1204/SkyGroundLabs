@@ -22,3 +22,15 @@ C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\obj\Release\SkyGroundLabs.Data.Entity.csprojResolveAssemblyReference.cache
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\obj\Release\SkyGroundLabs.Data.Entity.dll
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\obj\Release\SkyGroundLabs.Data.Entity.pdb
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\bin\Release\SkyGroundLabs.Data.Entity.dll.config
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\bin\Release\SkyGroundLabs.Data.Entity.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\bin\Release\SkyGroundLabs.Data.Entity.pdb
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\bin\Release\EntityFramework.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\bin\Release\SkyGroundLabs.Reflection.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\bin\Release\EntityFramework.xml
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\bin\Release\SkyGroundLabs.Reflection.pdb
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\obj\Release\SkyGroundLabs.Data.Entity.csprojResolveAssemblyReference.cache
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\obj\Release\SkyGroundLabs.Data.Entity.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Entity\obj\Release\SkyGroundLabs.Data.Entity.pdb

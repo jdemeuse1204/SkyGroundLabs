@@ -12,3 +12,10 @@ C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Linq\obj\Release\SkyGroundLabs.Data.Linq.csprojResolveAssemblyReference.cache
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Linq\obj\Release\SkyGroundLabs.Data.Linq.dll
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Linq\obj\Release\SkyGroundLabs.Data.Linq.pdb
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Linq\bin\Release\SkyGroundLabs.Data.Linq.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Linq\bin\Release\SkyGroundLabs.Data.Linq.pdb
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Linq\bin\Release\SkyGroundLabs.Reflection.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Linq\bin\Release\SkyGroundLabs.Reflection.pdb
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Linq\obj\Release\SkyGroundLabs.Data.Linq.csprojResolveAssemblyReference.cache
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Linq\obj\Release\SkyGroundLabs.Data.Linq.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Linq\obj\Release\SkyGroundLabs.Data.Linq.pdb

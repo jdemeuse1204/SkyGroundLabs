@@ -87,7 +87,11 @@ namespace SkyGroundLabs.Data
 
 		private void _initialize()
 		{
-
+			ContactFunctions = new ContactMethods(this);
+			AppointmentFunctions = new AppointmentMethods(this);
+			UserFunctions = new UserMethods(this);
+			ClockingFunctions = new ClockingMethods(this);
+			AuthenticationFunctions = new Authentication(this);
 		}
 		#endregion
 
