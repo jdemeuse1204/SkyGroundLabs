@@ -13,7 +13,7 @@ namespace SkyGroundLabs.Data.Tables
 	{
 		public Store()
 		{
-			Zip = "0";
+			Zip = "";
 		}
 
 		public long ID { get; set; }

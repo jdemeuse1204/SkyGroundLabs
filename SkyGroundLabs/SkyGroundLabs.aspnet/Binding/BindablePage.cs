@@ -55,6 +55,28 @@ namespace SkyGroundLabs.aspnet.Binding
 			}
 		}
 
+		private object _convertValue(Converter converter, object value)
+		{
+			switch (converter)
+			{
+				case Converter.IntToBool:
+					return Convert.ToInt64(value) == 1;
+			}
+
+			return value;
+		}
+
+		private object _getDefaultFromValueType(object value)
+		{
+			Type type = value.GetType();
+
+			if (type.IsValueType)
+			{
+				return Activator.CreateInstance(type);
+			}
+			return null;
+		}
+
 		public void PullDataContextFromPage()
 		{
 			if (DataContext == null)
@@ -69,6 +91,15 @@ namespace SkyGroundLabs.aspnet.Binding
 			foreach (var control in controls)
 			{
 				object value = ReflectionManager.GetPropertyValue(control, ((IBindable)control).PropertyName);
+				object toValue = ReflectionManager.GetPropertyValue(DataContext, ((IBindable)control).Path);
+				value = _convertValue(((IBindable)control).Conversion, value);
+
+				if (value != null && toValue != null && string.IsNullOrWhiteSpace(value.ToString()))
+				{
+					// get the default for the value type from the data context
+					value = _getDefaultFromValueType(toValue);
+				}
+
 				ReflectionManager.SetPropertyValue(DataContext, ((IBindable)control).Path, value);
 			}
 		}

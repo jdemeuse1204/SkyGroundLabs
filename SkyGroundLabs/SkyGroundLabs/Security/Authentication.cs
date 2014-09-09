@@ -99,7 +99,7 @@ namespace SkyGroundLabs.Security
 			return AuthenticationStatus.Success;
 		}
 
-		public bool IsUserInRole(User user, UserRoleType role)
+		public bool IsUserInRole(User user, UserRoles role)
 		{
 			return user == null ? false : user.UserRoleTypeID == role.ID;
 		}
@@ -107,14 +107,14 @@ namespace SkyGroundLabs.Security
 		public bool IsUserInRole(long userID, string roleName)
 		{
 			User user = _context.Users.Find(userID);
-			UserRoleType role = _context.UserRoleTypes.Where(w => w.Role.ToUpper() == roleName.ToUpper()).FirstOrDefault();
+			UserRoles role = _context.UserRoleTypes.Where(w => w.Role.ToUpper() == roleName.ToUpper()).FirstOrDefault();
 			return IsUserInRole(user, role);
 		}
 
 		public bool IsUserInRole(long userID, long userRoleTypeID)
 		{
 			User user = _context.Users.Find(userID);
-			UserRoleType role = _context.UserRoleTypes.Find(userRoleTypeID);
+			UserRoles role = _context.UserRoleTypes.Find(userRoleTypeID);
 			return IsUserInRole(user, role);
 		}
 

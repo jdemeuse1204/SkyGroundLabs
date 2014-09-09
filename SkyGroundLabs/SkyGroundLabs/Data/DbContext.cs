@@ -53,7 +53,7 @@ namespace SkyGroundLabs.Data
 
 		public IDbSet<UserClocking> UserClockings { get; set; }
 
-		public IDbSet<UserRoleType> UserRoleTypes { get; set; }
+		public IDbSet<UserRoles> UserRoleTypes { get; set; }
 
 		public IDbSet<UserClockingSpecialCode> UserClockingSpecialCodes { get; set; }
 
@@ -120,6 +120,12 @@ namespace SkyGroundLabs.Data
 			{
 				var store = ((dynamic)entity);
 				store.DisplayName = store.Name + " - " + store.City;
+
+				// default string checks
+				if (string.IsNullOrWhiteSpace(store.Zip))
+				{
+					store.Zip = "";
+				}
 			}
 			else if (entity is Contact)
 			{
@@ -142,11 +148,44 @@ namespace SkyGroundLabs.Data
 							contact.FirstName3,
 							contact.LastName3);
 
+				// default string checks
+				if (string.IsNullOrWhiteSpace(contact.Zip))
+				{
+					contact.Zip = "";
+				}
+
 				contact.DateEdited = DateTime.Now;
 			}
 			else if (entity is Appointment)
 			{
-				((dynamic)entity).DateEdited = DateTime.Now;
+				var appointment = ((dynamic)entity);
+				appointment.DateEdited = DateTime.Now;
+
+				// default string checks
+				if (string.IsNullOrWhiteSpace(appointment.StartTime))
+				{
+					appointment.StartTime = "";
+				}
+
+				if (string.IsNullOrWhiteSpace(appointment.EndTime))
+				{
+					appointment.EndTime = "";
+				}
+
+				if (string.IsNullOrWhiteSpace(appointment.Background))
+				{
+					appointment.Background = "";
+				}
+
+				if (string.IsNullOrWhiteSpace(appointment.DropoffZip))
+				{
+					appointment.DropoffZip = "";
+				}
+
+				if (string.IsNullOrWhiteSpace(appointment.PickupZip))
+				{
+					appointment.PickupZip = "";
+				}
 			}
 		}
 		#endregion

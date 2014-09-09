@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace SkyGroundLabs.aspnet.Binding
 {
-	public interface IBindable
+	public enum Converter
 	{
-		string Path { get; set; }
-		string PropertyName { get; set; }
-		Converter Conversion { get; set; }
+		None,
+		IntToBool
 	}
 }

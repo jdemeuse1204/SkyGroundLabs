@@ -11,5 +11,6 @@ namespace SkyGroundLabs.aspnet.Binding
 	{
 		public string Path { get; set; }
 		public string PropertyName { get; set; }
+		public Converter Conversion { get; set; }
 	}
 }

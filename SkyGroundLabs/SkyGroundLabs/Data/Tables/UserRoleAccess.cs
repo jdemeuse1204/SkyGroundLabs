@@ -8,13 +8,13 @@ using SkyGroundLabs.Data.Entity.Mapping;
 
 namespace SkyGroundLabs.Data.Tables
 {
-	[Table("UserRoleTypes")]
-	public class UserRoleType : DbTableEquatable<IDbTableEquatable<long>>
+	[Table("UserRoleAccess")]
+	public class UserRoleAccess : DbTableEquatable<IDbTableEquatable<long>>
 	{
 		public long ID { get; set; }
 
-		public string Role { get; set; }
+		public long UserRoleAccessPageID { get; set; }
 
-		public string Description { get; set; }
+		public long UserRoleID { get; set; }
 	}
 }
