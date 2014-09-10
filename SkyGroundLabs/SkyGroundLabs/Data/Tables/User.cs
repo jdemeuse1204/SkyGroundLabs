@@ -13,7 +13,7 @@ namespace SkyGroundLabs.Data.Tables
 	{
 		public User()
 		{
-			UserRoleTypeID = 1;
+			UserRoleID = 1;
 			ManagerUserID = 0;
 			LastAuthenticationDate = Defaults.MinDateTime;
 		}
@@ -56,7 +56,8 @@ namespace SkyGroundLabs.Data.Tables
 
 		public string DatabasePassword { get; set; }
 
-		public long UserRoleTypeID { get; set; }
+		[Column("UserRoleTypeID")]
+		public long UserRoleID { get; set; }
 
 		public string PIN { get; set; }
 

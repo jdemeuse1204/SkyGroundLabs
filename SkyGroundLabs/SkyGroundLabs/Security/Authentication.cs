@@ -92,7 +92,7 @@ namespace SkyGroundLabs.Security
 			user.Username = username;
 			user.SecurityAnswer = securityAnswer;
 			user.SecurityQuestion = securityQuestion;
-			user.UserRoleTypeID = 1;
+			user.UserRoleID = 1;
 			user.ManagerUserID = 1;
 			user.LastAuthenticationDate = DateTime.Now;
 
@@ -101,21 +101,40 @@ namespace SkyGroundLabs.Security
 
 		public bool IsUserInRole(User user, UserRoles role)
 		{
-			return user == null ? false : user.UserRoleTypeID == role.ID;
+			return user == null ? false : user.UserRoleID == role.ID;
 		}
 
 		public bool IsUserInRole(long userID, string roleName)
 		{
 			User user = _context.Users.Find(userID);
-			UserRoles role = _context.UserRoleTypes.Where(w => w.Role.ToUpper() == roleName.ToUpper()).FirstOrDefault();
+			UserRoles role = _context.UserRoles.Where(w => w.Role.ToUpper() == roleName.ToUpper()).FirstOrDefault();
 			return IsUserInRole(user, role);
 		}
 
 		public bool IsUserInRole(long userID, long userRoleTypeID)
 		{
 			User user = _context.Users.Find(userID);
-			UserRoles role = _context.UserRoleTypes.Find(userRoleTypeID);
+			UserRoles role = _context.UserRoles.Find(userRoleTypeID);
 			return IsUserInRole(user, role);
+		}
+
+		public bool HasPageAccess(long userID, string pageName)
+		{
+			User user = _context.Users.Find(userID);
+			UserRoles role = _context.UserRoles.Where(w => w.ID == user.UserRoleID).FirstOrDefault();
+			UserRoleAccessPages page = _context.UserRoleAccessPages.Where(w => w.PageName.ToUpper() == pageName.ToUpper()).FirstOrDefault();
+
+			if (role.Role.ToUpper() == "ADMIN")
+			{
+				return true;
+			}
+
+			if (page != null)
+			{
+				UserRoleAccess access = _context.UserRoleAccess.Where(w => w.UserRoleID == role.ID && w.UserRoleAccessPageID == page.ID).FirstOrDefault();
+				return access != null;
+			}
+			return false;
 		}
 
 		/// <summary>

@@ -48,7 +48,8 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Binding\BindableTextBox.cs" />
-    <Compile Include="Binding\Converter.cs" />
+    <Compile Include="Binding\PullConverter.cs" />
+    <Compile Include="Binding\PushConverter.cs" />
     <Compile Include="Binding\IBindable.cs" />
     <Compile Include="Component\MessageBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

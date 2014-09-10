@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using SkyGroundLabs.Reflection;
 
@@ -31,6 +32,7 @@ namespace SkyGroundLabs.aspnet.Binding
 			foreach (var control in controls)
 			{
 				object value = ReflectionManager.GetPropertyValue(DataContext, ((IBindable)control).Path);
+				value = _convertPushValue(((IBindable)control).PushConversion, value);
 				ReflectionManager.SetPropertyValue(((IBindable)control), ((IBindable)control).PropertyName, value);
 			}
 		}
@@ -55,11 +57,26 @@ namespace SkyGroundLabs.aspnet.Binding
 			}
 		}
 
-		private object _convertValue(Converter converter, object value)
+		private object _convertPushValue(PushConverter converter, object value)
 		{
 			switch (converter)
 			{
-				case Converter.IntToBool:
+				case PushConverter.DateTimeToShortDateString:
+					return Convert.ToDateTime(value).ToShortDateString();
+				case PushConverter.BoolToInt:
+					return ((bool)value ? 1 : 0);
+				case PushConverter.NumberToDecimalPrecision2:
+					return Convert.ToDecimal(value).ToString("0.00");
+			}
+
+			return value;
+		}
+
+		private object _convertPullValue(PullConverter converter, object value)
+		{
+			switch (converter)
+			{
+				case PullConverter.IntToBool:
 					return Convert.ToInt64(value) == 1;
 			}
 
@@ -92,7 +109,7 @@ namespace SkyGroundLabs.aspnet.Binding
 			{
 				object value = ReflectionManager.GetPropertyValue(control, ((IBindable)control).PropertyName);
 				object toValue = ReflectionManager.GetPropertyValue(DataContext, ((IBindable)control).Path);
-				value = _convertValue(((IBindable)control).Conversion, value);
+				value = _convertPullValue(((IBindable)control).PullConversion, value);
 
 				if (value != null && toValue != null && string.IsNullOrWhiteSpace(value.ToString()))
 				{

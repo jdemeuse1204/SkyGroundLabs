@@ -53,7 +53,11 @@ namespace SkyGroundLabs.Data
 
 		public IDbSet<UserClocking> UserClockings { get; set; }
 
-		public IDbSet<UserRoles> UserRoleTypes { get; set; }
+		public IDbSet<UserRoles> UserRoles { get; set; }
+
+		public IDbSet<UserRoleAccess> UserRoleAccess { get; set; }
+
+		public IDbSet<UserRoleAccessPages> UserRoleAccessPages { get; set; }
 
 		public IDbSet<UserClockingSpecialCode> UserClockingSpecialCodes { get; set; }
 

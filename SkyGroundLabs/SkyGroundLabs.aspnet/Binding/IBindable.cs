@@ -10,6 +10,7 @@ namespace SkyGroundLabs.aspnet.Binding
 	{
 		string Path { get; set; }
 		string PropertyName { get; set; }
-		Converter Conversion { get; set; }
+		PushConverter PushConversion { get; set; }
+		PullConverter PullConversion { get; set; }
 	}
 }
