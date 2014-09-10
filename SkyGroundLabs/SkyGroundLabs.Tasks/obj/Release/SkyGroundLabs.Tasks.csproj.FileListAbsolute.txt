@@ -10,3 +10,7 @@ C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Tasks
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Tasks\bin\Release\SkyGroundLabs.Tasks.pdb
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Tasks\obj\Release\SkyGroundLabs.Tasks.dll
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Tasks\obj\Release\SkyGroundLabs.Tasks.pdb
+C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Tasks\bin\Release\SkyGroundLabs.Tasks.dll
+C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Tasks\bin\Release\SkyGroundLabs.Tasks.pdb
+C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Tasks\obj\Release\SkyGroundLabs.Tasks.dll
+C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Tasks\obj\Release\SkyGroundLabs.Tasks.pdb

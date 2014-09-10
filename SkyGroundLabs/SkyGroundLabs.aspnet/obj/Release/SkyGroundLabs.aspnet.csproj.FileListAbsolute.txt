@@ -19,3 +19,10 @@ C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspne
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\obj\Release\SkyGroundLabs.aspnet.csprojResolveAssemblyReference.cache
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\obj\Release\SkyGroundLabs.aspnet.dll
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\obj\Release\SkyGroundLabs.aspnet.pdb
+C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\bin\Release\SkyGroundLabs.aspnet.dll
+C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\bin\Release\SkyGroundLabs.aspnet.pdb
+C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\bin\Release\SkyGroundLabs.Reflection.dll
+C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\bin\Release\SkyGroundLabs.Reflection.pdb
+C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\obj\Release\SkyGroundLabs.aspnet.csprojResolveAssemblyReference.cache
+C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\obj\Release\SkyGroundLabs.aspnet.dll
+C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\obj\Release\SkyGroundLabs.aspnet.pdb
