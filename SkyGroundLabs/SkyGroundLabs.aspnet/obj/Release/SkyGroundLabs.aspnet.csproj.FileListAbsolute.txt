@@ -25,3 +25,4 @@ C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.as
 C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\obj\Release\SkyGroundLabs.aspnet.csprojResolveAssemblyReference.cache
 C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\obj\Release\SkyGroundLabs.aspnet.dll
 C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\obj\Release\SkyGroundLabs.aspnet.pdb
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.aspnet\obj\Release\SkyGroundLabs.aspnet.csprojResolveAssemblyReference.cache
