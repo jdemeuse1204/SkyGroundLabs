@@ -120,6 +120,11 @@ namespace SkyGroundLabs.Security
 
 		public bool HasPageAccess(long userID, string pageName)
 		{
+			if (userID == 0)
+			{
+				return false;
+			}
+
 			User user = _context.Users.Find(userID);
 			UserRoles role = _context.UserRoles.Where(w => w.ID == user.UserRoleID).FirstOrDefault();
 			UserRoleAccessPages page = _context.UserRoleAccessPages.Where(w => w.PageName.ToUpper() == pageName.ToUpper()).FirstOrDefault();
