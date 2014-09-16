@@ -46,5 +46,9 @@ namespace SkyGroundLabs.Data.Tables
 		public double Latitude { get; set; }
 
 		public double Longitude { get; set; }
+
+		public string PunchTimeZoneName { get; set; }
+
+		public string PunchTimeZoneOffset { get; set; }
 	}
 }
