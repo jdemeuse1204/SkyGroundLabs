@@ -50,5 +50,7 @@ namespace SkyGroundLabs.Data.Tables
 		public string PunchTimeZoneName { get; set; }
 
 		public string PunchTimeZoneOffset { get; set; }
+
+		public long PunchUserID { get; set; }
 	}
 }

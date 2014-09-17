@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -13,7 +14,11 @@ namespace SkyGroundLabs.aspnet.Binding
 	public partial class BindablePage : System.Web.UI.Page
 	{
 		#region Properties
-		public static object DataContext { get; set; }
+		public static object DataContext 
+		{
+			get { return HttpContext.Current.Session["DataContext"]; }
+			set { HttpContext.Current.Session["DataContext"] = value; } 
+		}
 		#endregion
 
 		#region Methods

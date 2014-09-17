@@ -44,6 +44,11 @@ namespace SkyGroundLabs.Data.Methods
 
 		public UserClocking PunchIn(long userID, DateTime dateTime, GeoLocation location, string GMTOffset, string timeZoneName, string specialCode = "", long appointmentID = 0)
 		{
+			return PunchIn(userID, userID, dateTime, location, GMTOffset, timeZoneName, specialCode, appointmentID);
+		}
+
+		public UserClocking PunchIn(long userID, long punchUserID, DateTime dateTime, GeoLocation location, string GMTOffset, string timeZoneName, string specialCode = "", long appointmentID = 0)
+		{
 			UserClocking inPunch = new UserClocking();
 			inPunch.AppointmentID = appointmentID;
 			inPunch.IsApproved = false;
@@ -59,6 +64,7 @@ namespace SkyGroundLabs.Data.Methods
 			inPunch.Latitude = location.Latitude;
 			inPunch.PunchTimeZoneName = timeZoneName;
 			inPunch.PunchTimeZoneOffset = GMTOffset;
+			inPunch.PunchUserID = punchUserID;
 
 			_context.SaveChanges(inPunch);
 
@@ -78,6 +84,7 @@ namespace SkyGroundLabs.Data.Methods
 			outPunch.Latitude = 0;
 			outPunch.PunchTimeZoneName = "";
 			outPunch.PunchTimeZoneOffset = "";
+			outPunch.PunchUserID = punchUserID;
 
 			_context.SaveChanges(outPunch);
 
@@ -85,6 +92,11 @@ namespace SkyGroundLabs.Data.Methods
 		}
 
 		public IEnumerable<UserClocking> PunchBoth(long userID, DateTime indateTime, DateTime outdateTime, GeoLocation location, string GMTOffset, string timeZoneName, string specialCode = "", long appointmentID = 0)
+		{
+			return PunchBoth(userID, userID, indateTime, outdateTime, location, GMTOffset, timeZoneName, specialCode, appointmentID);
+		}
+
+		public IEnumerable<UserClocking> PunchBoth(long userID, long punchUserID, DateTime indateTime, DateTime outdateTime, GeoLocation location, string GMTOffset, string timeZoneName, string specialCode = "", long appointmentID = 0)
 		{
 			var punchSet = new List<UserClocking>();
 
@@ -103,6 +115,7 @@ namespace SkyGroundLabs.Data.Methods
 			inPunch.Latitude = location.Latitude;
 			inPunch.PunchTimeZoneName = timeZoneName;
 			inPunch.PunchTimeZoneOffset = GMTOffset;
+			inPunch.PunchUserID = punchUserID;
 
 			_context.SaveChanges(inPunch);
 
@@ -122,6 +135,7 @@ namespace SkyGroundLabs.Data.Methods
 			outPunch.Latitude = location.Latitude;
 			outPunch.PunchTimeZoneName = timeZoneName;
 			outPunch.PunchTimeZoneOffset = GMTOffset;
+			outPunch.PunchUserID = punchUserID;
 
 			_context.SaveChanges(outPunch);
 
@@ -133,11 +147,16 @@ namespace SkyGroundLabs.Data.Methods
 
 		public UserClocking PunchOut(long userID, DateTime dateTime, GeoLocation location, string GMTOffset, string timeZoneName, string specialCode = "", long appointmentID = 0)
 		{
+			return PunchOut(userID, userID, dateTime, location, GMTOffset, timeZoneName, specialCode, appointmentID);
+		}
+
+		public UserClocking PunchOut(long userID, long punchUserID, DateTime dateTime, GeoLocation location, string GMTOffset, string timeZoneName, string specialCode = "", long appointmentID = 0)
+		{
 			var outPunch = _context.UserClockings.Where(w => w.UserID == userID
 				&& w.PunchType == PunchType.Out
 				&& w.PunchTime == Defaults.MinDateTime).FirstOrDefault();
 
-			var inPunch = _context.UserClockings.Where(w => w.PairingID == outPunch.PairingID 
+			var inPunch = _context.UserClockings.Where(w => w.PairingID == outPunch.PairingID
 				&& w.PunchType == PunchType.In).FirstOrDefault();
 
 			if (outPunch == null)
@@ -170,6 +189,7 @@ namespace SkyGroundLabs.Data.Methods
 			outPunch.Latitude = location.Latitude;
 			outPunch.PunchTimeZoneName = timeZoneName;
 			outPunch.PunchTimeZoneOffset = GMTOffset;
+			outPunch.PunchUserID = punchUserID;
 
 			_context.SaveChanges(outPunch);
 
