@@ -14,15 +14,30 @@ namespace SkyGroundLabs.aspnet.Binding
 	public partial class BindablePage : System.Web.UI.Page
 	{
 		#region Properties
-		public static object DataContext 
+		protected object DataContext
 		{
 			get { return HttpContext.Current.Session["DataContext"]; }
-			set { HttpContext.Current.Session["DataContext"] = value; } 
+			set { HttpContext.Current.Session["DataContext"] = value; }
 		}
 		#endregion
 
 		#region Methods
-		public void PushDataContextToPage()
+		protected static object GetDataContext()
+		{
+			return HttpContext.Current.Session["DataContext"];
+		}
+
+		protected static T GetDataContext<T>()
+		{
+			return (T)HttpContext.Current.Session["DataContext"];
+		}
+
+		protected static void ClearDataContext()
+		{
+			HttpContext.Current.Session["DataContext"] = null;
+		}
+
+		protected void PushDataContextToPage()
 		{
 			if (DataContext == null)
 			{
@@ -42,7 +57,7 @@ namespace SkyGroundLabs.aspnet.Binding
 			}
 		}
 
-		public void ClearPage()
+		protected void ClearPage()
 		{
 			List<IBindable> controls = new List<IBindable>();
 
@@ -62,44 +77,7 @@ namespace SkyGroundLabs.aspnet.Binding
 			}
 		}
 
-		private object _convertPushValue(PushConverter converter, object value)
-		{
-			switch (converter)
-			{
-				case PushConverter.DateTimeToShortDateString:
-					return Convert.ToDateTime(value).ToShortDateString();
-				case PushConverter.BoolToInt:
-					return ((bool)value ? 1 : 0);
-				case PushConverter.NumberToDecimalPrecision2:
-					return Convert.ToDecimal(value).ToString("0.00");
-			}
-
-			return value;
-		}
-
-		private object _convertPullValue(PullConverter converter, object value)
-		{
-			switch (converter)
-			{
-				case PullConverter.IntToBool:
-					return Convert.ToInt64(value) == 1;
-			}
-
-			return value;
-		}
-
-		private object _getDefaultFromValueType(object value)
-		{
-			Type type = value.GetType();
-
-			if (type.IsValueType)
-			{
-				return Activator.CreateInstance(type);
-			}
-			return null;
-		}
-
-		public void PullDataContextFromPage()
+		protected void PullDataContextFromPage()
 		{
 			if (DataContext == null)
 			{
@@ -124,6 +102,19 @@ namespace SkyGroundLabs.aspnet.Binding
 
 				ReflectionManager.SetPropertyValue(DataContext, ((IBindable)control).Path, value);
 			}
+		}
+		#endregion
+
+		#region Private Methods
+		private object _getDefaultFromValueType(object value)
+		{
+			Type type = value.GetType();
+
+			if (type.IsValueType)
+			{
+				return Activator.CreateInstance(type);
+			}
+			return null;
 		}
 
 		private void _getControlList(ControlCollection controlCollection, List<IBindable> resultCollection)
@@ -154,6 +145,32 @@ namespace SkyGroundLabs.aspnet.Binding
 			{
 				resultCollection.Add(control);
 			}
+		}
+
+		private object _convertPushValue(PushConverter converter, object value)
+		{
+			switch (converter)
+			{
+				case PushConverter.DateTimeToShortDateString:
+					return Convert.ToDateTime(value).ToShortDateString();
+				case PushConverter.BoolToInt:
+					return ((bool)value ? 1 : 0);
+				case PushConverter.NumberToDecimalPrecision2:
+					return Convert.ToDecimal(value).ToString("0.00");
+			}
+
+			return value;
+		}
+
+		private object _convertPullValue(PullConverter converter, object value)
+		{
+			switch (converter)
+			{
+				case PullConverter.IntToBool:
+					return Convert.ToInt64(value) == 1;
+			}
+
+			return value;
 		}
 		#endregion
 	}
