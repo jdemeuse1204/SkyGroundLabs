@@ -217,32 +217,78 @@ namespace SkyGroundLabs.Data.Methods
 		#region Get Punches
 		public UserClocking GetLastPunch(long userID)
 		{
-			return _context.UserClockings.Where(w => w.UserID == userID && w.PunchTime != Defaults.MinDateTime).OrderByDescending(w => w.ID).FirstOrDefault();
+			var query = _getLastPair(userID);
+
+			if (query.Count() > 0)
+			{
+				// check to see if there is an out punch
+				var outPunch = query.Where(w => w.PunchType == PunchType.Out && w.PunchTime == Defaults.MinDateTime).FirstOrDefault();
+
+				// if the count is greater than zero then there is no out punch
+				return outPunch == null ? query.FirstOrDefault(w => w.PunchType == PunchType.In) : query.FirstOrDefault(w => w.PunchType == PunchType.Out);
+			}
+
+			return null;
 		}
 
 		public PunchType GetLastPunchType(long userID)
 		{
-			return GetLastPunch(userID).PunchType;
+			var punch = GetLastPunch(userID);
+			return punch == null ? PunchType.In : punch.PunchType;
 		}
 
 		public UserClocking GetLastInPunch(long userID)
 		{
-			return _context.UserClockings.Where(w => w.UserID == userID && w.PunchType == PunchType.In).OrderByDescending(w => w.PunchTime).FirstOrDefault();
+			var query = _getLastPair(userID);
+
+			if (query.Count() > 0)
+			{
+				return query.Where(w => w.PunchType == PunchType.In).FirstOrDefault();
+			}
+
+			return null;
 		}
 
 		public UserClocking GetLastOutPunch(long userID)
 		{
-			return _context.UserClockings.Where(w => w.UserID == userID && w.PunchType == PunchType.Out && w.PunchTime != Defaults.MinDateTime).OrderByDescending(w => w.PunchTime).FirstOrDefault();
+			var query = _getLastPair(userID);
+
+			if (query.Count() > 0)
+			{
+				return query.Where(w => w.PunchType == PunchType.Out).FirstOrDefault();
+			}
+
+			return null;
 		}
 
 		public UserClocking GetLastOutPunch(long userID, Guid pairingID)
 		{
-			return _context.UserClockings.Where(w => w.UserID == userID && w.PunchType == PunchType.Out && w.PairingID == pairingID && w.PunchTime != Defaults.MinDateTime).OrderByDescending(w => w.PunchTime).FirstOrDefault();
+			return _context.UserClockings.Where(w => w.UserID == userID && w.PunchType == PunchType.Out && w.PairingID == pairingID).FirstOrDefault();
 		}
 
 		public UserClocking GetPunch(Guid pairingID, PunchType punchType)
 		{
 			return _context.UserClockings.Where(w => w.PairingID == pairingID && w.PunchType == punchType).FirstOrDefault();
+		}
+
+		private IEnumerable<UserClocking> _getLastPair(long userID)
+		{
+			// Return the punch that doesnt have an out punch first in case a user clocking was added
+			var lastPunch = _context.UserClockings.Where(w => w.PunchTime == Defaults.MinDateTime).FirstOrDefault();
+
+			if (lastPunch != null)
+			{
+				return _context.UserClockings.Where(w => w.PairingID == lastPunch.PairingID);
+			}
+
+			lastPunch = _context.UserClockings.Where(w => w.UserID == userID && w.PunchType == PunchType.In).OrderByDescending(w => w.PunchTime).FirstOrDefault();
+
+			if (lastPunch != null)
+			{
+				return _context.UserClockings.Where(w => w.PairingID == lastPunch.PairingID);
+			}
+
+			return new List<UserClocking>();
 		}
 		#endregion
 

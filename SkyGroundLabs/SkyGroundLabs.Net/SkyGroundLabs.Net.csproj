@@ -45,7 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Email\eContext.cs" />
     <Compile Include="Email\ElectronicMail.cs" />
     <Compile Include="Email\ElectronicMailAddress.cs" />
