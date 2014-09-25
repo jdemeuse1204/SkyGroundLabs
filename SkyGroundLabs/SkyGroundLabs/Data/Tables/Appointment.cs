@@ -92,5 +92,9 @@ namespace SkyGroundLabs.Data.Tables
 		public double Quote { get; set; }
 
 		public string DisplayTitle { get; set; }
+
+		public long CreatedByID { get; set; }
+
+		public long EditedByID { get; set; }
 	}
 }
