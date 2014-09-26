@@ -70,6 +70,7 @@
     <Compile Include="Data\Tables\AppointmentContentsView.cs" />
     <Compile Include="Data\Tables\AppointmentDisplayTitle.cs" />
     <Compile Include="Data\Tables\Contact.cs" />
+    <Compile Include="Data\Tables\ContactAddressArchive.cs" />
     <Compile Include="Data\Tables\ContactArchive.cs" />
     <Compile Include="Data\Tables\Crew.cs" />
     <Compile Include="Data\Tables\CrewAssignment.cs" />

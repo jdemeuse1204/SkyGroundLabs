@@ -79,5 +79,9 @@ namespace SkyGroundLabs.Data.Tables
 		public bool IsLocked { get; set; }
 
 		public long LockedByUserID { get; set; }
+
+		public long CreatedByID { get; set; }
+
+		public long EditedByID { get; set; }
 	}
 }
