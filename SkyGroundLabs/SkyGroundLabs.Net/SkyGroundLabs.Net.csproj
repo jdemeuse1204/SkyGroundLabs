@@ -33,6 +33,18 @@
     <Reference Include="EAGetMail40">
       <HintPath>..\..\..\..\Users\jdemeuse\Desktop\DLLs\EAGetMail40.dll</HintPath>
     </Reference>
+    <Reference Include="Google.GData.AccessControl">
+      <HintPath>..\..\..\..\DLLs\Google.GData.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.GData.Calendar">
+      <HintPath>..\..\..\..\DLLs\Google.GData.Calendar.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.GData.Client">
+      <HintPath>..\..\..\..\DLLs\Google.GData.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.GData.Extensions">
+      <HintPath>..\..\..\..\DLLs\Google.GData.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="SkyGroundLabs.Reflection">
       <HintPath>..\SkyGroundLabs.Reflection\bin\Release\SkyGroundLabs.Reflection.dll</HintPath>
     </Reference>
@@ -51,8 +63,14 @@
     <Compile Include="Email\EmailServices.cs" />
     <Compile Include="Email\WritableElectronicMail.cs" />
     <Compile Include="Google\Address.cs" />
-    <Compile Include="Google\GoogleMaps.cs" />
-    <Compile Include="Google\GoogleSearch.cs" />
+    <Compile Include="Google\CalendarEvent.cs" />
+    <Compile Include="Google\CalendarEventReminder.cs" />
+    <Compile Include="Google\CalendarEventReminderType.cs" />
+    <Compile Include="Google\Calendars\GoogleCalendarCredentials.cs" />
+    <Compile Include="Google\Calendars\GoogleCalendars.cs" />
+    <Compile Include="Google\CalendarEventInvitee.cs" />
+    <Compile Include="Google\Maps\GoogleMaps.cs" />
+    <Compile Include="Google\Search\GoogleSearch.cs" />
     <Compile Include="Google\Place.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

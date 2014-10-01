@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using iONWeb.Data;
+
+namespace iONWeb_Test
+{
+	public class ReusableContext : DbContext
+	{
+		public ReusableContext() : base("") { }
+	}
+}

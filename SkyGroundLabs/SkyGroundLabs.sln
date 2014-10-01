@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyGroundLabs", "SkyGroundLabs\SkyGroundLabs.csproj", "{B04E3C16-8013-4EFE-81F4-3052C036C040}"
-EndProject
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyGroundLabs.aspnet", "SkyGroundLabs.aspnet\SkyGroundLabs.aspnet.csproj", "{6BBD825F-51E9-40DF-BD7D-7A214E129993}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyGroundLabs.Net", "SkyGroundLabs.Net\SkyGroundLabs.Net.csproj", "{1A45388E-DB5B-4400-A57A-F948482A0E67}"
@@ -17,16 +17,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyGroundLabs.Cryptography"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyGroundLabs.Data.Linq", "SkyGroundLabs.Data.Linq\SkyGroundLabs.Data.Linq.csproj", "{E9C68D11-569F-459B-B9B8-79DBA5565DC1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ion", "Ion\Ion.csproj", "{25B01201-F19C-4D76-9B54-B469A9D147C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iONWeb", "iONWeb\iONWeb.csproj", "{9D753427-146B-4FD4-B5F9-03C19BB1B0C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iONWeb_Test", "iONWeb_Test\iONWeb_Test.csproj", "{A5DB0356-CFE0-4DBB-9705-9CED94AF3F66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B04E3C16-8013-4EFE-81F4-3052C036C040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B04E3C16-8013-4EFE-81F4-3052C036C040}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B04E3C16-8013-4EFE-81F4-3052C036C040}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B04E3C16-8013-4EFE-81F4-3052C036C040}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6BBD825F-51E9-40DF-BD7D-7A214E129993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6BBD825F-51E9-40DF-BD7D-7A214E129993}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BBD825F-51E9-40DF-BD7D-7A214E129993}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -55,6 +57,18 @@ Global
 		{E9C68D11-569F-459B-B9B8-79DBA5565DC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9C68D11-569F-459B-B9B8-79DBA5565DC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9C68D11-569F-459B-B9B8-79DBA5565DC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25B01201-F19C-4D76-9B54-B469A9D147C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25B01201-F19C-4D76-9B54-B469A9D147C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25B01201-F19C-4D76-9B54-B469A9D147C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25B01201-F19C-4D76-9B54-B469A9D147C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D753427-146B-4FD4-B5F9-03C19BB1B0C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D753427-146B-4FD4-B5F9-03C19BB1B0C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D753427-146B-4FD4-B5F9-03C19BB1B0C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D753427-146B-4FD4-B5F9-03C19BB1B0C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5DB0356-CFE0-4DBB-9705-9CED94AF3F66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5DB0356-CFE0-4DBB-9705-9CED94AF3F66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5DB0356-CFE0-4DBB-9705-9CED94AF3F66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5DB0356-CFE0-4DBB-9705-9CED94AF3F66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9D753427-146B-4FD4-B5F9-03C19BB1B0C6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>iONWeb</RootNamespace>
+    <AssemblyName>iONWeb</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Business\ClockingDisplayEmployeeValue.cs" />
+    <Compile Include="Business\ClockingDisplayValue.cs" />
+    <Compile Include="Business\Enumeration\PunchType.cs" />
+    <Compile Include="Business\Extension\Extensions.cs" />
+    <Compile Include="Business\GeoLocation.cs" />
+    <Compile Include="Business\JsonAddress.cs" />
+    <Compile Include="Business\JsonAppointmentDisplay.cs" />
+    <Compile Include="Business\JsonClockPair.cs" />
+    <Compile Include="Business\Services\ClockingServices.cs" />
+    <Compile Include="Business\Services\ContactServices.cs" />
+    <Compile Include="Business\Services\DisplayServices.cs" />
+    <Compile Include="Business\UserAccess.cs" />
+    <Compile Include="Business\UserClockingPair.cs" />
+    <Compile Include="Data\DbContext.cs" />
+    <Compile Include="Data\Defaults.cs" />
+    <Compile Include="Data\Methods\AppointmentMethods.cs" />
+    <Compile Include="Data\Methods\ClockingMethods.cs" />
+    <Compile Include="Data\Methods\ContactMethods.cs" />
+    <Compile Include="Data\Methods\UserMethods.cs" />
+    <Compile Include="Data\Tables\AppInfo.cs" />
+    <Compile Include="Data\Tables\Appointment.cs" />
+    <Compile Include="Data\Tables\AppointmentContentsView.cs" />
+    <Compile Include="Data\Tables\AppointmentDisplayTitle.cs" />
+    <Compile Include="Data\Tables\Calendar.cs" />
+    <Compile Include="Data\Tables\Contact.cs" />
+    <Compile Include="Data\Tables\ContactAddressArchive.cs" />
+    <Compile Include="Data\Tables\ContactArchive.cs" />
+    <Compile Include="Data\Tables\Crew.cs" />
+    <Compile Include="Data\Tables\CrewAssignment.cs" />
+    <Compile Include="Data\Tables\EmailAccount.cs" />
+    <Compile Include="Data\Tables\EmailRecent.cs" />
+    <Compile Include="Data\Tables\Floor.cs" />
+    <Compile Include="Data\Tables\Indicator.cs" />
+    <Compile Include="Data\Tables\MoveType.cs" />
+    <Compile Include="Data\Tables\Parameter.cs" />
+    <Compile Include="Data\Tables\Safe.cs" />
+    <Compile Include="Data\Tables\Store.cs" />
+    <Compile Include="Data\Tables\User.cs" />
+    <Compile Include="Data\Tables\UserClocking.cs" />
+    <Compile Include="Data\Tables\UserClockingSpecialCode.cs" />
+    <Compile Include="Data\Tables\UserRoleAccess.cs" />
+    <Compile Include="Data\Tables\UserRoleAccessPages.cs" />
+    <Compile Include="Data\Tables\UserRoles.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\Authentication.cs" />
+    <Compile Include="Security\AuthenticationResult.cs" />
+    <Compile Include="Security\AuthenticationStatus.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SkyGroundLabs.Cryptography\SkyGroundLabs.Cryptography.csproj">
+      <Project>{0a082d56-b31f-47f4-b9e2-4b0541fe7496}</Project>
+      <Name>SkyGroundLabs.Cryptography</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SkyGroundLabs.Data.Entity\SkyGroundLabs.Data.Entity.csproj">
+      <Project>{de76aab4-b415-484f-97eb-c295f6971066}</Project>
+      <Name>SkyGroundLabs.Data.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SkyGroundLabs.Reflection\SkyGroundLabs.Reflection.csproj">
+      <Project>{350531ff-b397-43d8-935c-b5c265d9b98d}</Project>
+      <Name>SkyGroundLabs.Reflection</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
