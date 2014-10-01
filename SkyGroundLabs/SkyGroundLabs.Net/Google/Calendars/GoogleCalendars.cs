@@ -72,17 +72,19 @@ namespace SkyGroundLabs.Net.Google.Calendars
 				myQuery.Query = queryString;
 				var myResultsFeed = service.Query(myQuery);
 
+				// CANNOT do .Where(w => w.EventId == eventId) because Entries has only 25 entries loaded
+				// might be in a different chunk
 				for (int i = 0; i < myResultsFeed.Entries.Count; i++)
 				{
 					EventEntry entry = myResultsFeed.Entries[i] as EventEntry;
 					results.Add(new CalendarEvent(_credentials, entry));
 
-					// go to the next page if there is one
+					// go to the next page if there is one, default is 25 items per chunk
 					if ((myResultsFeed.Entries.Count - 1) == i && !string.IsNullOrWhiteSpace(myResultsFeed.NextChunk))
 					{
 						myQuery = new FeedQuery(myResultsFeed.NextChunk);
 						myResultsFeed = service.Query(myQuery);
-						i = -1;
+						i = -1; // must be -1 because we are going to add 1 right away to get to 0
 					}
 				}
 
@@ -98,15 +100,14 @@ namespace SkyGroundLabs.Net.Google.Calendars
 		{
 			var list = _getEventsByQueryString(searchText);
 
-			foreach (var item in list)
+			if (list == null || list.Count() == 0)
 			{
-				if (item.EventID == eventId)
-				{
-					return item;
-				}
+				return null;  // Nothing was ever saved to the calendar
 			}
-
-			return null;
+			else
+			{
+				return list.Where(w => w.EventID == eventId).FirstOrDefault();
+			}
 		}
 		#endregion
 	}

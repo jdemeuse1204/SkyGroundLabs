@@ -121,93 +121,31 @@ namespace SkyGroundLabs.Net.Google
 
 		public bool Save()
 		{
+			// TODO : Test me!
 			try
 			{
 				if (_entry == null)
 				{
-
 					var service = new CalendarService(_applicationName);
 					service.setUserCredentials(_credentials.EmailAddress, _credentials.Password);
 
-					// Create the new entry
-					var entry = new EventEntry();
-					entry.Title.Text = this.Title;
-					entry.Content.Content = this.Contents;
-
-					// Set a location for the event.
-					var eventLocation = new Where();
-					eventLocation.ValueString = this.Location;
-					entry.Locations.Add(eventLocation);
-					// Set the event time
-					var eventTime = new When(this.StartTime, this.EndTime);
-					entry.Times.Add(eventTime);
-
-					// reminders
-					foreach (var item in Reminders)
-					{
-						var newReminder = new Reminder();
-						newReminder.Method = item.Type;
-						newReminder.Minutes = item.Minutes;
-						newReminder.Hours = item.Hours;
-						newReminder.Days = item.Days;
-						_entry.Reminders.Add(newReminder);
-					}
-
-					// participants
-					foreach (var item in Invitees)
-					{
-						var newInvitee = new Who();
-						newInvitee.Email = item.Email;
-						newInvitee.ValueString = item.Name;
-						_entry.Participants.Add(newInvitee);
-					}
+					// this will create the entry for us and set it to the current calendar event info
+					_setEventEntryToCurrent();
 
 					// this is the calendar it is being posted to
 					var postUri = new Uri(_credentials.CalendarUri);
 
 					// Send the request and receive the response:
-					this._entry = service.Insert(postUri, entry);
+					this._entry = service.Insert(postUri, _entry);
+
+					// grab the eventId back
 					this.EventID = _entry.EventId;
 
 				}
 				else
 				{
-					_entry.Title.Text = this.Title;
-					_entry.Content.Content = this.Contents;
-
-					// clear the locations and re-add them
-					_entry.Locations.Clear();
-					var eventLocation = new Where();
-					eventLocation.ValueString = this.Location;
-					_entry.Locations.Add(eventLocation);
-
-					// clear the times and re-add them
-					_entry.Times.Clear();
-					var eventTime = new When(this.StartTime, this.EndTime);
-					_entry.Times.Add(eventTime);
-
-					// reminders
-					_entry.Reminders.Clear();
-					foreach (var item in Reminders)
-					{
-						var newReminder = new Reminder();
-						newReminder.Method = item.Type;
-						newReminder.Minutes = item.Minutes;
-						newReminder.Hours = item.Hours;
-						newReminder.Days = item.Days;
-						_entry.Reminders.Add(newReminder);
-					}
-
-					// participants
-					_entry.Participants.Clear();
-					foreach (var item in Invitees)
-					{
-						var newInvitee = new Who();
-						newInvitee.Email = item.Email;
-						newInvitee.ValueString = item.Name;
-						_entry.Participants.Add(newInvitee);
-					}
-
+					// set the entry to the current calendar event info and update
+					_setEventEntryToCurrent();
 					_entry.Update();
 				}
 
@@ -216,6 +154,56 @@ namespace SkyGroundLabs.Net.Google
 			catch
 			{
 				return false;
+			}
+		}
+
+		private void _setEventEntryToCurrent()
+		{
+			// create the entry if needed
+			if (_entry == null)
+			{
+				_entry = new EventEntry();
+			}
+
+			// Set the title
+			_entry.Title.Text = this.Title;
+
+			// Set the contents
+			_entry.Content.Content = this.Contents;
+
+			// Set a location for the event.
+			_entry.Locations.Clear();
+			_entry.Locations.Add(new Where()
+			{
+				ValueString = this.Location
+			});
+
+			// Set the event time
+			_entry.Times.Clear();
+			_entry.Times.Add(new When(this.StartTime, this.EndTime));
+
+			// reminders clear first so we can update it
+			_entry.Reminders.Clear();
+
+			foreach (var item in Reminders)
+			{
+				var newReminder = new Reminder();
+				newReminder.Method = item.Type;
+				newReminder.Minutes = item.Minutes;
+				newReminder.Hours = item.Hours;
+				newReminder.Days = item.Days;
+				_entry.Reminders.Add(newReminder);
+			}
+
+			// participants clear first so we can update it
+			_entry.Participants.Clear();
+
+			foreach (var item in Invitees)
+			{
+				var newInvitee = new Who();
+				newInvitee.Email = item.Email;
+				newInvitee.ValueString = item.Name;
+				_entry.Participants.Add(newInvitee);
 			}
 		}
 		#endregion
