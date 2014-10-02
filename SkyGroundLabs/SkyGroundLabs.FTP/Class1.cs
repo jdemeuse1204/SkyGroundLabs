@@ -11,9 +11,8 @@ namespace SkyGroundLabs.FTP
     public class Class1
     {
 		// download files
-		private void Button_Click(object sender, RoutedEventArgs e)
+		private void Button_Click(object sender)
 		{
-			this.Cursor = Cursors.Wait;
 			string pathUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 			string pathDownload = System.IO.Path.Combine(pathUser, "Downloads");
 			string finalDownloadPath = pathDownload + @"\Published"; //  get local downloads folder
@@ -144,15 +143,13 @@ namespace SkyGroundLabs.FTP
 			}
 
 			AddFileExtensions(finalDownloadPath);
-			this.Cursor = Cursors.Arrow;
-			MessageBox.Show("Files Downloaded to the below location:\n" + finalDownloadPath);
+			//MessageBox.Show("Files Downloaded to the below location:\n" + finalDownloadPath);
 		}
 
 		// upload files
-		private void Button_Click_1(object sender, RoutedEventArgs e)
+		private void Button_Click_1(object sender)
 		{
-			this.Cursor = Cursors.Wait;
-			string path = this.txtPublishPath.Text;
+			string path = "";// this.txtPublishPath.Text;
 			RemoveFileExtensions(path);
 			CreateSetupTextFile(path);
 			RemoveFileExtensions(path);
@@ -260,11 +257,9 @@ namespace SkyGroundLabs.FTP
 				ftpStream.Close();
 			}
 
-			this.Cursor = Cursors.Arrow;
-			MessageBox.Show("Upload complete");
+			//MessageBox.Show("Upload complete");
 		}
 
-		#region Helper Methods
 		private void RemoveFileExtensions(string path)
 		{
 			string[] files = System.IO.Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);

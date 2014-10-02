@@ -14,3 +14,11 @@ C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\iONWeb\bin\Release\
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\iONWeb\bin\Release\EntityFramework.SqlServer.xml
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\iONWeb\obj\Release\iONWeb.dll
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\iONWeb\obj\Release\iONWeb.pdb
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\iONWeb\bin\Release\SkyGroundLabs.Net.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\iONWeb\bin\Release\EAGetMail40.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\iONWeb\bin\Release\Google.GData.Client.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\iONWeb\bin\Release\Google.GData.Calendar.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\iONWeb\bin\Release\Google.GData.Extensions.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\iONWeb\bin\Release\Newtonsoft.Json.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\iONWeb\bin\Release\Google.GData.AccessControl.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\iONWeb\bin\Release\SkyGroundLabs.Net.pdb

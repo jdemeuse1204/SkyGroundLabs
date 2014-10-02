@@ -12,11 +12,6 @@ namespace SkyGroundLabs.Net.Google
 {
 	public class CalendarEvent
 	{
-		#region Properties
-		private readonly string _applicationName = "CalendarSampleApp";
-		private GoogleCalendarCredentials _credentials { get; set; }
-		#endregion
-
 		#region Constructors And Helpers
 		public CalendarEvent(GoogleCalendarCredentials credentials)
 		{
@@ -91,6 +86,8 @@ namespace SkyGroundLabs.Net.Google
 		#endregion
 
 		#region Properties
+		private readonly string _applicationName = "CalendarSampleApp";
+		private GoogleCalendarCredentials _credentials { get; set; }
 		public DateTime DateCreated { get; private set; }
 		public DateTime DateEdied { get; private set; }
 		public DateTime StartTime { get; set; }

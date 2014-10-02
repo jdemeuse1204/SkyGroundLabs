@@ -9,16 +9,9 @@ using SkyGroundLabs.Data.Entity.Mapping;
 namespace iONWeb.Data.Tables
 {
 	[Table("Users")]
-	public class User : DbTableEquatable<IDbTableEquatable<long>>
+	public class User : DbTableEquatable<IDbTableEquatable<int>>
 	{
-		public User()
-		{
-			UserRoleID = 1;
-			ManagerUserID = 0;
-			LastAuthenticationDate = Defaults.MinDateTime;
-		}
-
-		public long ID { get; set; }
+		public int ID { get; set; }
 
 		public string Username { get; set; }
 
@@ -34,9 +27,9 @@ namespace iONWeb.Data.Tables
 
 		public string LastName { get; set; }
 
-		public string DisplayName { get; set; }
+		public string Address1 { get; set; }
 
-		public string Street { get; set; }
+		public string Address2 { get; set; }
 
 		public string City { get; set; }
 
@@ -46,22 +39,15 @@ namespace iONWeb.Data.Tables
 
 		public string Phone1 { get; set; }
 
-		public string Phone1Carrier { get; set; }
-
 		public string Phone2 { get; set; }
-
-		public string Phone2Carrier { get; set; }
 
 		public string Email { get; set; }
 
-		public string DatabasePassword { get; set; }
+		public int UserRoleID { get; set; }
 
-		[Column("UserRoleTypeID")]
-		public long UserRoleID { get; set; }
+		public int ManagerUserID { get; set; }
 
-		public string PIN { get; set; }
-
-		public long ManagerUserID { get; set; }
+		public int CompanyID { get; set; }
 
 		public string SecurityQuestion { get; set; }
 

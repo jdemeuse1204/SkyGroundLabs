@@ -36,6 +36,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="SkyGroundLabs.Net">
+      <HintPath>..\SkyGroundLabs.Net\bin\Release\SkyGroundLabs.Net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -46,11 +49,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Business\ClockingDisplayEmployeeValue.cs" />
-    <Compile Include="Business\ClockingDisplayValue.cs" />
-    <Compile Include="Business\Enumeration\PunchType.cs" />
-    <Compile Include="Business\Extension\Extensions.cs" />
-    <Compile Include="Business\GeoLocation.cs" />
+    <Compile Include="Business\Calendar\iONCalendarCredentials.cs" />
+    <Compile Include="Business\Calendar\iONCalendarEvent.cs" />
+    <Compile Include="Business\Calendar\iONCalendarService.cs" />
+    <Compile Include="Business\Clocking\ClockingDisplayEmployeeValue.cs" />
+    <Compile Include="Business\Clocking\ClockingDisplayValue.cs" />
+    <Compile Include="Business\Clocking\PunchType.cs" />
+    <Compile Include="Data\Enumeration\EventHistoryType.cs" />
+    <Compile Include="Data\Enumeration\InviteeType.cs" />
+    <Compile Include="Data\Enumeration\ReminderType.cs" />
+    <Compile Include="Data\Tables\Company.cs" />
+    <Compile Include="Data\Tables\Customer.cs" />
+    <Compile Include="Data\Tables\Event.cs" />
+    <Compile Include="Data\Tables\EventAuthentication.cs" />
+    <Compile Include="Data\Tables\EventHistory.cs" />
+    <Compile Include="Data\Tables\EventInvitee.cs" />
+    <Compile Include="Data\Tables\EventReminder.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Business\Clocking\GeoLocation.cs" />
     <Compile Include="Business\JsonAddress.cs" />
     <Compile Include="Business\JsonAppointmentDisplay.cs" />
     <Compile Include="Business\JsonClockPair.cs" />
@@ -58,31 +74,11 @@
     <Compile Include="Business\Services\ContactServices.cs" />
     <Compile Include="Business\Services\DisplayServices.cs" />
     <Compile Include="Business\UserAccess.cs" />
-    <Compile Include="Business\UserClockingPair.cs" />
+    <Compile Include="Business\Clocking\UserClockingPair.cs" />
     <Compile Include="Data\DbContext.cs" />
     <Compile Include="Data\Defaults.cs" />
-    <Compile Include="Data\Methods\AppointmentMethods.cs" />
-    <Compile Include="Data\Methods\ClockingMethods.cs" />
-    <Compile Include="Data\Methods\ContactMethods.cs" />
-    <Compile Include="Data\Methods\UserMethods.cs" />
-    <Compile Include="Data\Tables\AppInfo.cs" />
-    <Compile Include="Data\Tables\Appointment.cs" />
-    <Compile Include="Data\Tables\AppointmentContentsView.cs" />
-    <Compile Include="Data\Tables\AppointmentDisplayTitle.cs" />
-    <Compile Include="Data\Tables\Calendar.cs" />
-    <Compile Include="Data\Tables\Contact.cs" />
-    <Compile Include="Data\Tables\ContactAddressArchive.cs" />
-    <Compile Include="Data\Tables\ContactArchive.cs" />
-    <Compile Include="Data\Tables\Crew.cs" />
-    <Compile Include="Data\Tables\CrewAssignment.cs" />
-    <Compile Include="Data\Tables\EmailAccount.cs" />
-    <Compile Include="Data\Tables\EmailRecent.cs" />
-    <Compile Include="Data\Tables\Floor.cs" />
     <Compile Include="Data\Tables\Indicator.cs" />
-    <Compile Include="Data\Tables\MoveType.cs" />
     <Compile Include="Data\Tables\Parameter.cs" />
-    <Compile Include="Data\Tables\Safe.cs" />
-    <Compile Include="Data\Tables\Store.cs" />
     <Compile Include="Data\Tables\User.cs" />
     <Compile Include="Data\Tables\UserClocking.cs" />
     <Compile Include="Data\Tables\UserClockingSpecialCode.cs" />
@@ -90,9 +86,6 @@
     <Compile Include="Data\Tables\UserRoleAccessPages.cs" />
     <Compile Include="Data\Tables\UserRoles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\Authentication.cs" />
-    <Compile Include="Security\AuthenticationResult.cs" />
-    <Compile Include="Security\AuthenticationStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -111,6 +104,9 @@
       <Project>{350531ff-b397-43d8-935c-b5c265d9b98d}</Project>
       <Name>SkyGroundLabs.Reflection</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\Methods\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

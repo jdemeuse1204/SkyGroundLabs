@@ -100,10 +100,10 @@ namespace Ion.Data
 		#endregion
 
 		#region Methods
-		public virtual void DeleteOnSave<TEntity>(TEntity entity)
+		public virtual void Delete<TEntity>(TEntity entity)
 			where TEntity : DbTableEquatable<IDbTableEquatable<long>>
 		{
-			base.DeleteOnSave<TEntity, long>(entity);
+			base.Delete<TEntity, long>(entity);
 		}
 
 		public virtual void SaveChanges<TEntity>(TEntity entity)

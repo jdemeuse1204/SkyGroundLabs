@@ -1,0 +1,5 @@
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.FTP\bin\Release\SkyGroundLabs.FTP.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.FTP\bin\Release\SkyGroundLabs.FTP.pdb
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.FTP\obj\Release\SkyGroundLabs.FTP.csprojResolveAssemblyReference.cache
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.FTP\obj\Release\SkyGroundLabs.FTP.dll
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.FTP\obj\Release\SkyGroundLabs.FTP.pdb

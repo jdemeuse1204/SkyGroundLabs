@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using iONWeb.Business.Enumeration;
+using iONWeb.Business.Clocking;
 using SkyGroundLabs.Data.Entity.Mapping;
 
 namespace iONWeb.Data.Tables

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using iONWeb.Business.Calendar;
+using iONWeb.Data.Tables;
 using SkyGroundLabs.Net.Google;
 using SkyGroundLabs.Net.Google.Calendars;
 
@@ -12,9 +14,31 @@ namespace iONWeb_Test
 	{
 		static void Main(string[] args)
 		{
-			GoogleCalendarTest_Nickbooks();
+			GuidInsertTest();
 		}
 
+		#region Database Tests
+		static void GuidInsertTest()
+		{
+			iONCalendarCredentials creds = new iONCalendarCredentials();
+			creds.Username = "jdemeuse1204";
+			creds.Password = "aiwa1122";
+			creds.Server = "lin.arvixe.com";
+			creds.Database = "iONWebDataStore_Live";
+			creds.UserID = 1;
+
+			iONCalendarEvent e = new iONCalendarEvent(creds);
+			e.Location = "My House";
+			e.Title = "Test";
+			e.StartTime = DateTime.Now;
+			e.EndTime = DateTime.Now;
+			e.Contents = "Contents";
+			e.Save();
+
+		}
+		#endregion
+
+		#region Google Calendar Tests
 		static void GoogleCalendarTest_Nickbooks()
 		{
 			var credentials = new GoogleCalendarCredentials()
@@ -61,5 +85,6 @@ namespace iONWeb_Test
 			calEvent.EndTime = DateTime.Now.AddMinutes(120);
 			calEvent.Save();
 		}
+		#endregion
 	}
 }

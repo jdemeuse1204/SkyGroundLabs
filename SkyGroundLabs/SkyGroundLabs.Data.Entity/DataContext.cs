@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -55,11 +56,12 @@ namespace SkyGroundLabs.Data.Entity
 		{
 			var changedList = Set<TEntity>();
 			var ID = entity.GetType().GetProperty("ID").GetValue(entity);
+			var defaultValue = Activator.CreateInstance(entity.GetType().GetProperty("ID").PropertyType);
 
 			_preprocessSave<TEntity, TPKType>(entity);
-
+			
 			// Save changes
-			if (Convert.ToInt64(ID) == 0)
+			if (ID.Equals(defaultValue))
 			{
 				// Insert
 				// If No ID we need to insert on submit
@@ -81,13 +83,14 @@ namespace SkyGroundLabs.Data.Entity
 		/// <typeparam name="TEntity">Record Type</typeparam>
 		/// <typeparam name="TPKType">Primary Key Type</typeparam>
 		/// <param name="entity">Record</param>
-		public virtual void DeleteOnSave<TEntity, TPKType>(TEntity entity)
+		public virtual void Delete<TEntity, TPKType>(TEntity entity)
 			where TEntity : DbTableEquatable<IDbTableEquatable<TPKType>>
 			where TPKType : struct
 		{
 			var ID = entity.GetType().GetProperty("ID").GetValue(entity);
 			var item = Set<TEntity>().Find(ID);
 			Set<TEntity>().Remove((TEntity)item);
+			SaveChanges();
 		}
 
 		protected virtual void _preprocessSave<TEntity, TPKType>(TEntity entity)

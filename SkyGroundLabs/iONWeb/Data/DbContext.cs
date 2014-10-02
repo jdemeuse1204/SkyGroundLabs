@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 using iONWeb.Business.Services;
 using SkyGroundLabs.Data.Entity;
 using SkyGroundLabs.Data.Entity.Mapping;
-using iONWeb.Data.Methods;
 using iONWeb.Data.Tables;
-using iONWeb.Security;
 
 namespace iONWeb.Data
 {
@@ -19,61 +17,23 @@ namespace iONWeb.Data
 	public class DbContext : DataContext
 	{
 		#region Tables
-		public IDbSet<Appointment> Appointments { get; set; }
 
-		public IDbSet<Contact> Contacts { get; set; }
+		public IDbSet<Company> Companies { get; set; }
 
-		public IDbSet<Floor> Floors { get; set; }
+		public IDbSet<Customer> Customers { get; set; }
 
-		public IDbSet<Indicator> Indicators { get; set; }
+		public IDbSet<Event> Events { get; set; }
 
-		public IDbSet<MoveType> MoveTypes { get; set; }
+		public IDbSet<EventAuthentication> EventAuthentication { get; set; }
 
-		public IDbSet<Parameter> Parameters { get; set; }
+		public IDbSet<EventHistory> EventHistory { get; set; }
 
-		public IDbSet<Store> Stores { get; set; }
+		public IDbSet<EventReminder> EventReminders { get; set; }
 
 		public IDbSet<User> Users { get; set; }
 
-		public IDbSet<AppointmentContentsView> ContentsView { get; set; }
+		public IDbSet<EventInvitee> EventInvitees { get; set; }
 
-		public IDbSet<AppointmentDisplayTitle> DisplayTitle { get; set; }
-
-		public IDbSet<Crew> Crews { get; set; }
-
-		public IDbSet<EmailAccount> EmailAccounts { get; set; }
-
-		public IDbSet<EmailRecent> EmailRecents { get; set; }
-
-		public IDbSet<Safe> Safes { get; set; }
-
-		public IDbSet<ContactArchive> ContactsArchive { get; set; }
-
-		public IDbSet<CrewAssignment> CrewAssignments { get; set; }
-
-		public IDbSet<UserClocking> UserClockings { get; set; }
-
-		public IDbSet<UserRoles> UserRoles { get; set; }
-
-		public IDbSet<UserRoleAccess> UserRoleAccess { get; set; }
-
-		public IDbSet<UserRoleAccessPages> UserRoleAccessPages { get; set; }
-
-		public IDbSet<UserClockingSpecialCode> UserClockingSpecialCodes { get; set; }
-
-		public IDbSet<AppInfo> ApplicationInformation { get; set; }
-		#endregion
-
-		#region Functions
-		public ContactMethods ContactFunctions { get; set; }
-
-		public AppointmentMethods AppointmentFunctions { get; set; }
-
-		public UserMethods UserFunctions { get; set; }
-
-		public ClockingMethods ClockingFunctions { get; set; }
-
-		public Authentication AuthenticationFunctions { get; set; }
 		#endregion
 
 		#region Constructor
@@ -91,106 +51,13 @@ namespace iONWeb.Data
 
 		private void _initialize()
 		{
-			ContactFunctions = new ContactMethods(this);
-			AppointmentFunctions = new AppointmentMethods(this);
-			UserFunctions = new UserMethods(this);
-			ClockingFunctions = new ClockingMethods(this);
-			AuthenticationFunctions = new Authentication(this);
 		}
 		#endregion
 
 		#region Methods
-		public virtual void DeleteOnSave<TEntity>(TEntity entity)
-			where TEntity : DbTableEquatable<IDbTableEquatable<long>>
-		{
-			base.DeleteOnSave<TEntity, long>(entity);
-		}
-
-		public virtual void SaveChanges<TEntity>(TEntity entity)
-			where TEntity : DbTableEquatable<IDbTableEquatable<long>>
-		{
-			base.SaveChanges<TEntity, long>(entity);
-		}
-
-		public IDbSet<TEntity> GetTable<TEntity>()
-			where TEntity : DbTableEquatable<IDbTableEquatable<long>>
-		{
-			return base.Set<TEntity, long>();
-		}
-
 		protected override void _preprocessSave<TEntity, TPKType>(TEntity entity)
 		{
-			if (entity is Store)
-			{
-				var store = ((dynamic)entity);
-				store.DisplayName = store.Name + " - " + store.City;
 
-				// default string checks
-				if (string.IsNullOrWhiteSpace(store.Zip))
-				{
-					store.Zip = "";
-				}
-			}
-			else if (entity is Contact)
-			{
-				var contact = ((dynamic)entity);
-				contact.DisplayAddress = ContactServices.BuildAddress(
-							contact.Street,
-							contact.City,
-							contact.State,
-							contact.Zip);
-
-				contact.DisplayName1 = ContactServices.BuildDisplayName(
-							contact.FirstName1,
-							contact.LastName1);
-
-				contact.DisplayName2 = ContactServices.BuildDisplayName(
-							contact.FirstName2,
-							contact.LastName2);
-
-				contact.DisplayName3 = ContactServices.BuildDisplayName(
-							contact.FirstName3,
-							contact.LastName3);
-
-				// default string checks
-				if (string.IsNullOrWhiteSpace(contact.Zip))
-				{
-					contact.Zip = "";
-				}
-
-				contact.DateEdited = DateTime.Now;
-			}
-			else if (entity is Appointment)
-			{
-				var appointment = ((dynamic)entity);
-				appointment.DateEdited = DateTime.Now;
-
-				// default string checks
-				if (string.IsNullOrWhiteSpace(appointment.StartTime))
-				{
-					appointment.StartTime = "";
-				}
-
-				if (string.IsNullOrWhiteSpace(appointment.EndTime))
-				{
-					appointment.EndTime = "";
-				}
-
-				if (string.IsNullOrWhiteSpace(appointment.Background))
-				{
-					appointment.Background = "";
-				}
-
-				if (string.IsNullOrWhiteSpace(appointment.DropoffZip))
-				{
-					appointment.DropoffZip = "";
-				}
-
-				if (string.IsNullOrWhiteSpace(appointment.PickupZip))
-				{
-					appointment.PickupZip = "";
-				}
-			}
 		}
 		#endregion
 	}

@@ -9,6 +9,6 @@ namespace iONWeb_Test
 {
 	public class ReusableContext : DbContext
 	{
-		public ReusableContext() : base("") { }
+		public ReusableContext() : base("Data Source=lin.arvixe.com;Initial Catalog=iONWebDataStore_Live;User ID=jdemeuse1204;Password=aiwa1122;MultipleActiveResultSets=true") { }
 	}
 }
