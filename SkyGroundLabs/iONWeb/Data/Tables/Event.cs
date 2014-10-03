@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using iONWeb.Data.Enumeration;
 using SkyGroundLabs.Data.Entity.Mapping;
 
 namespace iONWeb.Data.Tables
@@ -28,6 +29,10 @@ namespace iONWeb.Data.Tables
 
 		public bool IsReoccuring { get; set; }
 
-		public int CreatedByUserID { get; set; }
+		public int AuthorID { get; set; }
+
+		public Guid CalendarID { get; set; }
+
+		public EventType Type { get; set; }
 	}
 }

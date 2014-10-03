@@ -17,6 +17,11 @@ namespace iONWeb.Data
 	public class DbContext : DataContext
 	{
 		#region Tables
+		public IDbSet<Calendar> Calendars { get; set; }
+
+		public IDbSet<CalendarHistory> CalendarHistory { get; set; }
+
+		public IDbSet<CalendarInvitee> CalendarInvitees { get; set; }
 
 		public IDbSet<Company> Companies { get; set; }
 

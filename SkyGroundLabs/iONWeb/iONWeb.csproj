@@ -51,13 +51,21 @@
   <ItemGroup>
     <Compile Include="Business\Calendar\iONCalendarCredentials.cs" />
     <Compile Include="Business\Calendar\iONCalendarEvent.cs" />
+    <Compile Include="Business\Calendar\iONCalendar.cs" />
+    <Compile Include="Business\Calendar\iONCalendarException.cs" />
+    <Compile Include="Business\Calendar\iONCalendarEventException.cs" />
     <Compile Include="Business\Calendar\iONCalendarService.cs" />
     <Compile Include="Business\Clocking\ClockingDisplayEmployeeValue.cs" />
     <Compile Include="Business\Clocking\ClockingDisplayValue.cs" />
     <Compile Include="Business\Clocking\PunchType.cs" />
+    <Compile Include="Data\Enumeration\CalendarHistoryType.cs" />
     <Compile Include="Data\Enumeration\EventHistoryType.cs" />
+    <Compile Include="Data\Enumeration\EventType.cs" />
     <Compile Include="Data\Enumeration\InviteeType.cs" />
     <Compile Include="Data\Enumeration\ReminderType.cs" />
+    <Compile Include="Data\Tables\Calendar.cs" />
+    <Compile Include="Data\Tables\CalendarHistory.cs" />
+    <Compile Include="Data\Tables\CalendarInvitee.cs" />
     <Compile Include="Data\Tables\Company.cs" />
     <Compile Include="Data\Tables\Customer.cs" />
     <Compile Include="Data\Tables\Event.cs" />

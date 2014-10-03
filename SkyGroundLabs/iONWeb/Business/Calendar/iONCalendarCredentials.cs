@@ -12,10 +12,10 @@ namespace iONWeb.Business.Calendar
 
 		public string Database { get; set; }
 
-		public string Username { get; set; }
+		public readonly string Username = "jdemeuse1204";
 
 		public int UserID { get; set; }
 
-		public string Password { get; set; }
+		public readonly string Password = "aiwa1122";
 	}
 }

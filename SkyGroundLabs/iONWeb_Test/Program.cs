@@ -14,18 +14,33 @@ namespace iONWeb_Test
 	{
 		static void Main(string[] args)
 		{
-			GuidInsertTest();
+			//LoadTest_EventsOnCalendar();
+			CalendarServiceTest_LoadCalendar();
 		}
 
 		#region Database Tests
-		static void GuidInsertTest()
+		static void CalendarServiceTest_LoadCalendar()
 		{
 			iONCalendarCredentials creds = new iONCalendarCredentials();
-			creds.Username = "jdemeuse1204";
-			creds.Password = "aiwa1122";
 			creds.Server = "lin.arvixe.com";
 			creds.Database = "iONWebDataStore_Live";
 			creds.UserID = 1;
+
+			iONCalendarService service = new iONCalendarService(creds);
+			service.LazyLoad();
+		}
+
+		static void SaveCalendarTest()
+		{
+			iONCalendarCredentials creds = new iONCalendarCredentials();
+			creds.Server = "lin.arvixe.com";
+			creds.Database = "iONWebDataStore_Live";
+			creds.UserID = 1;
+
+			iONCalendar calendar = new iONCalendar(creds);
+			calendar.Name = "Test";
+			calendar.Description = "Test";
+			calendar.Insert();
 
 			iONCalendarEvent e = new iONCalendarEvent(creds);
 			e.Location = "My House";
@@ -33,8 +48,30 @@ namespace iONWeb_Test
 			e.StartTime = DateTime.Now;
 			e.EndTime = DateTime.Now;
 			e.Contents = "Contents";
-			e.Save();
+			e.Insert(calendar.CalendarID);
 
+		}
+
+		static void LoadTest_EventsOnCalendar()
+		{
+			iONCalendarCredentials creds = new iONCalendarCredentials();
+			creds.Server = "lin.arvixe.com";
+			creds.Database = "iONWebDataStore_Live";
+			creds.UserID = 1;
+
+			iONCalendarService service = new iONCalendarService(creds);
+			var calendar = service.FindCalendarByName("test").FirstOrDefault();
+
+			for (int i = 0; i < 10000; i++)
+			{
+				iONCalendarEvent e = new iONCalendarEvent(creds);
+				e.Location = "My House" + i;
+				e.Title = "Test" + i;
+				e.StartTime = DateTime.Now;
+				e.EndTime = DateTime.Now;
+				e.Contents = "Contents";
+				e.Insert(calendar.CalendarID);
+			}
 		}
 		#endregion
 
