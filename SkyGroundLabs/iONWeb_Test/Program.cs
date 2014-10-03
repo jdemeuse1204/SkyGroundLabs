@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using iONWeb.Business;
 using iONWeb.Business.Calendar;
 using iONWeb.Data.Tables;
 using SkyGroundLabs.Net.Google;
@@ -14,14 +15,39 @@ namespace iONWeb_Test
 	{
 		static void Main(string[] args)
 		{
-			//LoadTest_EventsOnCalendar();
-			CalendarServiceTest_LoadCalendar();
+			ClockIn();
 		}
+
+		#region Clocking Tests
+		static void ClockIn()
+		{
+			using (var context = new ReusableContext())
+			{
+				var inPunch = new Clocking();
+				inPunch.PunchTime = DateTime.Now;
+				inPunch.PunchTimeRounded = DateTime.Now;
+				inPunch.OriginalPunchTime = DateTime.Now;
+				inPunch.PunchType = iONWeb.Business.Clocking.PunchType.In;
+				inPunch.PairingID = inPunch.GetNewPairingID(context);
+				context.Clockings.Add(inPunch);
+
+				var outPunch = new Clocking();
+				outPunch.PunchTime = DateTime.Now;
+				outPunch.PunchTimeRounded = DateTime.Now;
+				outPunch.OriginalPunchTime = DateTime.Now;
+				outPunch.PunchType = iONWeb.Business.Clocking.PunchType.Out;
+				outPunch.PairingID = inPunch.PairingID;
+				context.Clockings.Add(outPunch);
+
+				context.SaveChanges();
+			}
+		}
+		#endregion
 
 		#region Database Tests
 		static void CalendarServiceTest_LoadCalendar()
 		{
-			iONCalendarCredentials creds = new iONCalendarCredentials();
+			iONCredentials creds = new iONCredentials();
 			creds.Server = "lin.arvixe.com";
 			creds.Database = "iONWebDataStore_Live";
 			creds.UserID = 1;
@@ -32,7 +58,7 @@ namespace iONWeb_Test
 
 		static void SaveCalendarTest()
 		{
-			iONCalendarCredentials creds = new iONCalendarCredentials();
+			iONCredentials creds = new iONCredentials();
 			creds.Server = "lin.arvixe.com";
 			creds.Database = "iONWebDataStore_Live";
 			creds.UserID = 1;
@@ -54,7 +80,7 @@ namespace iONWeb_Test
 
 		static void LoadTest_EventsOnCalendar()
 		{
-			iONCalendarCredentials creds = new iONCalendarCredentials();
+			iONCredentials creds = new iONCredentials();
 			creds.Server = "lin.arvixe.com";
 			creds.Database = "iONWebDataStore_Live";
 			creds.UserID = 1;

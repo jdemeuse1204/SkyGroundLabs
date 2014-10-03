@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iONWeb.Business.Calendar
+namespace iONWeb.Business
 {
-	public class iONCalendarCredentials
+	public class iONCredentials
 	{
 		public string Server { get; set; }
 

@@ -13,11 +13,11 @@ namespace iONWeb.Business.Calendar
 	public class iONCalendarEvent
 	{
 		#region Properties
-		private iONCalendarCredentials _credentials { get; set; }
+		private iONCredentials _credentials { get; set; }
 		#endregion
 
 		#region Constructors And Helpers
-		public iONCalendarEvent(iONCalendarCredentials credentials)
+		public iONCalendarEvent(iONCredentials credentials)
 		{
 			Invitees = new List<EventInvitee>();
 			Reminders = new List<EventReminder>();
@@ -25,7 +25,7 @@ namespace iONWeb.Business.Calendar
 			this.Type = EventType.Private;
 		}
 
-		public iONCalendarEvent(iONCalendarCredentials credentials, Event e)
+		public iONCalendarEvent(iONCredentials credentials, Event e)
 		{
 			Invitees = new List<EventInvitee>();
 			Reminders = new List<EventReminder>();
@@ -280,7 +280,7 @@ namespace iONWeb.Business.Calendar
 		// Connection to only be used with events
 		private class EventContext : DbContext
 		{
-			public EventContext(iONCalendarCredentials credentials)
+			public EventContext(iONCredentials credentials)
 				: base(credentials.Server, credentials.Database, credentials.Username, credentials.Password)
 			{
 

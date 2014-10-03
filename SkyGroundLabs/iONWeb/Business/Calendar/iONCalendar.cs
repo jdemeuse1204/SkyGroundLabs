@@ -14,7 +14,7 @@ namespace iONWeb.Business.Calendar
 		public Guid CalendarID { get; private set; }
 		public string Description { get; set; }
 		public string Name { get; set; }
-		private iONCalendarCredentials _credentials { get; set; }
+		private iONCredentials _credentials { get; set; }
 
 		public bool WasLazyLoaded { get; private set; }
 
@@ -28,13 +28,13 @@ namespace iONWeb.Business.Calendar
 		#endregion
 
 		#region Constructor
-		public iONCalendar(iONCalendarCredentials credentials)
+		public iONCalendar(iONCredentials credentials)
 		{
 			_credentials = credentials;
 			this.AuthorID = credentials.UserID;
 		}
 
-		public iONCalendar(iONCalendarCredentials credentials, Data.Tables.Calendar calendar)
+		public iONCalendar(iONCredentials credentials, Data.Tables.Calendar calendar)
 		{
 			_credentials = credentials;
 			this.AuthorID = credentials.UserID;
@@ -178,7 +178,7 @@ namespace iONWeb.Business.Calendar
 		// Connection to only be used with events
 		private class CalendarContext : DbContext
 		{
-			public CalendarContext(iONCalendarCredentials credentials)
+			public CalendarContext(iONCredentials credentials)
 				: base(credentials.Server, credentials.Database, credentials.Username, credentials.Password)
 			{
 

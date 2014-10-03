@@ -49,15 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Business\Calendar\iONCalendarCredentials.cs" />
     <Compile Include="Business\Calendar\iONCalendarEvent.cs" />
     <Compile Include="Business\Calendar\iONCalendar.cs" />
     <Compile Include="Business\Calendar\iONCalendarException.cs" />
     <Compile Include="Business\Calendar\iONCalendarEventException.cs" />
     <Compile Include="Business\Calendar\iONCalendarService.cs" />
-    <Compile Include="Business\Clocking\ClockingDisplayEmployeeValue.cs" />
-    <Compile Include="Business\Clocking\ClockingDisplayValue.cs" />
+    <Compile Include="Business\Clocking\iONClockingService.cs" />
     <Compile Include="Business\Clocking\PunchType.cs" />
+    <Compile Include="Business\iONCredentials.cs" />
     <Compile Include="Data\Enumeration\CalendarHistoryType.cs" />
     <Compile Include="Data\Enumeration\EventHistoryType.cs" />
     <Compile Include="Data\Enumeration\EventType.cs" />
@@ -77,7 +76,6 @@
     <Compile Include="Business\Clocking\GeoLocation.cs" />
     <Compile Include="Business\JsonAddress.cs" />
     <Compile Include="Business\JsonAppointmentDisplay.cs" />
-    <Compile Include="Business\JsonClockPair.cs" />
     <Compile Include="Business\Services\ClockingServices.cs" />
     <Compile Include="Business\Services\ContactServices.cs" />
     <Compile Include="Business\Services\DisplayServices.cs" />
@@ -88,7 +86,7 @@
     <Compile Include="Data\Tables\Indicator.cs" />
     <Compile Include="Data\Tables\Parameter.cs" />
     <Compile Include="Data\Tables\User.cs" />
-    <Compile Include="Data\Tables\UserClocking.cs" />
+    <Compile Include="Data\Tables\Clocking.cs" />
     <Compile Include="Data\Tables\UserClockingSpecialCode.cs" />
     <Compile Include="Data\Tables\UserRoleAccess.cs" />
     <Compile Include="Data\Tables\UserRoleAccessPages.cs" />
@@ -115,6 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Methods\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Notes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

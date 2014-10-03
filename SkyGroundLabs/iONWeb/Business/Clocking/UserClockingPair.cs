@@ -10,9 +10,9 @@ namespace iONWeb.Business.Clocking
 	public class UserClockingPair
 	{
 		#region Properties
-		public UserClocking InPunch { get; set; }
+		public Data.Tables.Clocking InPunch { get; set; }
 
-		public UserClocking OutPunch { get; set; }
+		public Data.Tables.Clocking OutPunch { get; set; }
 
 		public string Name { get; set; }
 

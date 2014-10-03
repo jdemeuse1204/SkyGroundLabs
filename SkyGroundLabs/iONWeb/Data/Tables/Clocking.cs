@@ -9,19 +9,13 @@ using SkyGroundLabs.Data.Entity.Mapping;
 
 namespace iONWeb.Data.Tables
 {
-	[Table("UserClockings")]
-	public class UserClocking : DbTableEquatable<IDbTableEquatable<long>>
+	[Table("Clockings")]
+	public class Clocking : DbTableEquatable<IDbTableEquatable<Guid>>
 	{
-		public UserClocking()
-		{
-			PunchTime = Defaults.MinDateTime;
-			PunchTimeRounded = Defaults.MinDateTime;
-			OriginalPunchTime = Defaults.MinDateTime;
-		}
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public Guid ID { get; set; }
 
-		public long ID { get; set; }
-
-		public long UserID { get; set; }
+		public int UserID { get; set; }
 
 		public PunchType PunchType { get; set; }
 
@@ -31,7 +25,7 @@ namespace iONWeb.Data.Tables
 
 		public string SpecialCode { get; set; }
 
-		public long AppointmentID { get; set; }
+		public Guid EventID { get; set; }
 
 		public bool IsApproved { get; set; }
 
@@ -51,6 +45,6 @@ namespace iONWeb.Data.Tables
 
 		public string PunchTimeZoneOffset { get; set; }
 
-		public long PunchUserID { get; set; }
+		public int PunchUserID { get; set; }
 	}
 }

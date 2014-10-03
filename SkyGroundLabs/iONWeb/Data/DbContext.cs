@@ -39,6 +39,8 @@ namespace iONWeb.Data
 
 		public IDbSet<EventInvitee> EventInvitees { get; set; }
 
+		public IDbSet<Clocking> Clockings { get; set; }
+
 		#endregion
 
 		#region Constructor

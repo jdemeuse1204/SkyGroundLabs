@@ -54,5 +54,7 @@ namespace iONWeb.Data.Tables
 		public string SecurityAnswer { get; set; }
 
 		public DateTime LastAuthenticationDate { get; set; }
+
+		public bool CanSchedule { get; set; }
 	}
 }

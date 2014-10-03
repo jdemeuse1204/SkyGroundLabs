@@ -1,0 +1,3 @@
+﻿1.  Put flag in Users table that says whether or not they can schedule an event that has hours to be worked
+2.  Event as hours to be worked which can be EndTime - StartTime
+	a.  Hours can only be assigned by Scheduler who is a User with a scheduler flag

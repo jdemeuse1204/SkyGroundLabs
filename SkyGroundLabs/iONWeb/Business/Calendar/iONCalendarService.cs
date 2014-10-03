@@ -9,13 +9,13 @@ namespace iONWeb.Business.Calendar
 {
 	public class iONCalendarService
 	{
-		public iONCalendarService(iONCalendarCredentials credentials)
+		public iONCalendarService(iONCredentials credentials)
 		{
 			_credentials = credentials;
 		}
 
 		#region Properties
-		private iONCalendarCredentials _credentials { get; set; }
+		private iONCredentials _credentials { get; set; }
 
 		public List<iONCalendar> _calendars { get; set; }
 		public IEnumerable<iONCalendar> Calendars { get { return _calendars; } }
@@ -102,7 +102,7 @@ namespace iONWeb.Business.Calendar
 		// Connection to only be used with events
 		private class ServiceContext : DbContext
 		{
-			public ServiceContext(iONCalendarCredentials credentials)
+			public ServiceContext(iONCredentials credentials)
 				: base(credentials.Server, credentials.Database, credentials.Username, credentials.Password)
 			{
 
