@@ -12,10 +12,6 @@ namespace iONWeb.Business.Calendar
 {
 	public class iONCalendarEvent
 	{
-		#region Properties
-		private iONCredentials _credentials { get; set; }
-		#endregion
-
 		#region Constructors And Helpers
 		public iONCalendarEvent(iONCredentials credentials)
 		{
@@ -43,6 +39,7 @@ namespace iONWeb.Business.Calendar
 		#endregion
 
 		#region Properties
+		private iONCredentials _credentials { get; set; }
 		public bool WasLazyLoaded { get; private set; }
 		public DateTime DateCreated { get; private set; }
 		public DateTime DateEdied { get; private set; }
@@ -61,6 +58,7 @@ namespace iONWeb.Business.Calendar
 		public bool IsSaved { get { return EventID != Guid.Empty; } }
 		public List<EventReminder> Reminders { get; set; }
 		public List<EventInvitee> Invitees { get; set; }
+		public List<Schedule> Schedules { get; set; }
 		#endregion
 
 		#region Methods

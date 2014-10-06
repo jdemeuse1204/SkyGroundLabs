@@ -72,6 +72,7 @@
     <Compile Include="Data\Tables\EventHistory.cs" />
     <Compile Include="Data\Tables\EventInvitee.cs" />
     <Compile Include="Data\Tables\EventReminder.cs" />
+    <Compile Include="Data\Tables\Schedule.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Business\Clocking\GeoLocation.cs" />
     <Compile Include="Business\JsonAddress.cs" />
@@ -87,7 +88,7 @@
     <Compile Include="Data\Tables\Parameter.cs" />
     <Compile Include="Data\Tables\User.cs" />
     <Compile Include="Data\Tables\Clocking.cs" />
-    <Compile Include="Data\Tables\UserClockingSpecialCode.cs" />
+    <Compile Include="Data\Tables\ClockingSpecialCode.cs" />
     <Compile Include="Data\Tables\UserRoleAccess.cs" />
     <Compile Include="Data\Tables\UserRoleAccessPages.cs" />
     <Compile Include="Data\Tables\UserRoles.cs" />
