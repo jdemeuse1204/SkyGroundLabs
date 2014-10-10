@@ -32,7 +32,7 @@ namespace iONWeb.Data.Tables
 		public int UserID { get; set; }
 
 		[Column("ReminderTypeID")]
-		public ReminderType Type { get; set; }
+		public NotificationType Type { get; set; }
 
 		[NotMapped]
 		public bool MarkedForRemoval { get; set; }  // if this is set then we need to remove the entry from the database

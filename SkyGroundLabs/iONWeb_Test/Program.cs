@@ -21,26 +21,7 @@ namespace iONWeb_Test
 		#region Clocking Tests
 		static void ClockIn()
 		{
-			using (var context = new ReusableContext())
-			{
-				var inPunch = new Clocking();
-				inPunch.PunchTime = DateTime.Now;
-				inPunch.PunchTimeRounded = DateTime.Now;
-				inPunch.OriginalPunchTime = DateTime.Now;
-				inPunch.PunchType = iONWeb.Business.Clocking.PunchType.In;
-				inPunch.PairingID = inPunch.GetNewPairingID(context);
-				context.Clockings.Add(inPunch);
-
-				var outPunch = new Clocking();
-				outPunch.PunchTime = DateTime.Now;
-				outPunch.PunchTimeRounded = DateTime.Now;
-				outPunch.OriginalPunchTime = DateTime.Now;
-				outPunch.PunchType = iONWeb.Business.Clocking.PunchType.Out;
-				outPunch.PairingID = inPunch.PairingID;
-				context.Clockings.Add(outPunch);
-
-				context.SaveChanges();
-			}
+			
 		}
 		#endregion
 

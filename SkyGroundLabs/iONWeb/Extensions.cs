@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using iONWeb.Data;
 
 namespace iONWeb
 {
 	public static class Extensions
 	{
 		#region Methods
+		public static string ToISO8601(this DateTime s)
+		{
+			return s.ToString("yyyy-MM-ddTHH:mm:ssZ");
+		}
+
 		public static class EnumUtil
 		{
 			public static IEnumerable<T> GetValues<T>()

@@ -54,14 +54,16 @@
     <Compile Include="Business\Calendar\iONCalendarException.cs" />
     <Compile Include="Business\Calendar\iONCalendarEventException.cs" />
     <Compile Include="Business\Calendar\iONCalendarService.cs" />
+    <Compile Include="Business\Calendar\iONTask.cs" />
     <Compile Include="Business\Clocking\iONClockingService.cs" />
     <Compile Include="Business\Clocking\PunchType.cs" />
     <Compile Include="Business\iONCredentials.cs" />
     <Compile Include="Data\Enumeration\CalendarHistoryType.cs" />
+    <Compile Include="Data\Enumeration\ClockingSpecialCodeType.cs" />
     <Compile Include="Data\Enumeration\EventHistoryType.cs" />
     <Compile Include="Data\Enumeration\EventType.cs" />
     <Compile Include="Data\Enumeration\InviteeType.cs" />
-    <Compile Include="Data\Enumeration\ReminderType.cs" />
+    <Compile Include="Data\Enumeration\NotificationType.cs" />
     <Compile Include="Data\Tables\Calendar.cs" />
     <Compile Include="Data\Tables\CalendarHistory.cs" />
     <Compile Include="Data\Tables\CalendarInvitee.cs" />

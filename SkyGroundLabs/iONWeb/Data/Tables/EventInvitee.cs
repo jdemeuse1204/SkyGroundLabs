@@ -24,6 +24,8 @@ namespace iONWeb.Data.Tables
 
 		public bool NotificationSent { get; set; }
 
+		public NotificationType NotificationType { get; set; }
+
 		[NotMapped]
 		public bool MarkedForRemoval { get; set; }  // if this is set then we need to remove the entry from the database
 	}

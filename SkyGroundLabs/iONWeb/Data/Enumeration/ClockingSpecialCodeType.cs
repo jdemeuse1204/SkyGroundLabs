@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace iONWeb.Data.Enumeration
 {
-	public enum ReminderType
+	public enum ClockingSpecialCodeType
 	{
-		None = 0,
-		Alert,
-		Email,
-		SMS
+		REG,
+		VAC,
+		LCE
+
 	}
 }
