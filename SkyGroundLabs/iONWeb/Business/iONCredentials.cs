@@ -12,10 +12,10 @@ namespace iONWeb.Business
 
 		public string Database { get; set; }
 
-		public readonly string Username = "jdemeuse1204";
+		public readonly string Username = "username";
 
 		public int UserID { get; set; }
 
-		public readonly string Password = "aiwa1122";
+		public readonly string Password = "password";
 	}
 }

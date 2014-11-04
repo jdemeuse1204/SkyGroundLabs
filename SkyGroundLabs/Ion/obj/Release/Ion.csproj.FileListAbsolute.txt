@@ -1,4 +1,3 @@
-C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion\obj\Release\Ion.csprojResolveAssemblyReference.cache
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion\bin\Release\Ion.dll.config
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion\bin\Release\Ion.dll
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion\bin\Release\Ion.pdb
@@ -14,3 +13,4 @@ C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion\bin\Release\Sky
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion\bin\Release\SkyGroundLabs.Reflection.pdb
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion\obj\Release\Ion.dll
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion\obj\Release\Ion.pdb
+C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion\obj\Release\Ion.csprojResolveAssemblyReference.cache

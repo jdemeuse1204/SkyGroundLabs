@@ -36,8 +36,17 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="SkyGroundLabs.Cryptography">
+      <HintPath>..\SkyGroundLabs.Cryptography\bin\Release\SkyGroundLabs.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="SkyGroundLabs.Data.Entity">
+      <HintPath>..\SkyGroundLabs.Data.Entity\bin\Release\SkyGroundLabs.Data.Entity.dll</HintPath>
+    </Reference>
     <Reference Include="SkyGroundLabs.Net">
       <HintPath>..\SkyGroundLabs.Net\bin\Release\SkyGroundLabs.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="SkyGroundLabs.Reflection">
+      <HintPath>..\SkyGroundLabs.Reflection\bin\Release\SkyGroundLabs.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -99,20 +108,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SkyGroundLabs.Cryptography\SkyGroundLabs.Cryptography.csproj">
-      <Project>{0a082d56-b31f-47f4-b9e2-4b0541fe7496}</Project>
-      <Name>SkyGroundLabs.Cryptography</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SkyGroundLabs.Data.Entity\SkyGroundLabs.Data.Entity.csproj">
-      <Project>{de76aab4-b415-484f-97eb-c295f6971066}</Project>
-      <Name>SkyGroundLabs.Data.Entity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SkyGroundLabs.Reflection\SkyGroundLabs.Reflection.csproj">
-      <Project>{350531ff-b397-43d8-935c-b5c265d9b98d}</Project>
-      <Name>SkyGroundLabs.Reflection</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Methods\" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,29 @@ namespace Ion.Business.Extension
 	public static class Extensions
 	{
 		#region Methods
+		/// <summary>
+		/// Converts a SqlDataReader to an object.  The return column names must match the properties names for it to work
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="reader"></param>
+		/// <returns></returns>
+		public static T ToObject<T>(this SqlDataReader reader, params string[] namesToSkip)
+		{
+			T obj = Activator.CreateInstance<T>();
+
+			foreach (var property in obj.GetType().GetProperties())
+			{
+				if (namesToSkip != null && namesToSkip.Contains(property.Name))
+				{
+					continue;
+				}
+
+				property.SetValue(obj, reader[property.Name], null);
+			}
+
+			return obj;
+		}
+
 		public static class EnumUtil
 		{
 			public static IEnumerable<T> GetValues<T>()

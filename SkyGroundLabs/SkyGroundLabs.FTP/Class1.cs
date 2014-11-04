@@ -23,7 +23,7 @@ namespace SkyGroundLabs.FTP
 			FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://lin.arvixe.com/Published/");
 
 			request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
-			request.Credentials = new NetworkCredential("jdemeuse", "aiwa1122");
+			request.Credentials = new NetworkCredential("username", "password");
 
 			FtpWebResponse response = (FtpWebResponse)request.GetResponse();
 
@@ -54,7 +54,7 @@ namespace SkyGroundLabs.FTP
 			request = (FtpWebRequest)WebRequest.Create("ftp://lin.arvixe.com/Published/Application Files/Data");
 
 			request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
-			request.Credentials = new NetworkCredential("jdemeuse", "aiwa1122");
+			request.Credentials = new NetworkCredential("username", "password");
 
 			response = (FtpWebResponse)request.GetResponse();
 
@@ -103,7 +103,7 @@ namespace SkyGroundLabs.FTP
 				if (fileToDownload == "Main\\Files")
 					continue;
 				WebClient webRequest = new WebClient();
-				webRequest.Credentials = new NetworkCredential("jdemeuse", "aiwa1122");
+				webRequest.Credentials = new NetworkCredential("username", "password");
 
 				string ftp = "ftp://lin.arvixe.com/Published/";
 				if (fileToDownload.Contains("Data"))
@@ -158,7 +158,7 @@ namespace SkyGroundLabs.FTP
 			FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://lin.arvixe.com/Published/");
 
 			request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
-			request.Credentials = new NetworkCredential("jdemeuse", "aiwa1122");
+			request.Credentials = new NetworkCredential("username", "password");
 
 			FtpWebResponse response = (FtpWebResponse)request.GetResponse();
 
@@ -189,7 +189,7 @@ namespace SkyGroundLabs.FTP
 			request = (FtpWebRequest)WebRequest.Create("ftp://lin.arvixe.com/Published/Application Files/Data");
 
 			request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
-			request.Credentials = new NetworkCredential("jdemeuse", "aiwa1122");
+			request.Credentials = new NetworkCredential("username", "password");
 
 			response = (FtpWebResponse)request.GetResponse();
 
@@ -221,7 +221,7 @@ namespace SkyGroundLabs.FTP
 				if (fileToDelete == "ftp://lin.arvixe.com/Published/Files")
 					continue;
 				FtpWebRequest requestFileDelete = (FtpWebRequest)WebRequest.Create(fileToDelete);
-				requestFileDelete.Credentials = new NetworkCredential("jdemeuse", "aiwa1122");
+				requestFileDelete.Credentials = new NetworkCredential("username", "password");
 				requestFileDelete.Method = WebRequestMethods.Ftp.DeleteFile;
 
 				FtpWebResponse responseFileDelete = (FtpWebResponse)requestFileDelete.GetResponse();
@@ -241,7 +241,7 @@ namespace SkyGroundLabs.FTP
 				request = (FtpWebRequest)WebRequest.Create(ftpPath + GetFileName(s));
 
 				request.Method = WebRequestMethods.Ftp.UploadFile;
-				request.Credentials = new NetworkCredential("jdemeuse", "aiwa1122");
+				request.Credentials = new NetworkCredential("username", "password");
 				ftpStream = request.GetRequestStream();
 				FileStream file = File.OpenRead(s);
 				int length = 1024;

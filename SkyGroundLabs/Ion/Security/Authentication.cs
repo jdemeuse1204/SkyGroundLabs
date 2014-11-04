@@ -87,7 +87,7 @@ namespace Ion.Security
 				return AuthenticationStatus.UsernameExists;
 			}
 
-			user.DatabasePassword = CryptographyServices.Encrypt("aiwa1122", passphraseKey);
+			user.DatabasePassword = CryptographyServices.Encrypt("password", passphraseKey);
 			user.Password = CryptographyServices.Encrypt(unEncryptedUserPassword, passphraseKey);
 			user.Username = username;
 			user.SecurityAnswer = securityAnswer;
