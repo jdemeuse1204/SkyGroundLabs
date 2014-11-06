@@ -12,29 +12,6 @@ namespace SkyGroundLabs.Data.Entity
 	public static class Extension
 	{
 		/// <summary>
-		/// Converts a SqlDataReader to an object.  The return column names must match the properties names for it to work
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="reader"></param>
-		/// <returns></returns>
-		public static T ToObject<T>(this SqlDataReader reader, params string[] namesToSkip)
-		{
-			T obj = Activator.CreateInstance<T>();
-
-			foreach (var property in obj.GetType().GetProperties())
-			{
-				if (namesToSkip.Contains(property.Name))
-				{
-					continue;
-				}
-
-				property.SetValue(obj, reader[property.Name], null);
-			}
-
-			return obj;
-		}
-
-		/// <summary>
 		/// This is depreciated, please use Entity Frameworks Find Command.
 		/// This was for Linq.Data.Sql because it does not have a find command.
 		/// </summary>
