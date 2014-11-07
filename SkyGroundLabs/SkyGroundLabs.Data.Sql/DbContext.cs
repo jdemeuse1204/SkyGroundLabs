@@ -150,6 +150,19 @@ namespace SkyGroundLabs.Data.Sql
 						fields += "[" + item.Key + "],";
 					}
 				}
+				
+				// joins
+				var joins = select.GetJoins();
+
+				foreach (var item in joins)
+				{
+					foreach (var field in item)
+					{
+						fields += "[" + item.Table + "].[" + field.Key + "],";
+					}
+				}
+
+
 			}
 
 			return null;
