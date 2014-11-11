@@ -8,42 +8,14 @@ namespace SkyGroundLabs.Data.Sql.Functions
 {
 	public class DbFunctions
 	{
-		public static string Replace(string valueToReplace, string newValue)
+		public static string Replace(string value, string valueToReplace, string newValue)
 		{
-			var item = new FunctionReplace(valueToReplace, newValue);
-
-			return item.Get();
+			return string.Format("REPLACE({0},'{1}','{2}') as {0}", "{0}", value, valueToReplace, newValue);
 		}
 
-		private static string Upper()
+		private static string Upper(string value)
 		{
-			var item = new FunctionUpper();
-			return item.Get();
-		}
-
-		class FunctionReplace : IDbFunction
-		{
-			private string _valueToReplace { get; set; }
-			private string _newValue { get; set; }
-
-			public FunctionReplace(string valueToReplace, string newValue)
-			{
-				_valueToReplace = valueToReplace;
-				_newValue = newValue;
-			}
-
-			public string Get()
-			{
-				return string.Format("REPLACE({0},'{1}','{2}') as {0}", "{0}", _valueToReplace, _newValue);
-			}
-		}
-
-		class FunctionUpper : IDbFunction
-		{
-			public string Get()
-			{
-				return "UPPER({0}) as {0}";
-			}
+			return string.Format("UPPER({0}) as {0}", value);
 		}
 	}
 }

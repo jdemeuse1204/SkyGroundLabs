@@ -31,7 +31,7 @@ namespace SkyGroundLabs.Data.Sql
 				foreach (var item in update)
 				{
 					var paramName = string.Format("@Data{0}", count);
-					set += "[" + item.Key + "] = " + paramName + ",";
+					set += string.Format("[{0}] = {1},",item.Key, paramName);
 					updateValues.Add(paramName, item.Value);
 					count++;
 				}
@@ -41,12 +41,12 @@ namespace SkyGroundLabs.Data.Sql
 				foreach (var item in update.GetValidation())
 				{
 					var paramName = string.Format("@Data{0}", count);
-					validation += "[" + item.Key + "] = " + paramName + ",";
+					validation += string.Format("[{0}] = {1},", item.Key, paramName);
 					validationValues.Add(paramName, item.Value);
 					count++;
 				}
 
-				sql += " WHERE " + validation.TrimEnd(',');
+				sql += string.Format(" WHERE {0}", validation.TrimEnd(','));
 				using (SqlCommand cmd = new SqlCommand(sql, con))
 				{
 					foreach (var item in updateValues)
@@ -85,14 +85,14 @@ namespace SkyGroundLabs.Data.Sql
 				foreach (var item in insert)
 				{
 					var paramName = string.Format("@Data{0}", count);
-					fields += "[" + item.Key + "]" + ",";
+					fields += string.Format("[{0}],", item.Key);
 					values += paramName + ",";
 					insertValues.Add(paramName, item.Value);
 					count++;
 				}
 
-				sql += " (" + fields.TrimEnd(',') + ") VALUES ";
-				sql += " (" + values.TrimEnd(',') + ");Select @@IDENTITY;";
+				sql += string.Format("({0}) VALUES ", fields.TrimEnd(','));
+				sql += string.Format("({0});Select @@IDENTITY;", values.TrimEnd(','));
 
 				using (SqlCommand cmd = new SqlCommand(sql, con))
 				{
@@ -116,7 +116,8 @@ namespace SkyGroundLabs.Data.Sql
 
 		public dynamic Select(QuerySelect select)
 		{
-			var sql = "SELECT ";
+			var sql = "SELECT TOP 1 {0}";
+			var from = string.Format(" FROM {0},",select.Table);
 			var fields = string.Empty;
 			var validation = string.Empty;
 
@@ -124,48 +125,74 @@ namespace SkyGroundLabs.Data.Sql
 			{
 				foreach (var item in select)
 				{
-					var functions = string.Empty;
-					if (item.Value != null && item.Value.Count > 0)
-					{
-						foreach (var function in item.Value)
-						{
-							if (string.IsNullOrWhiteSpace(functions))
-							{
-								functions = function;
-							}
-							else
-							{
-								// nest the functions
-								functions = string.Format(functions, function);
-							}
-						}
-					}
-
-					if (string.IsNullOrWhiteSpace(functions))
-					{
-						fields += "[" + string.Format(functions,item.Key) + "],";
-					}
-					else
-					{
-						fields += "[" + item.Key + "],";
-					}
+					fields += string.Format("[{0}].[{1}],",select.Table, item.Key);
 				}
 				
 				// joins
 				var joins = select.GetJoins();
+				var joinCount = 0;
+				foreach (var item in joins)
+				{
+					validation += string.Format((joinCount == 0 ? " WHERE " : " AND ") + "[{0}].[{1}] = [{2}].[{3}]", 
+						item.ParentTable, 
+						item.ParentTableJoinValue,
+						item.ChildTable,
+						item.ChildTableJoinValue);
+
+					from += string.Format("{0},", item.ChildTable);
+
+					foreach (var field in item)
+					{
+						fields += string.Format("[{0}].[{1}],", item.ChildTable, field);
+					}
+					joinCount++;
+				}
+
+				sql = string.Format(sql, fields.TrimEnd(','));
+				sql += from.TrimEnd(',');
+
+				var count = 0;
+				var validationValues = new Dictionary<string, string>();
+				foreach (var item in select.GetValidation())
+				{
+					var paramName = string.Format("@Data{0}", count);
+					validation += string.Format((!validation.Contains("WHERE") ? " WHERE " : " AND ") + "[{0}].[{1}] = {2}", select.Table, item.Key, paramName);
+					validationValues.Add(paramName, item.Value);
+					count++;
+				}
 
 				foreach (var item in joins)
 				{
-					foreach (var field in item)
+					foreach (var field in item.GetValidation())
 					{
-						fields += "[" + item.Table + "].[" + field.Key + "],";
+						var paramName = string.Format("@Data{0}", count);
+						validation += string.Format((!validation.Contains("WHERE") ? " WHERE " : " AND ") + "[{0}].[{1}] = {2}", item.ChildTable, field.Key, paramName);
+						validationValues.Add(paramName, field.Value);
+						count++;
 					}
 				}
 
+				sql += validation;
+				using (SqlCommand cmd = new SqlCommand(sql, con))
+				{
+					foreach (var item in validationValues)
+					{
+						cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = item.Key;
+						cmd.Parameters[item.Key].Value = item.Value;
+					}
 
+					if (con.State == ConnectionState.Closed)
+					{
+						con.Open();
+					}
+
+					var reader = cmd.ExecuteReader();
+
+					reader.Read();
+
+					return reader.ToObject();
+				}
 			}
-
-			return null;
 		}
 	}
 }

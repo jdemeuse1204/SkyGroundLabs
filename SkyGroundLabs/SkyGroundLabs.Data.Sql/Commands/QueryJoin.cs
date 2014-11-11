@@ -9,45 +9,43 @@ namespace SkyGroundLabs.Data.Sql.Commands
 {
 	public class QueryJoin
 	{
-		public string Table { get; private set; }
-		private Dictionary<string, List<string>> _values { get; set; }
+		public string ParentTable { get; private set; }
+		public string ChildTable { get; private set; }
+		private List<string> _values { get; set; }
+		private Dictionary<string, string> _validation { get; set; }
+		public string ParentTableJoinValue { get; private set; }
+		public string ChildTableJoinValue { get; private set; }
 
-		public QueryJoin(string tableName)
+		public QueryJoin(string parentTableName, string childTableName)
 		{
-			Table = tableName;
-			_values = new Dictionary<string, List<string>>();
+			ParentTable = parentTableName;
+			ChildTable = childTableName;
+			_values = new List<string>();
+			_validation = new Dictionary<string, string>();
 		}
 
-		public void On(string parentFieldName, string childFieldName)
+		public void On(string parentTableJoinValue, string childTableJoinValue)
 		{
+			ParentTableJoinValue = parentTableJoinValue;
+			ChildTableJoinValue = childTableJoinValue;
+		}
 
+		public void Where(string fieldName, string value)
+		{
+			_validation.Add(fieldName, value);
 		}
 
 		public void Select(string fieldName)
 		{
-			_values.Add(fieldName, null);
+			_values.Add(fieldName);
 		}
 
-		public void Select(string fieldName, IDbFunction function)
+		public IEnumerable<KeyValuePair<string, string>> GetValidation()
 		{
-			var fns = new List<string>();
-			fns.Add(function.Get());
-			_values.Add(fieldName, fns);
+			return _validation;
 		}
 
-		public void Select(string fieldName, Dictionary<int,IDbFunction> functions)
-		{
-			var fns = new List<string>();
-
-			foreach (var item in functions)
-			{
-				fns.Add(item.Value.Get());
-			}
-
-			_values.Add(fieldName, fns);
-		}
-
-		public IEnumerator<KeyValuePair<string, List<string>>> GetEnumerator()
+		public IEnumerator<string> GetEnumerator()
 		{
 			return _values.GetEnumerator();
 		}

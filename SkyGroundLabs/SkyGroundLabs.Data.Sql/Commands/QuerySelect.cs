@@ -27,25 +27,6 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_values.Add(fieldName, null);
 		}
 
-		public void Select(string fieldName, IDbFunction function)
-		{
-			var fns = new List<string>();
-			fns.Add(function.Get());
-			_values.Add(fieldName, fns);
-		}
-
-		public void Select(string fieldName, Dictionary<int,IDbFunction> functions)
-		{
-			var fns = new List<string>();
-
-			foreach (var item in functions)
-			{
-				fns.Add(item.Value.Get());
-			}
-
-			_values.Add(fieldName, fns);
-		}
-
 		public void Where(string fieldName, string value)
 		{
 			_validation.Add(fieldName, value);

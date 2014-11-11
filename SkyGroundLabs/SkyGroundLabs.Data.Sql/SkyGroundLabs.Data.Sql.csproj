@@ -45,7 +45,6 @@
     <Compile Include="DbContext.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Functions\DbFunctions.cs" />
-    <Compile Include="Functions\IDbFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\QueryInsert.cs" />
   </ItemGroup>

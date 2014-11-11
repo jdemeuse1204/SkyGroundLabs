@@ -41,6 +41,11 @@ namespace System
 		/// <returns></returns>
 		public static dynamic ToObject(this SqlDataReader reader)
 		{
+			if (!reader.HasRows)
+			{
+				return null;
+			}
+
 			var result = new ExpandoObject() as IDictionary<string, Object>;
 
 			IDataRecord rec = (IDataRecord)reader;
