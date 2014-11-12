@@ -39,9 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\QueryJoin.cs" />
+    <Compile Include="Commands\QueryEquiJoin.cs" />
+    <Compile Include="Commands\QueryLeftJoin.cs" />
     <Compile Include="Commands\QuerySelect.cs" />
     <Compile Include="Commands\QueryUpdate.cs" />
+    <Compile Include="Commands\QueyInnerJoin.cs" />
     <Compile Include="DbContext.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Functions\DbFunctions.cs" />

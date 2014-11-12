@@ -7,7 +7,7 @@ using SkyGroundLabs.Data.Sql.Functions;
 
 namespace SkyGroundLabs.Data.Sql.Commands
 {
-	public class QueryJoin
+	public class QueryEquiJoin
 	{
 		public string ParentTable { get; private set; }
 		public string ChildTable { get; private set; }
@@ -16,7 +16,7 @@ namespace SkyGroundLabs.Data.Sql.Commands
 		public string ParentTableJoinValue { get; private set; }
 		public string ChildTableJoinValue { get; private set; }
 
-		public QueryJoin(string parentTableName, string childTableName)
+		public QueryEquiJoin(string parentTableName, string childTableName)
 		{
 			ParentTable = parentTableName;
 			ChildTable = childTableName;

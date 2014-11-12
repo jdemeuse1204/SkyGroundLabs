@@ -62,6 +62,9 @@
     <Compile Include="Email\ElectronicMailAddress.cs" />
     <Compile Include="Email\EmailServices.cs" />
     <Compile Include="Email\WritableElectronicMail.cs" />
+    <Compile Include="Ftp\Class1.cs" />
+    <Compile Include="Ftp\Ftp.cs" />
+    <Compile Include="Ftp\FtpCredentials.cs" />
     <Compile Include="Google\Address.cs" />
     <Compile Include="Google\CalendarEvent.cs" />
     <Compile Include="Google\CalendarEventReminder.cs" />
@@ -72,6 +75,7 @@
     <Compile Include="Google\Maps\GoogleMaps.cs" />
     <Compile Include="Google\Search\GoogleSearch.cs" />
     <Compile Include="Google\Place.cs" />
+    <Compile Include="InstantMessage\TcpMessenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

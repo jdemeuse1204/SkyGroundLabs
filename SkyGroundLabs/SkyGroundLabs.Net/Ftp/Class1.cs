@@ -6,10 +6,10 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyGroundLabs.FTP
+namespace SkyGroundLabs.Net.Ftp
 {
-    public class Class1
-    {
+	public class Class1
+	{
 		// download files
 		private void Button_Click(object sender)
 		{
@@ -378,5 +378,5 @@ namespace SkyGroundLabs.FTP
 
 			return filePath.Substring(0, filePath.Length - (filePath.Length - pos));
 		}
-    }
+	}
 }

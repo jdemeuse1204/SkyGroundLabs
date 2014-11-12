@@ -31,7 +31,7 @@ namespace SkyGroundLabs.Data.Sql
 				foreach (var item in update)
 				{
 					var paramName = string.Format("@Data{0}", count);
-					set += string.Format("[{0}] = {1},",item.Key, paramName);
+					set += string.Format("[{0}] = {1},", item.Key, paramName);
 					updateValues.Add(paramName, item.Value);
 					count++;
 				}
@@ -114,65 +114,109 @@ namespace SkyGroundLabs.Data.Sql
 			}
 		}
 
-		public dynamic Select(QuerySelect select)
+		private string _getSelectSql(QuerySelect select, out Dictionary<string, string> validationValues)
 		{
+			validationValues = new Dictionary<string, string>();
 			var sql = "SELECT TOP 1 {0}";
-			var from = string.Format(" FROM {0},",select.Table);
+			var from = string.Format(" FROM {0},", select.Table);
 			var fields = string.Empty;
 			var validation = string.Empty;
 
-			using (SqlConnection con = new SqlConnection(_sqlConnection))
+
+			if (select.Count == 0)
+			{
+				fields += "*";
+			}
+			else
 			{
 				foreach (var item in select)
 				{
-					fields += string.Format("[{0}].[{1}],",select.Table, item.Key);
+					fields += string.Format("[{0}].[{1}],", select.Table, item.Key);
 				}
-				
-				// joins
-				var joins = select.GetJoins();
-				var joinCount = 0;
-				foreach (var item in joins)
+			}
+
+			var joins = select.GetJoins();
+			var joinCount = 0;
+			foreach (var item in joins)
+			{
+				validation += string.Format((joinCount == 0 ? " WHERE " : " AND ") + "[{0}].[{1}] = [{2}].[{3}]",
+					item.ParentTable,
+					item.ParentTableJoinValue,
+					item.ChildTable,
+					item.ChildTableJoinValue);
+
+				from += string.Format("{0},", item.ChildTable);
+
+				foreach (var field in item)
 				{
-					validation += string.Format((joinCount == 0 ? " WHERE " : " AND ") + "[{0}].[{1}] = [{2}].[{3}]", 
-						item.ParentTable, 
-						item.ParentTableJoinValue,
-						item.ChildTable,
-						item.ChildTableJoinValue);
-
-					from += string.Format("{0},", item.ChildTable);
-
-					foreach (var field in item)
-					{
-						fields += string.Format("[{0}].[{1}],", item.ChildTable, field);
-					}
-					joinCount++;
+					fields += string.Format("[{0}].[{1}],", item.ChildTable, field);
 				}
+				joinCount++;
+			}
 
-				sql = string.Format(sql, fields.TrimEnd(','));
-				sql += from.TrimEnd(',');
+			sql = string.Format(sql, fields.TrimEnd(','));
+			sql += from.TrimEnd(',');
 
-				var count = 0;
-				var validationValues = new Dictionary<string, string>();
-				foreach (var item in select.GetValidation())
+			var count = 0;
+			foreach (var item in select.GetValidation())
+			{
+				var paramName = string.Format("@Data{0}", count);
+				validation += string.Format((!validation.Contains("WHERE") ? " WHERE " : " AND ") + "[{0}].[{1}] = {2}", select.Table, item.Key, paramName);
+				validationValues.Add(paramName, item.Value);
+				count++;
+			}
+
+			foreach (var item in joins)
+			{
+				foreach (var field in item.GetValidation())
 				{
 					var paramName = string.Format("@Data{0}", count);
-					validation += string.Format((!validation.Contains("WHERE") ? " WHERE " : " AND ") + "[{0}].[{1}] = {2}", select.Table, item.Key, paramName);
-					validationValues.Add(paramName, item.Value);
+					validation += string.Format((!validation.Contains("WHERE") ? " WHERE " : " AND ") + "[{0}].[{1}] = {2}", item.ChildTable, field.Key, paramName);
+					validationValues.Add(paramName, field.Value);
 					count++;
 				}
+			}
 
-				foreach (var item in joins)
+			sql += validation;
+			return sql;
+		}
+
+		public T Select<T>(QuerySelect select) where T : class
+		{
+			var validationValues = new Dictionary<string, string>();
+			var sql = _getSelectSql(select, out validationValues);
+
+			using (SqlConnection con = new SqlConnection(_sqlConnection))
+			{
+				using (SqlCommand cmd = new SqlCommand(sql, con))
 				{
-					foreach (var field in item.GetValidation())
+					foreach (var item in validationValues)
 					{
-						var paramName = string.Format("@Data{0}", count);
-						validation += string.Format((!validation.Contains("WHERE") ? " WHERE " : " AND ") + "[{0}].[{1}] = {2}", item.ChildTable, field.Key, paramName);
-						validationValues.Add(paramName, field.Value);
-						count++;
+						cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = item.Key;
+						cmd.Parameters[item.Key].Value = item.Value;
 					}
-				}
 
-				sql += validation;
+					if (con.State == ConnectionState.Closed)
+					{
+						con.Open();
+					}
+
+					var reader = cmd.ExecuteReader();
+
+					reader.Read();
+
+					return reader.ToObject<T>();
+				}
+			}
+		}
+
+		public dynamic Select(QuerySelect select)
+		{
+			var validationValues = new Dictionary<string, string>(); 
+			var sql = _getSelectSql(select,out validationValues);
+
+			using (SqlConnection con = new SqlConnection(_sqlConnection))
+			{
 				using (SqlCommand cmd = new SqlCommand(sql, con))
 				{
 					foreach (var item in validationValues)
