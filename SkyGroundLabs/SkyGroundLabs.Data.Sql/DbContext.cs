@@ -6,236 +6,97 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Commands;
+using SkyGroundLabs.Data.Sql.Support;
 
 namespace SkyGroundLabs.Data.Sql
 {
-	public class DbContext
+	public class DbContext : IDisposable
 	{
-		private string _sqlConnection { get; set; }
+		private SqlConnection _connection { get; set; }
+		private SqlCommand _cmd { get; set; }
+		private SqlDataReader _reader { get; set; }
 
-		public DbContext(string sqlConnection)
+		public DbContext(string connectionString)
 		{
-			_sqlConnection = sqlConnection;
+			_connection = new SqlConnection(connectionString);
 		}
 
-		public void Update(QueryUpdate update)
+		public void Disconnect()
 		{
-			var sql = string.Format("UPDATE {0} SET ", update.Table);
-			var set = string.Empty;
-			var validation = string.Empty;
-
-			using (SqlConnection con = new SqlConnection(_sqlConnection))
-			{
-				var count = 0;
-				var updateValues = new Dictionary<string, string>();
-				foreach (var item in update)
-				{
-					var paramName = string.Format("@Data{0}", count);
-					set += string.Format("[{0}] = {1},", item.Key, paramName);
-					updateValues.Add(paramName, item.Value);
-					count++;
-				}
-
-				sql += set.TrimEnd(',');
-				var validationValues = new Dictionary<string, string>();
-				foreach (var item in update.GetValidation())
-				{
-					var paramName = string.Format("@Data{0}", count);
-					validation += string.Format("[{0}] = {1},", item.Key, paramName);
-					validationValues.Add(paramName, item.Value);
-					count++;
-				}
-
-				sql += string.Format(" WHERE {0}", validation.TrimEnd(','));
-				using (SqlCommand cmd = new SqlCommand(sql, con))
-				{
-					foreach (var item in updateValues)
-					{
-						cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = item.Key;
-						cmd.Parameters[item.Key].Value = item.Value;
-					}
-
-					foreach (var item in validationValues)
-					{
-						cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = item.Key;
-						cmd.Parameters[item.Key].Value = item.Value;
-					}
-
-					if (con.State == ConnectionState.Closed)
-					{
-						con.Open();
-					}
-
-					cmd.ExecuteReader();
-				}
-			}
+			_connection.Close();
 		}
 
-		public object Insert(QueryInsert insert)
+		public void ExecuteSql(ISqlBuilder builder)
 		{
-			var sql = string.Format("INSERT INTO {0}", insert.Table);
-			var fields = string.Empty;
-			var values = string.Empty;
-			var key = new object();
+			_cmd = builder.BuildCommand(_connection);
 
-			using (SqlConnection con = new SqlConnection(_sqlConnection))
-			{
-				var count = 0;
-				var insertValues = new Dictionary<string, string>();
-				foreach (var item in insert)
-				{
-					var paramName = string.Format("@Data{0}", count);
-					fields += string.Format("[{0}],", item.Key);
-					values += paramName + ",";
-					insertValues.Add(paramName, item.Value);
-					count++;
-				}
-
-				sql += string.Format("({0}) VALUES ", fields.TrimEnd(','));
-				sql += string.Format("({0});Select @@IDENTITY;", values.TrimEnd(','));
-
-				using (SqlCommand cmd = new SqlCommand(sql, con))
-				{
-					foreach (var item in insertValues)
-					{
-						cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = item.Key;
-						cmd.Parameters[item.Key].Value = item.Value;
-					}
-
-					if (con.State == ConnectionState.Closed)
-					{
-						con.Open();
-					}
-
-					SqlDataReader reader = cmd.ExecuteReader();
-					reader.Read();
-					return reader.GetValue(0);
-				}
-			}
+			_connect();
+			_reader = _cmd.ExecuteReader();
 		}
 
-		private string _getSelectSql(QuerySelect select, out Dictionary<string, string> validationValues)
+		public T First<T>()
 		{
-			validationValues = new Dictionary<string, string>();
-			var sql = "SELECT TOP 1 {0}";
-			var from = string.Format(" FROM {0},", select.Table);
-			var fields = string.Empty;
-			var validation = string.Empty;
-
-
-			if (select.Count == 0)
-			{
-				fields += "*";
-			}
-			else
-			{
-				foreach (var item in select)
-				{
-					fields += string.Format("[{0}].[{1}],", select.Table, item.Key);
-				}
-			}
-
-			var joins = select.GetJoins();
-			var joinCount = 0;
-			foreach (var item in joins)
-			{
-				validation += string.Format((joinCount == 0 ? " WHERE " : " AND ") + "[{0}].[{1}] = [{2}].[{3}]",
-					item.ParentTable,
-					item.ParentTableJoinValue,
-					item.ChildTable,
-					item.ChildTableJoinValue);
-
-				from += string.Format("{0},", item.ChildTable);
-
-				foreach (var field in item)
-				{
-					fields += string.Format("[{0}].[{1}],", item.ChildTable, field);
-				}
-				joinCount++;
-			}
-
-			sql = string.Format(sql, fields.TrimEnd(','));
-			sql += from.TrimEnd(',');
-
-			var count = 0;
-			foreach (var item in select.GetValidation())
-			{
-				var paramName = string.Format("@Data{0}", count);
-				validation += string.Format((!validation.Contains("WHERE") ? " WHERE " : " AND ") + "[{0}].[{1}] = {2}", select.Table, item.Key, paramName);
-				validationValues.Add(paramName, item.Value);
-				count++;
-			}
-
-			foreach (var item in joins)
-			{
-				foreach (var field in item.GetValidation())
-				{
-					var paramName = string.Format("@Data{0}", count);
-					validation += string.Format((!validation.Contains("WHERE") ? " WHERE " : " AND ") + "[{0}].[{1}] = {2}", item.ChildTable, field.Key, paramName);
-					validationValues.Add(paramName, field.Value);
-					count++;
-				}
-			}
-
-			sql += validation;
-			return sql;
+			_reader.Read();
+			return _reader.ToObject<T>();
 		}
 
-		public T Select<T>(QuerySelect select) where T : class
+		public dynamic First()
 		{
-			var validationValues = new Dictionary<string, string>();
-			var sql = _getSelectSql(select, out validationValues);
-
-			using (SqlConnection con = new SqlConnection(_sqlConnection))
-			{
-				using (SqlCommand cmd = new SqlCommand(sql, con))
-				{
-					foreach (var item in validationValues)
-					{
-						cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = item.Key;
-						cmd.Parameters[item.Key].Value = item.Value;
-					}
-
-					if (con.State == ConnectionState.Closed)
-					{
-						con.Open();
-					}
-
-					var reader = cmd.ExecuteReader();
-
-					reader.Read();
-
-					return reader.ToObject<T>();
-				}
-			}
+			_reader.Read();
+			return _reader.ToObject();
 		}
 
-		public dynamic Select(QuerySelect select)
+		public dynamic Select()
 		{
-			var validationValues = new Dictionary<string, string>(); 
-			var sql = _getSelectSql(select,out validationValues);
+			return _reader.ToObject();
+		}
 
-			using (SqlConnection con = new SqlConnection(_sqlConnection))
+		public T Select<T>()
+		{
+			return _reader.ToObject<T>();
+		}
+
+		public bool HasNext()
+		{
+			return _reader.Read();
+		}
+
+		public List<T> SelectAll<T>()
+		{
+			var result = new List<T>();
+
+			while (_reader.Read())
 			{
-				using (SqlCommand cmd = new SqlCommand(sql, con))
-				{
-					foreach (var item in validationValues)
-					{
-						cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = item.Key;
-						cmd.Parameters[item.Key].Value = item.Value;
-					}
+				result.Add(_reader.ToObject<T>());
+			}
 
-					if (con.State == ConnectionState.Closed)
-					{
-						con.Open();
-					}
+			return result;
+		}
 
-					var reader = cmd.ExecuteReader();
+		public List<dynamic> SelectAll()
+		{
+			var result = new List<dynamic>();
 
-					reader.Read();
+			while (_reader.Read())
+			{
+				result.Add(_reader.ToObject());
+			}
 
-					return reader.ToObject();
-				}
+			return result;
+		}
+
+		public void Dispose()
+		{
+			_cmd.Dispose();
+			_connection.Close();
+			_connection.Dispose();
+		}
+
+		private void _connect()
+		{
+			if (_connection.State == ConnectionState.Closed)
+			{
+				_connection.Open();
 			}
 		}
 	}

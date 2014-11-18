@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyGroundLabs.Data.Sql.Commands
+namespace SkyGroundLabs.Data.Sql.Enumeration
 {
-	class QueryLeftJoin
+	public enum ComparisonType
 	{
+		Contains,
+		BeginsWith,
+		EndsWith,
+		Equals
 	}
 }

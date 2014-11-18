@@ -4,8 +4,10 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Dynamic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using SkyGroundLabs.Data.Sql.Mapping;
 
 namespace System
 {
@@ -17,18 +19,29 @@ namespace System
 		/// <typeparam name="T"></typeparam>
 		/// <param name="reader"></param>
 		/// <returns></returns>
-		public static T ToObject<T>(this SqlDataReader reader, params string[] namesToSkip)
+		public static T ToObject<T>(this SqlDataReader reader)
 		{
+			// Create instance
 			T obj = Activator.CreateInstance<T>();
 
-			foreach (var property in obj.GetType().GetProperties())
+			// find any unmapped attributes
+			var properties = obj.GetType().GetProperties().Where(w => w.GetCustomAttribute<UnmappedAttribute>() == null);
+
+			// find any columns that have the column name attribute on them,
+			// we need to swtich the column name to the one in the property
+			var columnRenameProperties = obj.GetType().GetProperties().Where(w => w.GetCustomAttribute<ColumnAttribute>() != null).Select(w => w.Name);
+
+			foreach (var property in properties)
 			{
-				if (namesToSkip.Contains(property.Name))
+				var columnName = property.Name;
+
+				if (columnRenameProperties.Contains(columnName))
 				{
-					continue;
+					columnName = property.GetCustomAttribute<ColumnAttribute>().Name;
 				}
 
-				property.SetValue(obj, reader[property.Name], null);
+				var dbValue = reader[columnName];
+				property.SetValue(obj, dbValue is DBNull ? null : dbValue, null);
 			}
 
 			return obj;
@@ -56,6 +69,18 @@ namespace System
 			}
 
 			return result;
+		}
+
+		public static T GetCustomAttribute<T>(this PropertyInfo property) where T : Attribute
+		{
+			var result = property.GetCustomAttributes(typeof(T), true).FirstOrDefault();
+
+			if (result == null)
+			{
+				return default(T);
+			}
+
+			return (T)result;
 		}
 	}
 }
