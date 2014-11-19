@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Commands;
+using SkyGroundLabs.Data.Sql.Connection;
 using SkyGroundLabs.Data.Sql.Enumeration;
 using SkyGroundLabs.Data.Sql.Mapping;
 using SkyGroundLabs.Data.Sql.Support;
@@ -26,33 +27,26 @@ namespace SkyGroundLabs.Data.Sql
 		{
 			_connection = new SqlConnection(connectionString);
 		}
+
+		public DbContext(IConnectionBuilder connection)
+		{
+			_connection = new SqlConnection(connection.BuildConnectionString());
+		}
 		#endregion
 
-		#region Methods
-		public void ExecuteSql(ISqlBuilder builder)
-		{
-			_cmd = builder.BuildCommand(_connection);
-
-			_connect();
-			_reader = _cmd.ExecuteReader();
-		}
-
-		/// <summary>
-		/// Execute sql statement without sql builder on the database
-		/// </summary>
-		/// <param name="sql"></param>
-		public void ExecuteSql(string sql)
-		{
-			_cmd = new SqlCommand(sql, _connection);
-
-			_connect();
-			_reader = _cmd.ExecuteReader();
-		}
-
+		#region Select Methods
 		public T First<T>()
 		{
 			_reader.Read();
-			return _reader.ToObject<T>();
+
+			if (_reader.HasRows)
+			{
+				return _reader.ToObject<T>();
+			}
+			else
+			{
+				return default(T);
+			}
 		}
 
 		protected object SelectIdentity()
@@ -64,22 +58,39 @@ namespace SkyGroundLabs.Data.Sql
 		public dynamic First()
 		{
 			_reader.Read();
-			return _reader.ToObject();
+
+			if (_reader.HasRows)
+			{
+				return _reader.ToObject();
+			}
+			else
+			{
+				return null;
+			}
 		}
 
 		public dynamic Select()
 		{
-			return _reader.ToObject();
+			if (_reader.HasRows)
+			{
+				return _reader.ToObject();
+			}
+			else
+			{
+				return null;
+			}
 		}
 
 		public T Select<T>()
 		{
-			return _reader.ToObject<T>();
-		}
-
-		public bool HasNext()
-		{
-			return _reader.Read();
+			if (_reader.HasRows)
+			{
+				return _reader.ToObject<T>();
+			}
+			else
+			{
+				return default(T);
+			}
 		}
 
 		public List<T> SelectList<T>()
@@ -105,7 +116,36 @@ namespace SkyGroundLabs.Data.Sql
 
 			return result;
 		}
+		#endregion
 
+		#region Methods
+		public void ExecuteSql(ISqlBuilder builder)
+		{
+			_cmd = builder.BuildCommand(_connection);
+
+			_connect();
+			_reader = _cmd.ExecuteReader();
+		}
+
+		/// <summary>
+		/// Execute sql statement without sql builder on the database
+		/// </summary>
+		/// <param name="sql"></param>
+		public void ExecuteSql(string sql)
+		{
+			_cmd = new SqlCommand(sql, _connection);
+
+			_connect();
+			_reader = _cmd.ExecuteReader();
+		}
+
+		public bool HasNext()
+		{
+			return _reader.Read();
+		}
+		#endregion
+
+		#region Entity Methods
 		public void SaveChanges<T>(T entity)
 			where T : class
 		{
@@ -186,6 +226,12 @@ namespace SkyGroundLabs.Data.Sql
 						if (customColumn != null)
 						{
 							columnName = customColumn.Name;
+						}
+
+						if (pkNames.Contains(columnName))
+						{
+							// only do this if identity insert is on
+							continue;
 						}
 
 						// Skip unmapped fields
@@ -269,20 +315,19 @@ namespace SkyGroundLabs.Data.Sql
 						name = columnAttribute.Name;
 					}
 
-					builder.AddWhere(tableName, name, SkyGroundLabs.Data.Sql.Enumeration.ComparisonType.Equals, pks[i]);
+					builder.AddWhere(tableName, name, ComparisonType.Equals, pks[i]);
 				}
 			}
 			else
 			{
 				// assume the pk name is ID and we grab the first pk from the array
-				builder.AddWhere(tableName, "ID", SkyGroundLabs.Data.Sql.Enumeration.ComparisonType.Equals, pks[0]);
+				builder.AddWhere(tableName, "ID", ComparisonType.Equals, pks[0]);
 			}
 
 			this.ExecuteSql(builder);
 
 			return this.First<T>();
 		}
-
 		#endregion
 
 		#region Dispose

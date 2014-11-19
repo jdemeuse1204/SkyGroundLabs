@@ -10,5 +10,7 @@ namespace SkyGroundLabs.Data.Sql.Connection
 	{
 		string Username { get; set; }
 		string Password { get; set; }
+
+		string BuildConnectionString();
 	}
 }

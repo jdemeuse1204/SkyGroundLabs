@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyGroundLabs.Data.Sql", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ion.Common", "Ion.Common\Ion.Common.csproj", "{83394F72-F6CF-4513-97CD-CD06F36BF635}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyGroundLabs.Data.Sql.Tests", "SkyGroundLabs.Data.Sql.Tests\SkyGroundLabs.Data.Sql.Tests.csproj", "{BB667362-8E2C-4837-8141-30279D835BE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{83394F72-F6CF-4513-97CD-CD06F36BF635}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83394F72-F6CF-4513-97CD-CD06F36BF635}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83394F72-F6CF-4513-97CD-CD06F36BF635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB667362-8E2C-4837-8141-30279D835BE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB667362-8E2C-4837-8141-30279D835BE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB667362-8E2C-4837-8141-30279D835BE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB667362-8E2C-4837-8141-30279D835BE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
