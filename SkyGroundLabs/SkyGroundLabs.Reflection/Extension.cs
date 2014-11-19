@@ -32,5 +32,17 @@ namespace System
 
 			return result;
 		}
+
+		public static T GetCustomAttribute<T>(this Type type) where T : Attribute
+		{
+			var result = type.GetCustomAttributes(typeof(T), true).FirstOrDefault();
+
+			if (result == null)
+			{
+				return default(T);
+			}
+
+			return (T)result;
+		}
 	}
 }

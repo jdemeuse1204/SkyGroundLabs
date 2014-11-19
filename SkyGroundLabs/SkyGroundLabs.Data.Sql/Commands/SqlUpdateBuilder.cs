@@ -10,15 +10,20 @@ namespace SkyGroundLabs.Data.Sql.Commands
 {
 	public class SqlUpdateBuilder : SqlValidation, ISqlBuilder
 	{
+		#region Properties
 		private string _table { get; set; }
 		private string _set { get; set; }
+		#endregion
 
+		#region Constructor
 		public SqlUpdateBuilder()
 		{
 			_table = string.Empty;
 			_set = string.Empty;
 		}
+		#endregion
 
+		#region Methods
 		public SqlCommand BuildCommand(SqlConnection connection)
 		{
 			if (string.IsNullOrWhiteSpace(_table))
@@ -50,5 +55,6 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_set += string.Format("[{0}] = {1},", fieldName, data);
 			AddParameter(value);
 		}
+		#endregion
 	}
 }

@@ -10,11 +10,14 @@ namespace SkyGroundLabs.Data.Sql.Commands
 {
 	public class SqlInsertBuilder : SqlSecureExecutable, ISqlBuilder
 	{
+		#region Properties
 		private string _table { get; set; }
 		private string _fields { get; set; }
 		private string _values { get; set; }
 		private bool _isIdentityInsertOn { get; set; }
+		#endregion
 
+		#region Constructor
 		public SqlInsertBuilder(bool isIdentityInsertOn = true)
 			: base()
 		{
@@ -23,7 +26,9 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_values = string.Empty;
 			_isIdentityInsertOn = isIdentityInsertOn;
 		}
+		#endregion
 
+		#region Methods
 		public SqlCommand BuildCommand(SqlConnection connection)
 		{
 			if (string.IsNullOrWhiteSpace(_table))
@@ -62,5 +67,6 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_values += string.Format("{0},", data);
 			AddParameter(value);
 		}
+		#endregion
 	}
 }

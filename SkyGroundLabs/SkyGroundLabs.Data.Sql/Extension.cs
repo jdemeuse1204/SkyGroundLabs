@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Mapping;
+using SkyGroundLabs.Reflection;
 
 namespace System
 {
@@ -41,7 +42,7 @@ namespace System
 				}
 
 				var dbValue = reader[columnName];
-				property.SetValue(obj, dbValue is DBNull ? null : dbValue, null);
+				ReflectionManager.SetPropertyValue(obj, property.Name, dbValue is DBNull ? null : dbValue);
 			}
 
 			return obj;
@@ -69,18 +70,6 @@ namespace System
 			}
 
 			return result;
-		}
-
-		public static T GetCustomAttribute<T>(this PropertyInfo property) where T : Attribute
-		{
-			var result = property.GetCustomAttributes(typeof(T), true).FirstOrDefault();
-
-			if (result == null)
-			{
-				return default(T);
-			}
-
-			return (T)result;
 		}
 	}
 }

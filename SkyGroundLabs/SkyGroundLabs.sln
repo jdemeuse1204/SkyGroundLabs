@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iONWeb", "iONWeb\iONWeb.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyGroundLabs.Data.Sql", "SkyGroundLabs.Data.Sql\SkyGroundLabs.Data.Sql.csproj", "{8678E028-4423-44EF-89AF-0E7FCB523461}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ion.Common", "Ion.Common\Ion.Common.csproj", "{83394F72-F6CF-4513-97CD-CD06F36BF635}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{8678E028-4423-44EF-89AF-0E7FCB523461}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8678E028-4423-44EF-89AF-0E7FCB523461}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8678E028-4423-44EF-89AF-0E7FCB523461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83394F72-F6CF-4513-97CD-CD06F36BF635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83394F72-F6CF-4513-97CD-CD06F36BF635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83394F72-F6CF-4513-97CD-CD06F36BF635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83394F72-F6CF-4513-97CD-CD06F36BF635}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

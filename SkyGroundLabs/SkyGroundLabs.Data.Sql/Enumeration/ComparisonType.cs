@@ -11,6 +11,8 @@ namespace SkyGroundLabs.Data.Sql.Enumeration
 		Contains,
 		BeginsWith,
 		EndsWith,
-		Equals
+		Equals,
+		EqualsIgnoreCase,
+		EqualsTruncateTime
 	}
 }

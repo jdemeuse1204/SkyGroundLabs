@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{83394F72-F6CF-4513-97CD-CD06F36BF635}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ion.Common</RootNamespace>
+    <AssemblyName>Ion.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SkyGroundLabs.Data.Sql">
+      <HintPath>..\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Data.Sql.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\AppInfo.cs" />
+    <Compile Include="Data\Appointment.cs" />
+    <Compile Include="Data\AppointmentContentsView.cs" />
+    <Compile Include="Data\AppointmentDisplayTitle.cs" />
+    <Compile Include="Data\Contact.cs" />
+    <Compile Include="Data\ContactAddressArchive.cs" />
+    <Compile Include="Data\ContactArchive.cs" />
+    <Compile Include="Data\Crew.cs" />
+    <Compile Include="Data\CrewAssignment.cs" />
+    <Compile Include="Data\EmailAccount.cs" />
+    <Compile Include="Data\EmailRecent.cs" />
+    <Compile Include="Data\Floor.cs" />
+    <Compile Include="Data\Indicator.cs" />
+    <Compile Include="Data\MoveType.cs" />
+    <Compile Include="Data\Parameter.cs" />
+    <Compile Include="Data\Safe.cs" />
+    <Compile Include="Data\Store.cs" />
+    <Compile Include="Data\User.cs" />
+    <Compile Include="Data\UserClocking.cs" />
+    <Compile Include="Data\UserClockingSpecialCode.cs" />
+    <Compile Include="Data\UserRoleAccess.cs" />
+    <Compile Include="Data\UserRoleAccessPages.cs" />
+    <Compile Include="Data\UserRoles.cs" />
+    <Compile Include="Defauts.cs" />
+    <Compile Include="Enumeration\PunchType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

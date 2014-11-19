@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SkyGroundLabs.Reflection">
+      <HintPath>..\SkyGroundLabs.Reflection\bin\Release\SkyGroundLabs.Reflection.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,8 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connection\IConnectionBuilder.cs" />
     <Compile Include="Enumeration\ComparisonType.cs" />
     <Compile Include="Mapping\Column.cs" />
+    <Compile Include="Mapping\Key.cs" />
+    <Compile Include="Mapping\Table.cs" />
+    <Compile Include="Support\Field.cs" />
     <Compile Include="Support\ISqlBuilder.cs" />
     <Compile Include="Support\SqlSecureExecutable.cs" />
     <Compile Include="Enumeration\JoinType.cs" />

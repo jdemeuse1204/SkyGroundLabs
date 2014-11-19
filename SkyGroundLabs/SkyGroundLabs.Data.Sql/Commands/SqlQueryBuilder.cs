@@ -11,12 +11,15 @@ namespace SkyGroundLabs.Data.Sql.Commands
 {
 	public class SqlQueryBuilder : SqlValidation, ISqlBuilder
 	{
+		#region Properties
 		private string _select { get; set; }
 		private string _columns { get; set; }
 		private string _from { get; set; }
 		private string _table { get; set; }
 		private Dictionary<string, object> _parameters { get; set; }
+		#endregion
 
+		#region Constructor
 		public SqlQueryBuilder()
 			: base()
 		{
@@ -26,7 +29,9 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_table = string.Empty;
 			_parameters = new Dictionary<string, object>();
 		}
+		#endregion
 
+		#region Methods
 		public SqlCommand BuildCommand(SqlConnection connection)
 		{
 			if (string.IsNullOrWhiteSpace(_select))
@@ -52,13 +57,14 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_from += string.Format(" FROM {0} ", tableName);
 		}
 
-		public void Select(string table, params string[] fields)
+		public void Select(string table, params Field[] fields)
 		{
 			_select = " SELECT ";
 
 			foreach (var field in fields)
 			{
-				_columns += string.Format("[{0}].[{1}],", table, field);
+				var alias = string.IsNullOrWhiteSpace(field.Alias) ? "" : string.Format(" AS {0}", field.Alias);
+				_columns += string.Format("[{0}].[{1}]{2},", table, field.ColumnName, alias);
 			}
 		}
 
@@ -67,13 +73,14 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_select = " SELECT * ";
 		}
 
-		public void SelectTop(int rows, string table, params string[] fields)
+		public void SelectTop(int rows, string table, params Field[] fields)
 		{
 			_select = string.Format(" SELECT TOP {0} ", rows);
 
 			foreach (var field in fields)
 			{
-				_columns += string.Format("[{0}].[{1}],", table, field);
+				var alias = string.IsNullOrWhiteSpace(field.Alias) ? "" : string.Format(" AS {0}", field.Alias);
+				_columns += string.Format("[{0}].[{1}]{2},", table, field.ColumnName, alias);
 			}
 		}
 
@@ -105,5 +112,6 @@ namespace SkyGroundLabs.Data.Sql.Commands
 					break;
 			}
 		}
+		#endregion
 	}
 }
