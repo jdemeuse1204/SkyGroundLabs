@@ -37,6 +37,18 @@ namespace SkyGroundLabs.Data.Sql
 			_reader = _cmd.ExecuteReader();
 		}
 
+		/// <summary>
+		/// Execute sql statement without sql builder on the database
+		/// </summary>
+		/// <param name="sql"></param>
+		public void ExecuteSql(string sql)
+		{
+			_cmd = new SqlCommand(sql, _connection);
+
+			_connect();
+			_reader = _cmd.ExecuteReader();
+		}
+
 		public T First<T>()
 		{
 			_reader.Read();
