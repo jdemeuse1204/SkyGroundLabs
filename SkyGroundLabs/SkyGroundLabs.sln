@@ -27,6 +27,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ion.Common", "Ion.Common\Io
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyGroundLabs.Data.Sql.Tests", "SkyGroundLabs.Data.Sql.Tests\SkyGroundLabs.Data.Sql.Tests.csproj", "{BB667362-8E2C-4837-8141-30279D835BE6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "js", "js", "{494E49DC-CF43-4D92-A18B-C0B2C374BEA2}"
+	ProjectSection(SolutionItems) = preProject
+		DataBind.js = DataBind.js
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
