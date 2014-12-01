@@ -7,3 +7,12 @@ C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\bin\Rele
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\bin\Release\SkyGroundLabs.Reflection.pdb
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\obj\Release\Ion.Common.dll
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\obj\Release\Ion.Common.pdb
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\bin\Release\Ion.Common.dll
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\bin\Release\Ion.Common.pdb
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\bin\Release\SkyGroundLabs.Data.Sql.dll
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\bin\Release\SkyGroundLabs.Reflection.dll
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\bin\Release\SkyGroundLabs.Data.Sql.pdb
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\bin\Release\SkyGroundLabs.Reflection.pdb
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\obj\Release\Ion.Common.csprojResolveAssemblyReference.cache
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\obj\Release\Ion.Common.dll
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\Ion.Common\obj\Release\Ion.Common.pdb

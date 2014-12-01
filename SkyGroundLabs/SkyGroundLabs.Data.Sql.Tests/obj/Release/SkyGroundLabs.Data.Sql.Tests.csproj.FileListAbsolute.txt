@@ -9,3 +9,14 @@ C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\obj\Release\SkyGroundLabs.Data.Sql.Tests.csprojResolveAssemblyReference.cache
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\obj\Release\SkyGroundLabs.Data.Sql.Tests.dll
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\obj\Release\SkyGroundLabs.Data.Sql.Tests.pdb
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\SkyGroundLabs.Data.Sql.Tests.dll
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\SkyGroundLabs.Data.Sql.Tests.pdb
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\Ion.Common.dll
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\SkyGroundLabs.Data.Sql.dll
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\SkyGroundLabs.Reflection.dll
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\Ion.Common.pdb
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\SkyGroundLabs.Data.Sql.pdb
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\SkyGroundLabs.Reflection.pdb
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\obj\Release\SkyGroundLabs.Data.Sql.Tests.csprojResolveAssemblyReference.cache
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\obj\Release\SkyGroundLabs.Data.Sql.Tests.dll
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\obj\Release\SkyGroundLabs.Data.Sql.Tests.pdb

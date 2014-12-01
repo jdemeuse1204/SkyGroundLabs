@@ -21,9 +21,8 @@ namespace Ion.Data.Methods
 
 		public bool AreDatesValidForScheduling(Appointment appointment)
 		{
-			if (appointment.StartTime != "12:00 AM" &&
-				appointment.EndTime != "12:00 AM" &&
-				appointment.ScheduledDate.Date != Defaults.MinDateTime.Date)
+			if (appointment.StartDate != Defaults.MinDateTime.Date &&
+				appointment.EndDate != Defaults.MinDateTime.Date)
 			{
 				return true;
 			}

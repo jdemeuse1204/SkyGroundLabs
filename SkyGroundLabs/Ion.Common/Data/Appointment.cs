@@ -7,27 +7,18 @@ using SkyGroundLabs.Data.Sql.Mapping;
 
 namespace Ion.Common.Data
 {
-	[Table("TEMP_Appointments")]
+	[Table("Appointments")]
 	public class Appointment 
 	{
 		public Appointment()
 		{
-			IsScheduled = false;
-			FloorID = 0;
 			StartDate = Convert.ToDateTime("1/1/1900 12:00 AM");
 			EndDate = Convert.ToDateTime("1/1/1900 12:00 AM");
-			CrewID = 0;
 			Background = "Black";
 			DropoffZip = "";
 			PickupZip = "";
-			IsEmailed = false;
 			DateEntered = DateTime.Now;
 			DateEdited = DateTime.Now;
-			ContactID = 0;
-			SafeID = 0;
-			StoreID = 0;
-			Weight = 0d;
-			Quote = 0d;
 		}
 
 		public long ID { get; set; }

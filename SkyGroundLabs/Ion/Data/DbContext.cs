@@ -165,22 +165,6 @@ namespace Ion.Data
 				var appointment = ((dynamic)entity);
 				appointment.DateEdited = DateTime.Now;
 
-				// default string checks
-				if (string.IsNullOrWhiteSpace(appointment.StartTime))
-				{
-					appointment.StartTime = "";
-				}
-
-				if (string.IsNullOrWhiteSpace(appointment.EndTime))
-				{
-					appointment.EndTime = "";
-				}
-
-				if (string.IsNullOrWhiteSpace(appointment.Background))
-				{
-					appointment.Background = "";
-				}
-
 				if (string.IsNullOrWhiteSpace(appointment.DropoffZip))
 				{
 					appointment.DropoffZip = "";
