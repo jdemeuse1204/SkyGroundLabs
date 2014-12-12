@@ -48,6 +48,20 @@ namespace System
 			return obj;
 		}
 
+		public static bool IsNumeric(this object o)
+		{
+			var result = 0L;
+
+			return long.TryParse(o.ToString(), out result);
+		}
+
+		public  static string ToDatabaseColumnName(this PropertyInfo column)
+		{
+			var columnAttribute = column.GetCustomAttribute<ColumnAttribute>();
+
+			return columnAttribute == null ? column.Name : columnAttribute.Name;
+		}
+
 		/// <summary>
 		/// Turns the DataReader into an object and converts the types for you
 		/// </summary>

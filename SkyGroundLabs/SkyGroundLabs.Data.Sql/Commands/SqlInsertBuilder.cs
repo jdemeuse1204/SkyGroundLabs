@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Support;
+using SkyGroundLabs.Data.Sql.Enumeration;
+using System.Reflection;
+using SkyGroundLabs.Data.Sql.KeyGeneration;
 
 namespace SkyGroundLabs.Data.Sql.Commands
 {
@@ -13,18 +16,20 @@ namespace SkyGroundLabs.Data.Sql.Commands
 		#region Properties
 		private string _table { get; set; }
 		private string _fields { get; set; }
+		private string _identity { get; set; }
 		private string _values { get; set; }
-		private bool _isIdentityInsertOn { get; set; }
+		private List<string> _keys { get; set; }
+		
 		#endregion
 
 		#region Constructor
-		public SqlInsertBuilder(bool isIdentityInsertOn = true)
+		public SqlInsertBuilder()
 			: base()
 		{
 			_table = string.Empty;
 			_fields = string.Empty;
 			_values = string.Empty;
-			_isIdentityInsertOn = isIdentityInsertOn;
+			_keys = new List<string>();
 		}
 		#endregion
 
@@ -46,8 +51,9 @@ namespace SkyGroundLabs.Data.Sql.Commands
 				throw new QueryNotValidException("INSERT statement needs Fields");
 			}
 
-			var identity = _isIdentityInsertOn ? ";Select @@IDENTITY;" : "";
-			var sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2}){3}", _table, _fields.TrimEnd(','), _values.TrimEnd(','), identity);
+			
+			var sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", _table, _fields.TrimEnd(','), _values.TrimEnd(','));
+			_addKeyGenerationSql(sql);
 			var cmd = new SqlCommand(sql, connection);
 
 			InsertParameters(cmd);
@@ -66,6 +72,30 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_fields += string.Format("[{0}],", fieldName);
 			_values += string.Format("{0},", data);
 			AddParameter(value);
+		}
+
+		public void AddIdentityGeneration(string fieldName, object value)
+		{
+
+		}
+
+		public void AddIdentitySpecification()
+		{
+			var identity = string.Empty;
+
+			switch (identityType)
+			{
+				case IdentityType.AtAtIdentity:
+					identity = "@@IDENTITY";
+					break;
+				case IdentityType.FromKey:
+					identity = string.Format("@KEY{0}",_keys.Count);
+					break;
+			}
+
+			_keys.Add(identity);
+
+			return identity;
 		}
 		#endregion
 	}

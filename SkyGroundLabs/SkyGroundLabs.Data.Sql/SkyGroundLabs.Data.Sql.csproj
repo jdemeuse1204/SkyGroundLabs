@@ -45,7 +45,13 @@
     <Compile Include="Connection\IConnectionBuilder.cs" />
     <Compile Include="Connection\SqlServerConnectionBuilder.cs" />
     <Compile Include="Enumeration\ComparisonType.cs" />
+    <Compile Include="Enumeration\DbGenerationType.cs" />
+    <Compile Include="Enumeration\IdentityType.cs" />
+    <Compile Include="KeyGeneration\KeyContainer.cs" />
+    <Compile Include="KeyGeneration\KeyGenerationContainer.cs" />
+    <Compile Include="KeyGeneration\KeyGenerator.cs" />
     <Compile Include="Mapping\Column.cs" />
+    <Compile Include="Mapping\DbGenerationOption.cs" />
     <Compile Include="Mapping\Key.cs" />
     <Compile Include="Mapping\Table.cs" />
     <Compile Include="Support\Field.cs" />

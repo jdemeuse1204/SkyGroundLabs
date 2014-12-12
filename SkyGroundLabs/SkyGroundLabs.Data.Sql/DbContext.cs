@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Commands;
 using SkyGroundLabs.Data.Sql.Connection;
 using SkyGroundLabs.Data.Sql.Enumeration;
+using SkyGroundLabs.Data.Sql.KeyGeneration;
 using SkyGroundLabs.Data.Sql.Mapping;
 using SkyGroundLabs.Data.Sql.Support;
 using SkyGroundLabs.Reflection;
@@ -17,6 +19,7 @@ namespace SkyGroundLabs.Data.Sql
 	public class DbContext : IDisposable
 	{
 		#region Properties
+		private string _connectionString { get; set; }
 		private SqlConnection _connection { get; set; }
 		private SqlCommand _cmd { get; set; }
 		private SqlDataReader _reader { get; set; }
@@ -25,12 +28,14 @@ namespace SkyGroundLabs.Data.Sql
 		#region Constructor
 		public DbContext(string connectionString)
 		{
-			_connection = new SqlConnection(connectionString);
+			_connectionString = connectionString;
+			_connection = new SqlConnection(_connectionString);
 		}
 
 		public DbContext(IConnectionBuilder connection)
 		{
-			_connection = new SqlConnection(connection.BuildConnectionString());
+			_connectionString = connection.BuildConnectionString();
+			_connection = new SqlConnection(_connectionString);
 		}
 		#endregion
 
@@ -49,10 +54,18 @@ namespace SkyGroundLabs.Data.Sql
 			}
 		}
 
-		protected object SelectIdentity()
+		protected KeyContainer SelectIdentity()
 		{
 			_reader.Read();
-			return _reader[0];
+			var keyContainer = new KeyContainer();
+			var rec = (IDataRecord)_reader;
+
+			for (int i = 0; i < rec.FieldCount; i++)
+			{
+				keyContainer.Add(rec.GetName(i), rec.GetValue(i));
+			}
+
+			return keyContainer;
 		}
 
 		public dynamic First()
@@ -143,6 +156,59 @@ namespace SkyGroundLabs.Data.Sql
 		{
 			return _reader.Read();
 		}
+
+		/// <summary>
+		/// Gets the Db Generation Key Type.  If the attribute isnt set returns IdentitySpecification as default
+		/// </summary>
+		/// <param name="keyColumnProperty"></param>
+		/// <returns></returns>
+		private DbGenerationType _getDbGenerationOption(PropertyInfo keyColumnProperty)
+		{
+			var result = DbGenerationType.IdentitySpecification;
+			var dbGenerationOptionAttribute = keyColumnProperty.GetCustomAttribute<DbGenerationOptionAttribute>();
+
+			if (dbGenerationOptionAttribute != null)
+			{
+				result = dbGenerationOptionAttribute.Option;
+			}
+
+			return result;
+		}
+
+		private string _findPropertyName(object entity, string lookupName)
+		{
+			var properties = entity.GetType().GetProperties();
+
+			if (properties.Select(w => w.Name).Contains(lookupName))
+			{
+				return lookupName;
+			}
+
+			var column = properties.Where(w => w.GetCustomAttribute<ColumnAttribute>().Name == lookupName).FirstOrDefault();
+
+			if (column != null)
+			{
+				return column.Name;
+			}
+			else
+			{
+				throw new Exception("Column Not Found");
+			}
+		}
+
+		private string _findPropertyName(object entity, PropertyInfo propertyInfo)
+		{
+			var columnName = propertyInfo.Name;
+			var customColumn = propertyInfo.GetCustomAttribute<ColumnAttribute>();
+			var updateValue = propertyInfo.GetValue(entity);
+
+			if (customColumn != null)
+			{
+				columnName = customColumn.Name;
+			}
+
+			return columnName;
+		}
 		#endregion
 
 		#region Entity Methods
@@ -150,7 +216,6 @@ namespace SkyGroundLabs.Data.Sql
 			where T : class
 		{
 			// Check to see if the PK is defined
-			var keyProperties = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<KeyAttribute>() != null).ToList();
 			var tableName = entity.GetType().Name;
 
 			// check for table name attribute
@@ -162,44 +227,13 @@ namespace SkyGroundLabs.Data.Sql
 				tableName = tableAttribute.Name;
 			}
 
-			if (keyProperties.Count > 0)
+			// ID is the default primary key name
+			var primaryKeys = _getPrimaryKeyColumns(entity);
+			var isUpdating = false;
+
+			foreach (var primaryKey in primaryKeys)
 			{
-				// get all primary keys
-				throw new Exception("FINISH YOUR CODE DAMMIT!");
-			}
-			else
-			{
-				// ID is the default primary key name
-				var keyColumn = entity.GetType().GetProperties().Where(w => w.Name.ToUpper() == "ID").FirstOrDefault();
-				var pkNames = new string[] { };
-				var pkPropertyNames = new string[] { };
-
-				// if there was no column found look for the column attribute
-				if (keyColumn == null)
-				{
-					keyColumn = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<ColumnAttribute>().Name == "ID").FirstOrDefault();
-
-					pkNames = new string[] { keyColumn.GetCustomAttribute<ColumnAttribute>().Name };
-					pkPropertyNames = new string[] { keyColumn.Name };
-
-					// make sure the PK is named properly
-					if (keyColumn == null)
-					{
-						throw new Exception("Cannot find PrimaryKey ID");
-					}
-				}
-				else
-				{
-					pkNames = new string[] { keyColumn.Name };
-					pkPropertyNames = new string[] { keyColumn.Name };
-				}
-
-				// at this point we have the PK Property
-				// PK Types, 
-				// GUID, INTEGERS
-
-				var pkValue = keyColumn.GetValue(entity);
-				var isUpdating = false;
+				var pkValue = primaryKey.GetValue(entity);
 
 				if (pkValue is Int16 || pkValue is Int32 || pkValue is Int64)
 				{
@@ -210,70 +244,100 @@ namespace SkyGroundLabs.Data.Sql
 					isUpdating = pkValue != null && (Guid)pkValue != Guid.Empty;
 				}
 
-				// Update Or Insert
+				// break because we are already updating, do not want to set to false
 				if (isUpdating)
 				{
-					// Update Data
-					SqlUpdateBuilder update = new SqlUpdateBuilder();
-					update.Table(tableName);
-
-					foreach (var property in entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<UnmappedAttribute>() == null))
-					{
-						var columnName = property.Name;
-						var customColumn = property.GetCustomAttribute<ColumnAttribute>();
-						var updateValue = property.GetValue(entity);
-
-						if (customColumn != null)
-						{
-							columnName = customColumn.Name;
-						}
-
-						if (pkNames.Contains(columnName))
-						{
-							// only do this if identity insert is on
-							continue;
-						}
-
-						// Skip unmapped fields
-						update.AddUpdate(columnName, updateValue == null ? "NULL" : updateValue);
-					}
-
-					// add validation to only update the row
-					update.AddWhere(tableName, pkNames[0], ComparisonType.Equals, pkValue);
-					this.ExecuteSql(update);
+					break;
 				}
-				else
+			}
+
+			// Update Or Insert
+			if (isUpdating)
+			{
+				// Update Data
+				SqlUpdateBuilder update = new SqlUpdateBuilder();
+				update.Table(tableName);
+
+				foreach (var property in entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<UnmappedAttribute>() == null))
 				{
-					// Insert Data
-					SqlInsertBuilder insert = new SqlInsertBuilder();
-					insert.Table(tableName);
+					var columnName = property.Name;
+					var customColumn = property.GetCustomAttribute<ColumnAttribute>();
+					var updateValue = property.GetValue(entity);
 
-					foreach (var property in entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<UnmappedAttribute>() == null))
+					if (customColumn != null)
 					{
-						var columnName = property.Name;
-						var customColumn = property.GetCustomAttribute<ColumnAttribute>();
-						var insertValue = property.GetValue(entity);
-
-						if (customColumn != null)
-						{
-							columnName = customColumn.Name;
-						}
-
-						if (pkNames.Contains(columnName))
-						{
-							// only do this if identity insert is on
-							continue;
-						}
-
-						// Skip unmapped fields
-						insert.AddInsert(columnName, insertValue == null ? "NULL" : insertValue);
+						columnName = customColumn.Name;
 					}
 
-					// Execute the insert statement
-					this.ExecuteSql(insert);
+					if (primaryKeys.Select(w => w.Name).Contains(columnName))
+					{
+						// only do this if identity insert is on
+						continue;
+					}
 
-					// set the resulting pk in the entity object
-					ReflectionManager.SetPropertyValue(entity, pkPropertyNames[0], this.SelectIdentity());
+					// Skip unmapped fields
+					update.AddUpdate(columnName, updateValue == null ? "NULL" : updateValue);
+				}
+
+				// add validation to only update the row
+				foreach (var primaryKey in primaryKeys)
+				{
+					update.AddWhere(tableName, primaryKey.Name, ComparisonType.Equals, primaryKey.GetValue(entity));
+				}
+
+				this.ExecuteSql(update);
+			}
+			else
+			{
+				// Insert Data
+
+				// find keys we will need to generate
+				var keyGenerationColumns = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<DbGenerationOptionAttribute>() != null
+					&& w.GetCustomAttribute<DbGenerationOptionAttribute>().Option == DbGenerationType.Generate).ToList();
+				var insert = new SqlInsertBuilder();
+				insert.Table(tableName);
+
+				foreach (var property in entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<UnmappedAttribute>() == null))
+				{
+					var columnName = property.Name;
+					var customColumn = property.GetCustomAttribute<ColumnAttribute>();
+					var dbGenerationColumn = property.GetCustomAttribute<DbGenerationOptionAttribute>();
+					var insertValue = property.GetValue(entity);
+
+					if (customColumn != null)
+					{
+						columnName = customColumn.Name;
+					}
+
+					// is it a primary key
+					if (primaryKeys.Select(w => w.Name).Contains(columnName))
+					{
+						if (!keyGenerationColumns.Select(w => w.Name).Contains(columnName))
+						{
+							// only do this if identity insert is on
+							// only one column allows identity insert per table
+							insert.AddIdentity(IdentityType.AtAtIdentity);
+							continue;
+						}
+						else
+						{
+							insert.AddInsert(columnName, insert.AddIdentity(IdentityType.FromKey));
+							continue;
+						}
+					}
+
+					// Skip unmapped fields
+					insert.AddInsert(columnName, insertValue == null ? "NULL" : insertValue);
+				}
+
+				// Execute the insert statement
+				this.ExecuteSql(insert);
+
+				// set the resulting pk in the entity object
+				foreach (var item in this.SelectIdentity())
+				{
+					// find the property first in case the column name change attribute is used
+					ReflectionManager.SetPropertyValue(entity, _findPropertyName(entity, item.Key), item.Value);
 				}
 			}
 		}
@@ -328,6 +392,39 @@ namespace SkyGroundLabs.Data.Sql
 
 			return this.First<T>();
 		}
+		#endregion
+
+		#region Insert Methods
+		private List<PropertyInfo> _getPrimaryKeyColumns(object entity)
+		{
+			var pks = new List<PropertyInfo>();
+			var keyCheckOne = entity.GetType().GetProperties().Where(w => w.Name.ToUpper() == "ID").FirstOrDefault();
+			var keyCheckTwo = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<ColumnAttribute>() != null && w.GetCustomAttribute<ColumnAttribute>().Name == "ID").FirstOrDefault();
+			var keyCheckThree = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<KeyAttribute>() != null).ToList();
+
+			if (keyCheckOne != null)
+			{
+				pks.Add(keyCheckOne);
+			}
+
+			if (keyCheckTwo != null)
+			{
+				pks.Add(keyCheckTwo);
+			}
+
+			if (keyCheckThree != null)
+			{
+				pks.AddRange(keyCheckThree);
+			}
+
+			if (pks.Count == 0)
+			{
+				throw new Exception("Cannot find PrimaryKey(s)");
+			}
+
+			return pks;
+		}
+
 		#endregion
 
 		#region Dispose
