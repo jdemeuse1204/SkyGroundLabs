@@ -22,14 +22,17 @@ namespace SkyGroundLabs.Data.Sql.Support
 
 		public DbGenerationType Generation { get; private set; }
 
-		public InsertItem(PropertyInfo property)
+		public object Value { get; private set; }
+
+		public InsertItem(PropertyInfo property,object entity)
 		{
 			PropertyName = property.Name;
 			DatabaseColumnName = property.GetDatabaseColumnName();
 			IsPrimaryKey = property.IsPrimaryKey();
-			Type = property.GetType().Name.ToUpper();
+			Value = property.GetValue(entity);
+			this.Type = Value.GetType().Name.ToUpper();
 			Generation = property.GetDatabaseGenerationType();
-
+			
 			switch (Generation)
 			{
 				case DbGenerationType.None:
@@ -47,13 +50,13 @@ namespace SkyGroundLabs.Data.Sql.Support
 			switch (property.GetType().Name.ToUpper())
 			{
 				case "INT16":
-					Type = "smallint";
+					this.Type = "smallint";
 					break;
 				case "INT64":
-					Type = "bigint";
+					this.Type = "bigint";
 					break;
 				case "GUID":
-					Type = "uniqueidentifier";
+					this.Type = "uniqueidentifier";
 					break;
 			}
 		}

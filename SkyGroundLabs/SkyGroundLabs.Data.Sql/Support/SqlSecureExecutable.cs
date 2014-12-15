@@ -29,9 +29,14 @@ namespace SkyGroundLabs.Data.Sql.Support
 			return string.Format("@DATA{0}", _parameters.Count);
 		}
 
-		protected void AddParameter(object value)
+		protected void AddParameter(object parameterValue)
 		{
-			_parameters.Add(GetNextParameter(), value);
+			_parameters.Add(GetNextParameter(), parameterValue);
+		}
+
+		protected void AddParameter(string parameterKey, object parameterValue)
+		{
+			_parameters.Add(parameterKey, parameterValue);
 		}
 
 		protected void InsertParameters(SqlCommand cmd)
