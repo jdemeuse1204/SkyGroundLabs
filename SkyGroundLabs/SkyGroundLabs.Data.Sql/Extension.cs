@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Mapping;
 using SkyGroundLabs.Reflection;
 
-namespace System
+namespace SkyGroundLabs
 {
 	public static class Extension
 	{
@@ -46,6 +46,18 @@ namespace System
 			}
 
 			return obj;
+		}
+
+		/// <summary>
+		/// Checks to see if the column is the primary key
+		/// </summary>
+		/// <param name="property">PropertyInfo</param>
+		/// <returns>bool</returns>
+		public static bool IsPrimaryKey(this PropertyInfo property)
+		{
+			return property.Name.ToUpper() == "ID "
+				|| property.ToDatabaseColumnName().ToUpper() == "ID"
+				|| property.GetCustomAttribute<KeyAttribute>() != null;
 		}
 
 		public static bool IsNumeric(this object o)

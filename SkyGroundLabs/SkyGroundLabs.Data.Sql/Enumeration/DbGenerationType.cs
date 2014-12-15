@@ -8,6 +8,7 @@ namespace SkyGroundLabs.Data.Sql.Enumeration
 {
 	public enum DbGenerationType
 	{
+		None,
 		IdentitySpecification,
 		Generate
 	}

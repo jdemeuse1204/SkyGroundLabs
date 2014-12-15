@@ -8,6 +8,7 @@ using SkyGroundLabs.Data.Sql.Support;
 using SkyGroundLabs.Data.Sql.Enumeration;
 using System.Reflection;
 using SkyGroundLabs.Data.Sql.KeyGeneration;
+using SkyGroundLabs.Data.Sql.Mapping;
 
 namespace SkyGroundLabs.Data.Sql.Commands
 {
@@ -18,8 +19,7 @@ namespace SkyGroundLabs.Data.Sql.Commands
 		private string _fields { get; set; }
 		private string _identity { get; set; }
 		private string _values { get; set; }
-		private List<string> _keys { get; set; }
-		
+		private string _sqlVariables { get; set; }
 		#endregion
 
 		#region Constructor
@@ -29,7 +29,7 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_table = string.Empty;
 			_fields = string.Empty;
 			_values = string.Empty;
-			_keys = new List<string>();
+			_sqlVariables = string.Empty;
 		}
 		#endregion
 
@@ -51,9 +51,8 @@ namespace SkyGroundLabs.Data.Sql.Commands
 				throw new QueryNotValidException("INSERT statement needs Fields");
 			}
 
-			
+
 			var sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", _table, _fields.TrimEnd(','), _values.TrimEnd(','));
-			_addKeyGenerationSql(sql);
 			var cmd = new SqlCommand(sql, connection);
 
 			InsertParameters(cmd);
@@ -66,36 +65,62 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_table = tableName;
 		}
 
-		public void AddInsert(string fieldName, object value)
+		public void AddInsert(PropertyInfo property, object entity)
 		{
-			var data = GetNextParameter();
-			_fields += string.Format("[{0}],", fieldName);
-			_values += string.Format("{0},", data);
-			AddParameter(value);
-		}
+			var propertyName = property.Name;
+			var dbColumnName = property.ToDatabaseColumnName();
+			var propertyValue = property.GetValue(entity);
+			var variable = string.Empty;
+			var sqlDataType = "int";
+			var dbGenerationColumn = property.GetCustomAttribute<DbGenerationOptionAttribute>();
+			var dbGenerationType = DbGenerationType.None;
 
-		public void AddIdentityGeneration(string fieldName, object value)
-		{
+			// make sure the property is not null
+			propertyValue = propertyValue ?? "NULL";
 
-		}
-
-		public void AddIdentitySpecification()
-		{
-			var identity = string.Empty;
-
-			switch (identityType)
+			if (dbGenerationColumn != null)
 			{
-				case IdentityType.AtAtIdentity:
-					identity = "@@IDENTITY";
-					break;
-				case IdentityType.FromKey:
-					identity = string.Format("@KEY{0}",_keys.Count);
-					break;
+				dbGenerationType = dbGenerationColumn.Option;
 			}
 
-			_keys.Add(identity);
+			// make sure the method is used properly
+			if (dbGenerationType == DbGenerationType.None)
+			{
+				var data = GetNextParameter();
+				_fields += string.Format("[{0}],", dbColumnName);
+				_values += string.Format("{0},", data);
+				AddParameter(propertyValue);
+				return;
+			}
+			else if (dbGenerationType == DbGenerationType.Generate)
+			{
+				// need to automatically generate our key
+				variable = string.Format("@{0} as {1}", propertyName, propertyName);
 
-			return identity;
+				// set the sql data type
+				switch (propertyValue.GetType().Name.ToUpper())
+				{
+					case "INT16":
+						sqlDataType = "smallint";
+						break;
+					case "INT64":
+						sqlDataType = "bigint";
+						break;
+					case "GUID":
+						sqlDataType = "uniqueidentifier";
+						break;
+				}
+				_sqlVariables += string.Format("{0} as {1},", variable, sqlDataType);
+				_identity += variable + ",";
+			}
+			else
+			{
+				// identity specification is on
+				_identity = string.Format("@@IDENTITY as {0},", propertyName);
+			}
+
+
+
 		}
 		#endregion
 	}

@@ -292,42 +292,12 @@ namespace SkyGroundLabs.Data.Sql
 				// Insert Data
 
 				// find keys we will need to generate
-				var keyGenerationColumns = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<DbGenerationOptionAttribute>() != null
-					&& w.GetCustomAttribute<DbGenerationOptionAttribute>().Option == DbGenerationType.Generate).ToList();
 				var insert = new SqlInsertBuilder();
 				insert.Table(tableName);
 
 				foreach (var property in entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<UnmappedAttribute>() == null))
 				{
-					var columnName = property.Name;
-					var customColumn = property.GetCustomAttribute<ColumnAttribute>();
-					var dbGenerationColumn = property.GetCustomAttribute<DbGenerationOptionAttribute>();
-					var insertValue = property.GetValue(entity);
-
-					if (customColumn != null)
-					{
-						columnName = customColumn.Name;
-					}
-
-					// is it a primary key
-					if (primaryKeys.Select(w => w.Name).Contains(columnName))
-					{
-						if (!keyGenerationColumns.Select(w => w.Name).Contains(columnName))
-						{
-							// only do this if identity insert is on
-							// only one column allows identity insert per table
-							insert.AddIdentity(IdentityType.AtAtIdentity);
-							continue;
-						}
-						else
-						{
-							insert.AddInsert(columnName, insert.AddIdentity(IdentityType.FromKey));
-							continue;
-						}
-					}
-
-					// Skip unmapped fields
-					insert.AddInsert(columnName, insertValue == null ? "NULL" : insertValue);
+					insert.AddInsert(property, entity);
 				}
 
 				// Execute the insert statement
@@ -402,19 +372,25 @@ namespace SkyGroundLabs.Data.Sql
 			var keyCheckTwo = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<ColumnAttribute>() != null && w.GetCustomAttribute<ColumnAttribute>().Name == "ID").FirstOrDefault();
 			var keyCheckThree = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<KeyAttribute>() != null).ToList();
 
-			if (keyCheckOne != null)
+			if (keyCheckOne != null && !pks.Select(w => w.Name).Contains(keyCheckOne.Name))
 			{
 				pks.Add(keyCheckOne);
 			}
 
-			if (keyCheckTwo != null)
+			if (keyCheckTwo != null && !pks.Select(w => w.Name).Contains(keyCheckTwo.Name))
 			{
 				pks.Add(keyCheckTwo);
 			}
 
 			if (keyCheckThree != null)
 			{
-				pks.AddRange(keyCheckThree);
+				foreach (var item in keyCheckThree)
+				{
+					if (!pks.Select(w => w.Name).Contains(item.Name))
+					{
+						pks.Add(item);
+					}
+				}
 			}
 
 			if (pks.Count == 0)
