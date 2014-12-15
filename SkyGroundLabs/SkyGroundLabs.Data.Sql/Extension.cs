@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using SkyGroundLabs.Data.Sql.Enumeration;
 using SkyGroundLabs.Data.Sql.Mapping;
 using SkyGroundLabs.Reflection;
 
@@ -51,13 +52,13 @@ namespace SkyGroundLabs
 		/// <summary>
 		/// Checks to see if the column is the primary key
 		/// </summary>
-		/// <param name="property">PropertyInfo</param>
+		/// <param name="column">PropertyInfo</param>
 		/// <returns>bool</returns>
-		public static bool IsPrimaryKey(this PropertyInfo property)
+		public static bool IsPrimaryKey(this PropertyInfo column)
 		{
-			return property.Name.ToUpper() == "ID "
-				|| property.ToDatabaseColumnName().ToUpper() == "ID"
-				|| property.GetCustomAttribute<KeyAttribute>() != null;
+			return column.Name.ToUpper() == "ID "
+				|| column.GetDatabaseColumnName().ToUpper() == "ID"
+				|| column.GetCustomAttribute<KeyAttribute>() != null;
 		}
 
 		public static bool IsNumeric(this object o)
@@ -67,7 +68,13 @@ namespace SkyGroundLabs
 			return long.TryParse(o.ToString(), out result);
 		}
 
-		public  static string ToDatabaseColumnName(this PropertyInfo column)
+		public static DbGenerationType GetDatabaseGenerationType(this PropertyInfo column)
+		{
+			var dbGenerationColumn = column.GetCustomAttribute<DbGenerationOptionAttribute>();
+			return dbGenerationColumn == null ? DbGenerationType.None : dbGenerationColumn.Option;
+		}
+
+		public static string GetDatabaseColumnName(this PropertyInfo column)
 		{
 			var columnAttribute = column.GetCustomAttribute<ColumnAttribute>();
 

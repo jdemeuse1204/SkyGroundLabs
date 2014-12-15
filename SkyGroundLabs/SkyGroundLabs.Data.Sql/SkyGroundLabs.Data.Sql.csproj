@@ -55,6 +55,7 @@
     <Compile Include="Mapping\Key.cs" />
     <Compile Include="Mapping\Table.cs" />
     <Compile Include="Support\Field.cs" />
+    <Compile Include="Support\InsertItem.cs" />
     <Compile Include="Support\ISqlBuilder.cs" />
     <Compile Include="Support\SqlSecureExecutable.cs" />
     <Compile Include="Enumeration\JoinType.cs" />

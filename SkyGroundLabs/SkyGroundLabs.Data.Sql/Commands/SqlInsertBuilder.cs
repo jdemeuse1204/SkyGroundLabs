@@ -51,8 +51,36 @@ namespace SkyGroundLabs.Data.Sql.Commands
 				throw new QueryNotValidException("INSERT statement needs Fields");
 			}
 
+			var declare = !string.IsNullOrWhiteSpace(_sqlVariables) ? "DECLARE " + _sqlVariables.TrimEnd(',') : "";
 
-			var sql = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", _table, _fields.TrimEnd(','), _values.TrimEnd(','));
+			var set = string.Empty;
+
+			if (!string.IsNullOrWhiteSpace(_sqlVariables))
+			{
+				foreach (var item in _sqlVariables.TrimEnd(',').Split(','))
+				{
+					var type = item.Replace(" as ",",").Split(',')[1].Trim();
+					var variable = item.Replace(" as ", ",").Split(',')[0].Trim();
+					var keyGeneration = string.Format("Select ISNULL(MAX({0}),0) + 1 From {1}",
+						variable.Replace("@", ""), 
+						_table);
+
+					if (type.ToUpper() == "UNIQUEIDENTIFIER")
+					{
+						keyGeneration = "NEWID()";
+					}
+
+					set += string.Format("SET {0} = {1};", variable, keyGeneration);
+				}
+			}
+
+			var sql = string.Format("{0} {1} INSERT INTO {2} ({3}) VALUES ({4});{5}",
+				declare,
+				set,
+				_table, _fields.TrimEnd(','),
+				_values.TrimEnd(','),
+				string.IsNullOrWhiteSpace(_identity) ? "" : string.Format("Select {0}", _identity.TrimEnd(',')));
+
 			var cmd = new SqlCommand(sql, connection);
 
 			InsertParameters(cmd);
@@ -65,10 +93,10 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_table = tableName;
 		}
 
-		public void AddInsert(PropertyInfo property, object entity)
+		public void AddInsert(PropertyInfo property)
 		{
 			var propertyName = property.Name;
-			var dbColumnName = property.ToDatabaseColumnName();
+			var dbColumnName = property.GetDatabaseColumnName();
 			var propertyValue = property.GetValue(entity);
 			var variable = string.Empty;
 			var sqlDataType = "int";
@@ -95,7 +123,8 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			else if (dbGenerationType == DbGenerationType.Generate)
 			{
 				// need to automatically generate our key
-				variable = string.Format("@{0} as {1}", propertyName, propertyName);
+				var key = string.Format("@{0}", propertyName);
+				variable = string.Format("{0} as {1}", key, propertyName);
 
 				// set the sql data type
 				switch (propertyValue.GetType().Name.ToUpper())
@@ -110,7 +139,7 @@ namespace SkyGroundLabs.Data.Sql.Commands
 						sqlDataType = "uniqueidentifier";
 						break;
 				}
-				_sqlVariables += string.Format("{0} as {1},", variable, sqlDataType);
+				_sqlVariables += string.Format("{0} as {1},", key, sqlDataType);
 				_identity += variable + ",";
 			}
 			else

@@ -60,7 +60,7 @@ namespace SkyGroundLabs.Data.Sql.KeyGeneration
 				}
 				else if (primaryKeyValue.IsNumeric())
 				{
-					set += string.Format("Set {0} = (Select ISNULL(MAX({1}),0) + 1 From {2});", key, primaryKey.ToDatabaseColumnName(), tableName);
+					set += string.Format("Set {0} = (Select ISNULL(MAX({1}),0) + 1 From {2});", key, primaryKey.GetDatabaseColumnName(), tableName);
 				}
 				else
 				{
