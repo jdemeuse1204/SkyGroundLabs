@@ -68,6 +68,14 @@ namespace SkyGroundLabs
 			return long.TryParse(o.ToString(), out result);
 		}
 
+		public static string GetDatabaseTableName(this object o)
+		{
+			// check for table name attribute
+			var tableAttribute = o.GetType().GetCustomAttribute<TableAttribute>();
+
+			return tableAttribute == null ? o.GetType().Name : tableAttribute.Name;
+		}
+
 		public static DbGenerationType GetDatabaseGenerationType(this PropertyInfo column)
 		{
 			var dbGenerationColumn = column.GetCustomAttribute<DbGenerationOptionAttribute>();

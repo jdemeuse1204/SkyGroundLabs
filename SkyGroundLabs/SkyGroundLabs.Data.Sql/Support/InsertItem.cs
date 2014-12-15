@@ -10,7 +10,9 @@ namespace SkyGroundLabs.Data.Sql.Support
 {
 	public class InsertItem
 	{
-		public string Type { get; private set; }
+		public string SqlDataType { get; private set; }
+
+		public string PropertyDataType { get; private set; }
 
 		public string PropertyName { get; private set; }
 
@@ -29,8 +31,8 @@ namespace SkyGroundLabs.Data.Sql.Support
 			PropertyName = property.Name;
 			DatabaseColumnName = property.GetDatabaseColumnName();
 			IsPrimaryKey = property.IsPrimaryKey();
-			Value = property.GetValue(entity);
-			this.Type = Value.GetType().Name.ToUpper();
+			Value = property.GetValue(entity) ?? "NULL";
+			PropertyDataType = property.PropertyType.Name.ToUpper();
 			Generation = property.GetDatabaseGenerationType();
 			
 			switch (Generation)
@@ -47,16 +49,19 @@ namespace SkyGroundLabs.Data.Sql.Support
 					break;
 			}
 
-			switch (property.GetType().Name.ToUpper())
+			switch (property.PropertyType.Name.ToUpper())
 			{
 				case "INT16":
-					this.Type = "smallint";
+					this.SqlDataType = "smallint";
 					break;
 				case "INT64":
-					this.Type = "bigint";
+					this.SqlDataType = "bigint";
+					break;
+				case "INT32":
+					this.SqlDataType = "int";
 					break;
 				case "GUID":
-					this.Type = "uniqueidentifier";
+					this.SqlDataType = "uniqueidentifier";
 					break;
 			}
 		}
