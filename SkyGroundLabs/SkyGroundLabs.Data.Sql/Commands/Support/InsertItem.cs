@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Enumeration;
 
-namespace SkyGroundLabs.Data.Sql.Support
+namespace SkyGroundLabs.Data.Sql.Commands.Support
 {
 	public class InsertItem
 	{

@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Enumeration;
+using SkyGroundLabs.Data.Sql.Commands.Secure;
 
-namespace SkyGroundLabs.Data.Sql.Support
+namespace SkyGroundLabs.Data.Sql.Commands.Support
 {
 	/// <summary>
 	/// Builds the WHERE statement for queries

@@ -7,12 +7,12 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Commands;
+using SkyGroundLabs.Data.Sql.Commands.Support;
 using SkyGroundLabs.Data.Sql.Connection;
 using SkyGroundLabs.Data.Sql.Enumeration;
-using SkyGroundLabs.Data.Sql.KeyGeneration;
 using SkyGroundLabs.Data.Sql.Mapping;
-using SkyGroundLabs.Data.Sql.Support;
 using SkyGroundLabs.Reflection;
+
 
 namespace SkyGroundLabs.Data.Sql
 {
@@ -40,28 +40,10 @@ namespace SkyGroundLabs.Data.Sql
 		#endregion
 
 		#region Select/Read Methods
-		public T First<T>()
-		{
-			_reader.Read();
-
-			if (_reader.HasRows)
-			{
-				var result = _reader.ToObject<T>();
-
-				_reader.Close();
-				_reader.Dispose();
-
-				return result;
-			}
-			else
-			{
-				_reader.Close();
-				_reader.Dispose();
-
-				return default(T);
-			}
-		}
-
+		/// <summary>
+		/// Used with insert statements only, gets the value if the id's that were inserted
+		/// </summary>
+		/// <returns></returns>
 		protected KeyContainer SelectIdentity()
 		{
 			if (_reader.HasRows)
@@ -89,6 +71,36 @@ namespace SkyGroundLabs.Data.Sql
 			}
 		}
 
+		/// <summary>
+		/// Converts the first row to type T
+		/// </summary>
+		/// <returns></returns>
+		public T First<T>()
+		{
+			_reader.Read();
+
+			if (_reader.HasRows)
+			{
+				var result = _reader.ToObject<T>();
+
+				_reader.Close();
+				_reader.Dispose();
+
+				return result;
+			}
+			else
+			{
+				_reader.Close();
+				_reader.Dispose();
+
+				return default(T);
+			}
+		}
+
+		/// <summary>
+		/// Converts the first row to a dynamic
+		/// </summary>
+		/// <returns></returns>
 		public dynamic First()
 		{
 			_reader.Read();
@@ -111,6 +123,10 @@ namespace SkyGroundLabs.Data.Sql
 			}
 		}
 
+		/// <summary>
+		/// Converts an object to a dynamic
+		/// </summary>
+		/// <returns></returns>
 		public dynamic Select()
 		{
 			if (_reader.HasRows)
@@ -123,6 +139,11 @@ namespace SkyGroundLabs.Data.Sql
 			}
 		}
 
+		/// <summary>
+		/// Converts a datareader to an object of type T
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
 		public T Select<T>()
 		{
 			if (_reader.HasRows)
@@ -135,6 +156,10 @@ namespace SkyGroundLabs.Data.Sql
 			}
 		}
 
+		/// <summary>
+		/// Return list of items
+		/// </summary>
+		/// <returns>List of type T</returns>
 		public List<T> SelectList<T>()
 		{
 			var result = new List<T>();
@@ -150,6 +175,10 @@ namespace SkyGroundLabs.Data.Sql
 			return result;
 		}
 
+		/// <summary>
+		/// Return list of items
+		/// </summary>
+		/// <returns>List of dynamics</returns>
 		public List<dynamic> SelectList()
 		{
 			var result = new List<dynamic>();
@@ -167,6 +196,12 @@ namespace SkyGroundLabs.Data.Sql
 		#endregion
 
 		#region Entity Methods
+		/// <summary>
+		/// Saves changes to the database.  If there is a PK match values will be updated,
+		/// otherwise record will be inserted
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="entity"></param>
 		public void SaveChanges<T>(T entity)
 			where T : class
 		{
@@ -298,6 +333,10 @@ namespace SkyGroundLabs.Data.Sql
 			return this.First<T>();
 		}
 
+		/// <summary>
+		/// Execute the SqlBuilder on the database
+		/// </summary>
+		/// <param name="builder"></param>
 		public void ExecuteSql(ISqlBuilder builder)
 		{
 			_cmd = builder.BuildCommand(_connection);
@@ -307,7 +346,9 @@ namespace SkyGroundLabs.Data.Sql
 		}
 
 		/// <summary>
-		/// Execute sql statement without sql builder on the database
+		/// Execute sql statement without sql builder on the database, this should be used for any stored
+		/// procedures.  NOTE:  This does not use SqlSecureExecutable to ensure only safe sql strings
+		/// are executed
 		/// </summary>
 		/// <param name="sql"></param>
 		public void ExecuteSql(string sql)
@@ -318,6 +359,10 @@ namespace SkyGroundLabs.Data.Sql
 			_reader = _cmd.ExecuteReader();
 		}
 
+		/// <summary>
+		/// Used for looping through results
+		/// </summary>
+		/// <returns></returns>
 		public bool HasNext()
 		{
 			return _reader.Read();
@@ -352,6 +397,14 @@ namespace SkyGroundLabs.Data.Sql
 			}
 		}
 
+		/// <summary>
+		/// Gets all primary key columns
+		/// 1.  Where Name equals "ID"    -    
+		/// 2.  Where the Column Attribure equals "ID"    -    
+		/// 3.  Where the Key Attribute is on a property
+		/// </summary>
+		/// <param name="entity"></param>
+		/// <returns></returns>
 		private List<PropertyInfo> _getPrimaryKeyColumns(object entity)
 		{
 			var pks = new List<PropertyInfo>();
@@ -391,25 +444,43 @@ namespace SkyGroundLabs.Data.Sql
 		#endregion
 
 		#region Dispose
+		/// <summary>
+		/// Dispose of all connections, readers, and commands
+		/// </summary>
 		public void Dispose()
 		{
+			// disconnect our db reader
+			_reader.Close();
+			_reader.Dispose();
+
+			// dispose of our sql command
 			_cmd.Dispose();
+
+			// close our connection
 			_connection.Close();
 			_connection.Dispose();
 		}
 		#endregion
 
 		#region Connection Methods
+		/// <summary>
+		/// Connect our SqlConnection
+		/// </summary>
 		private void _connect()
 		{
+			// Open the connection if its closed
 			if (_connection.State == ConnectionState.Closed)
 			{
 				_connection.Open();
 			}
 		}
 
+		/// <summary>
+		/// Disconnect the SqlConnection
+		/// </summary>
 		public void Disconnect()
 		{
+			// Disconnect our connection
 			_connection.Close();
 		}
 		#endregion

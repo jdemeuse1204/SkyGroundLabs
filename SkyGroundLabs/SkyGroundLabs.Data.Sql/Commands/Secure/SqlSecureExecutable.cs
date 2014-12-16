@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyGroundLabs.Data.Sql.Support
+namespace SkyGroundLabs.Data.Sql.Commands.Secure
 {
 	/// <summary>
 	/// Uses parameters from SqlCommand to ensure safe sql commands are passed to the database

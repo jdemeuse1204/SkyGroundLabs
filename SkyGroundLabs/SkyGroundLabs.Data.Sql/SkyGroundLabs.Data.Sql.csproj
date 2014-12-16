@@ -47,17 +47,17 @@
     <Compile Include="Enumeration\ComparisonType.cs" />
     <Compile Include="Enumeration\DbGenerationType.cs" />
     <Compile Include="Enumeration\IdentityType.cs" />
-    <Compile Include="KeyGeneration\KeyContainer.cs" />
+    <Compile Include="Commands\Support\KeyContainer.cs" />
     <Compile Include="Mapping\Column.cs" />
     <Compile Include="Mapping\DbGenerationOption.cs" />
     <Compile Include="Mapping\Key.cs" />
     <Compile Include="Mapping\Table.cs" />
-    <Compile Include="Support\Field.cs" />
-    <Compile Include="Support\InsertItem.cs" />
-    <Compile Include="Support\ISqlBuilder.cs" />
-    <Compile Include="Support\SqlSecureExecutable.cs" />
+    <Compile Include="Commands\Support\Field.cs" />
+    <Compile Include="Commands\Support\InsertItem.cs" />
+    <Compile Include="Commands\Support\ISqlBuilder.cs" />
+    <Compile Include="Commands\Secure\SqlSecureExecutable.cs" />
     <Compile Include="Enumeration\JoinType.cs" />
-    <Compile Include="Support\QueryNotValidException.cs" />
+    <Compile Include="QueryNotValidException.cs" />
     <Compile Include="Commands\SqlInsertBuilder.cs" />
     <Compile Include="Commands\SqlQueryBuilder.cs" />
     <Compile Include="Commands\SqlUpdateBuilder.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="Extension.cs" />
     <Compile Include="Mapping\Unmapped.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Support\SqlValidation.cs" />
+    <Compile Include="Commands\Support\SqlValidation.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

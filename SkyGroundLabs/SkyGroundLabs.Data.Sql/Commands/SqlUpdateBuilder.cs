@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SkyGroundLabs.Data.Sql.Support;
+using SkyGroundLabs.Data.Sql.Commands.Support;
 
 namespace SkyGroundLabs.Data.Sql.Commands
 {
