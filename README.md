@@ -12,7 +12,7 @@ James custom framework
 4. Table (Target: Class)<br/>
 5. Unmapped (Target: Field or Property)<br/>
 
--Examples<br/>
+##Attribures
 ####Column<br/>
      [Column("Test")]
      public string Testing { get; set; }
@@ -81,8 +81,19 @@ James custom framework
     
 <i>Description:</i>  Select is meant to be used with HasNext() to loop through results.
 
+####SelectList<br/>
+
+    while (context.HasNext())
+    {
+        var lst = context.SelectList<TEMP_Test>();
+    }
+    
+<i>Description:</i>  SelectList will return a list of your results
+
 ####First<br/>
 
     var item = context.First<TEMP_Test>();
     
 <i>Description:</i>  First is meant to be used to return the first result from a query, DO NOT use with HasNext().
+
+NOTE:  All data returning functions do not need to be used with classes, they can return dynamic entities, just omit the description brackets.  Functions: Find(),Select(), SelectList(), First()
