@@ -83,10 +83,8 @@ James custom framework
 
 ####SelectList<br/>
 
-    while (context.HasNext())
-    {
-        var lst = context.SelectList<TEMP_Test>();
-    }
+    var lst = context.SelectList<TEMP_Test>();
+
     
 <i>Description:</i>  SelectList will return a list of your results
 
