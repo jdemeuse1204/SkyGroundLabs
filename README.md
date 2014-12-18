@@ -96,5 +96,5 @@ James custom framework
 
 NOTE:  All data returning functions do not need to be used with classes, they can return dynamic entities, just omit the description brackets.  
 
-Dynamic Functions: Find(),Select(), SelectList(), First()<br/>
-Class Functions: Find<MyClass>(),Select<MyClass>(), SelectList<MyClass>(), First<MyClass>()
+    Dynamic Functions: Find(),Select(), SelectList(), First()
+    Class Functions: Find<MyClass>(),Select<MyClass>(), SelectList<MyClass>(), First<MyClass>()
