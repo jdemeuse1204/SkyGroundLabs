@@ -96,4 +96,7 @@ James custom framework
     
 <i>Description:</i>  First is meant to be used to return the first result from a query, DO NOT use with HasNext().
 
-NOTE:  All data returning functions do not need to be used with classes, they can return dynamic entities, just omit the description brackets.  Functions: Find(),Select(), SelectList(), First()
+NOTE:  All data returning functions do not need to be used with classes, they can return dynamic entities, just omit the description brackets.  
+
+Dynamic Functions: Find(),Select(), SelectList(), First()
+Class Functions: Find<MyClass>(),Select<MyClass>(), SelectList<MyClass>(), First<MyClass>()
