@@ -21,13 +21,19 @@ namespace System
 			return (T)result;
 		}
 
-		public static List<object> GetCustomAttributes<T>(this PropertyInfo property) where T : Attribute
+		public static List<T> GetCustomAttributes<T>(this PropertyInfo property) where T : Attribute
 		{
-			var result = property.GetCustomAttributes(typeof(T), true).ToList();
+			var find = property.GetCustomAttributes(typeof(T), true).ToList();
+			var result = new List<T>();
 
-			if (result == null)
+			if (find == null)
 			{
-				return null;
+				return new List<T>();
+			}
+
+			foreach (var item in find)
+			{
+				result.Add((T)item);
 			}
 
 			return result;

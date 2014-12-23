@@ -11,6 +11,7 @@ using SkyGroundLabs.Data.Sql.Commands.Support;
 using SkyGroundLabs.Data.Sql.Connection;
 using SkyGroundLabs.Data.Sql.Enumeration;
 using SkyGroundLabs.Data.Sql.Mapping;
+using SkyGroundLabs.Data.Sql.Mapping.Base;
 using SkyGroundLabs.Reflection;
 
 
@@ -214,18 +215,28 @@ namespace SkyGroundLabs.Data.Sql
 			// Tells us whether to insert or update
 			var isUpdating = false;
 
+			// all table properties
+			var tableColumns = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<UnmappedAttribute>() == null);
+
 			// check to see whether we have an insert or update
 			foreach (var primaryKey in primaryKeys)
 			{
 				var pkValue = primaryKey.GetValue(entity);
 
-				if (pkValue is Int16 || pkValue is Int32 || pkValue is Int64)
+				switch (pkValue.GetType().Name.ToUpper())
 				{
-					isUpdating = Convert.ToInt64(pkValue) != 0;
-				}
-				else if (pkValue is Guid)
-				{
-					isUpdating = pkValue != null && (Guid)pkValue != Guid.Empty;
+					case "INT16":
+						isUpdating = Convert.ToInt16(pkValue) != 0;
+						break;
+					case "INT32":
+						isUpdating = Convert.ToInt32(pkValue) != 0;
+						break;
+					case "INT64":
+						isUpdating = Convert.ToInt64(pkValue) != 0;
+						break;
+					case "GUID":
+						isUpdating = pkValue != null && (Guid)pkValue != Guid.Empty;
+						break;
 				}
 
 				// break because we are already updating, do not want to set to false
@@ -242,7 +253,7 @@ namespace SkyGroundLabs.Data.Sql
 				SqlUpdateBuilder update = new SqlUpdateBuilder();
 				update.Table(tableName);
 
-				foreach (var property in entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<UnmappedAttribute>() == null))
+				foreach (var property in tableColumns)
 				{
 					var columnName = property.GetDatabaseColumnName();
 					var updateValue = property.GetValue(entity);
@@ -272,7 +283,7 @@ namespace SkyGroundLabs.Data.Sql
 				insert.Table(tableName);
 
 				// Loop through all mapped properties
-				foreach (var property in entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<UnmappedAttribute>() == null))
+				foreach (var property in tableColumns)
 				{
 					insert.AddInsert(property, entity);
 				}
@@ -379,7 +390,8 @@ namespace SkyGroundLabs.Data.Sql
 		private string _findPropertyName(object entity, string lookupName)
 		{
 			var properties = entity.GetType().GetProperties();
-			var column = properties.Where(w => w.GetCustomAttribute<ColumnAttribute>().Name == lookupName).FirstOrDefault();
+			var column = properties.Where(w => w.GetCustomAttribute<ColumnAttribute>() != null
+				&& w.GetCustomAttribute<ColumnAttribute>().Name == lookupName).FirstOrDefault();
 
 			// check for rename first 
 			if (column != null)
@@ -408,23 +420,12 @@ namespace SkyGroundLabs.Data.Sql
 		private List<PropertyInfo> _getPrimaryKeyColumns(object entity)
 		{
 			var pks = new List<PropertyInfo>();
-			var keyCheckOne = entity.GetType().GetProperties().Where(w => w.Name.ToUpper() == "ID").FirstOrDefault();
-			var keyCheckTwo = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<ColumnAttribute>() != null && w.GetCustomAttribute<ColumnAttribute>().Name == "ID").FirstOrDefault();
-			var keyCheckThree = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<KeyAttribute>() != null).ToList();
+			var keyList = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<SearchablePrimaryKeyAttribute>() != null
+				&& w.GetCustomAttribute<SearchablePrimaryKeyAttribute>().IsPrimaryKey);
 
-			if (keyCheckOne != null && !pks.Select(w => w.Name).Contains(keyCheckOne.Name))
+			if (keyList != null)
 			{
-				pks.Add(keyCheckOne);
-			}
-
-			if (keyCheckTwo != null && !pks.Select(w => w.Name).Contains(keyCheckTwo.Name))
-			{
-				pks.Add(keyCheckTwo);
-			}
-
-			if (keyCheckThree != null)
-			{
-				foreach (var item in keyCheckThree)
+				foreach (var item in keyList)
 				{
 					if (!pks.Select(w => w.Name).Contains(item.Name))
 					{

@@ -1,7 +1,6 @@
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\SkyGroundLabs.Data.Sql.Tests.dll
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\SkyGroundLabs.Data.Sql.Tests.pdb
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\Ion.Common.dll
-C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\SkyGroundLabs.Data.Sql.dll
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\SkyGroundLabs.Reflection.dll
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\Ion.Common.pdb
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql.Tests\bin\Release\SkyGroundLabs.Data.Sql.pdb
