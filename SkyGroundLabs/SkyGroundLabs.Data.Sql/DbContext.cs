@@ -250,13 +250,12 @@ namespace SkyGroundLabs.Data.Sql
 			if (isUpdating)
 			{
 				// Update Data
-				SqlUpdateBuilder update = new SqlUpdateBuilder();
+				var update = new SqlUpdateBuilder();
 				update.Table(tableName);
 
 				foreach (var property in tableColumns)
 				{
 					var columnName = property.GetDatabaseColumnName();
-					var updateValue = property.GetValue(entity);
 
 					// DO NOT UPDATE PRIMARY KEYS NO MATTER WHAT
 					if (primaryKeys.Select(w => w.Name).Contains(property.Name))
@@ -265,7 +264,7 @@ namespace SkyGroundLabs.Data.Sql
 					}
 
 					// Skip unmapped fields
-					update.AddUpdate(columnName, updateValue == null ? "NULL" : updateValue);
+					update.AddUpdate(columnName, property.GetValue(entity));
 				}
 
 				// add validation to only update the row
@@ -315,28 +314,21 @@ namespace SkyGroundLabs.Data.Sql
 			// get the database table name
 			var tableName = result.GetDatabaseTableName();
 
-			SqlQueryBuilder builder = new SqlQueryBuilder();
+			var builder = new SqlQueryBuilder();
 			builder.SelectAll();
 			builder.Table(tableName);
 
 			// Get All PKs
 			var keyProperties = _getPrimaryKeyColumns(result);
 
-			if (keyProperties.Count > 0)
+			for (int i = 0; i < keyProperties.Count(); i++)
 			{
-				for (int i = 0; i < keyProperties.Count; i++)
-				{
-					var key = keyProperties[i];
+				var key = keyProperties[i];
 
-					// check to see if the column is renamed
-					var name = key.GetDatabaseColumnName();
+				// check to see if the column is renamed
+				var name = key.GetDatabaseColumnName();
 
-					builder.AddWhere(tableName, name, ComparisonType.Equals, pks[i]);
-				}
-			}
-			else
-			{
-				throw new Exception("Primary Key Not Defined");
+				builder.AddWhere(tableName, name, ComparisonType.Equals, pks[i]);
 			}
 
 			this.ExecuteSql(builder);
@@ -419,27 +411,17 @@ namespace SkyGroundLabs.Data.Sql
 		/// <returns></returns>
 		private List<PropertyInfo> _getPrimaryKeyColumns(object entity)
 		{
-			var pks = new List<PropertyInfo>();
-			var keyList = entity.GetType().GetProperties().Where(w => w.GetCustomAttribute<SearchablePrimaryKeyAttribute>() != null
-				&& w.GetCustomAttribute<SearchablePrimaryKeyAttribute>().IsPrimaryKey);
+			var keyList = entity.GetType().GetProperties().Where(w =>
+				(w.GetCustomAttribute<SearchablePrimaryKeyAttribute>() != null
+				&& w.GetCustomAttribute<SearchablePrimaryKeyAttribute>().IsPrimaryKey)
+				|| (w.Name.ToUpper() == "ID"));
 
 			if (keyList != null)
 			{
-				foreach (var item in keyList)
-				{
-					if (!pks.Select(w => w.Name).Contains(item.Name))
-					{
-						pks.Add(item);
-					}
-				}
+				return keyList.ToList();
 			}
 
-			if (pks.Count == 0)
-			{
-				throw new Exception("Cannot find PrimaryKey(s)");
-			}
-
-			return pks;
+			throw new Exception("Cannot find PrimaryKey(s)");
 		}
 
 		#endregion

@@ -31,7 +31,7 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 			PropertyName = property.Name;
 			DatabaseColumnName = property.GetDatabaseColumnName();
 			IsPrimaryKey = property.IsPrimaryKey();
-			Value = property.GetValue(entity) ?? "NULL";
+			Value = property.GetValue(entity);
 			PropertyDataType = property.PropertyType.Name.ToUpper();
 			Generation = property.GetDatabaseGenerationType();
 			
@@ -49,6 +49,7 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 					break;
 			}
 
+			// for auto generation
 			switch (property.PropertyType.Name.ToUpper())
 			{
 				case "INT16":

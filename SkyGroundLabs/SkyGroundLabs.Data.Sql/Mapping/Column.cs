@@ -11,8 +11,7 @@ namespace SkyGroundLabs.Data.Sql.Mapping
 	public sealed class ColumnAttribute : SearchablePrimaryKeyAttribute
 	{
 		// SearchableKeyType needed for quick lookup in iterator
-		public ColumnAttribute(string name) 
-			: base(Enumeration.SearchablePrimaryKeyType.Column)
+		public ColumnAttribute(string name) : base(Enumeration.SearchablePrimaryKeyType.Column)
 		{
 			Name = name;
 		}

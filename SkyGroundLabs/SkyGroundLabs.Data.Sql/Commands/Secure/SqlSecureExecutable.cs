@@ -31,12 +31,12 @@ namespace SkyGroundLabs.Data.Sql.Commands.Secure
 
 		protected void AddParameter(object parameterValue)
 		{
-			_parameters.Add(GetNextParameter(), parameterValue);
+			_parameters.Add(GetNextParameter(), parameterValue == null ? DBNull.Value : parameterValue);
 		}
 
 		protected void AddParameter(string parameterKey, object parameterValue)
 		{
-			_parameters.Add(parameterKey, parameterValue);
+			_parameters.Add(parameterKey, parameterValue == null ? DBNull.Value : parameterValue);
 		}
 
 		protected void InsertParameters(SqlCommand cmd)
