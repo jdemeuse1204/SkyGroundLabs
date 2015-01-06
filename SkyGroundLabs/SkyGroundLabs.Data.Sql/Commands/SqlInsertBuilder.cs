@@ -58,7 +58,15 @@ namespace SkyGroundLabs.Data.Sql.Commands
 					var data = GetNextParameter();
 					fields += string.Format("[{0}],", item.DatabaseColumnName);
 					values += string.Format("{0},", data);
-					AddParameter(item.Value);
+
+					if (item.TranslateDataType)
+					{
+						AddParameter(item.Value, item.DbTranslationType);
+					}
+					else
+					{
+						AddParameter(item.Value);
+					}
 				}
 				else if (item.Generation == DbGenerationType.Generate)
 				{
@@ -69,7 +77,7 @@ namespace SkyGroundLabs.Data.Sql.Commands
 					var variable = string.Format("{0} as {1}", key, item.PropertyName);
 
 					// make our set statement
-					if (item.SqlDataType.ToUpper() == "UNIQUEIDENTIFIER")
+					if (item.SqlDataTypeString.ToUpper() == "UNIQUEIDENTIFIER")
 					{
 						// GUID
 						set += string.Format("SET {0} = NEWID();", key);
@@ -82,7 +90,7 @@ namespace SkyGroundLabs.Data.Sql.Commands
 
 					fields += string.Format("[{0}],", item.DatabaseColumnName);
 					values += string.Format("{0},", key);
-					declare += string.Format("{0} as {1},", key, item.SqlDataType);
+					declare += string.Format("{0} as {1},", key, item.SqlDataTypeString);
 					identity += variable + ",";
 
 					// Do not add as a parameter because the parameter will be converted to a string to

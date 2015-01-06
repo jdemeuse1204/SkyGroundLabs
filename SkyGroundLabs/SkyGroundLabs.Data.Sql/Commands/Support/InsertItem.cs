@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Enumeration;
+using SkyGroundLabs.Data.Sql.Mapping;
 
 namespace SkyGroundLabs.Data.Sql.Commands.Support
 {
 	public class InsertItem
 	{
-		public string SqlDataType { get; private set; }
+		public string SqlDataTypeString { get; private set; }
 
 		public string PropertyDataType { get; private set; }
 
@@ -20,11 +22,15 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 
 		public string KeyName { get; private set; }
 
+		public SqlDbType DbTranslationType { get; private set; }
+
 		public bool IsPrimaryKey { get; private set; }
 
 		public DbGenerationType Generation { get; private set; }
 
 		public object Value { get; private set; }
+
+		public bool TranslateDataType { get; private set; }
 
 		public InsertItem(PropertyInfo property,object entity)
 		{
@@ -34,7 +40,16 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 			Value = property.GetValue(entity);
 			PropertyDataType = property.PropertyType.Name.ToUpper();
 			Generation = property.GetDatabaseGenerationType();
-			
+
+			// check for sql data translation, used mostly for datetime2 inserts and updates
+			var translation = property.GetCustomAttribute<DbTranslationAttribute>();
+
+			if (translation != null)
+			{
+				DbTranslationType = translation.Type;
+				TranslateDataType = true;
+			}
+
 			switch (Generation)
 			{
 				case DbGenerationType.None:
@@ -53,16 +68,16 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 			switch (property.PropertyType.Name.ToUpper())
 			{
 				case "INT16":
-					this.SqlDataType = "smallint";
+					this.SqlDataTypeString = "smallint";
 					break;
 				case "INT64":
-					this.SqlDataType = "bigint";
+					this.SqlDataTypeString = "bigint";
 					break;
 				case "INT32":
-					this.SqlDataType = "int";
+					this.SqlDataTypeString = "int";
 					break;
 				case "GUID":
-					this.SqlDataType = "uniqueidentifier";
+					this.SqlDataTypeString = "uniqueidentifier";
 					break;
 			}
 		}

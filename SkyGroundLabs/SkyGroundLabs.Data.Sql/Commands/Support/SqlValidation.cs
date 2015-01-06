@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Enumeration;
 using SkyGroundLabs.Data.Sql.Commands.Secure;
+using System.Reflection;
+using System.Linq.Expressions;
+using System.Dynamic;
 
 namespace SkyGroundLabs.Data.Sql.Commands.Support
 {
@@ -15,6 +18,8 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 	{
 		#region Properties
 		private string _where { get; set; }
+		private const string COMPARECASE = "COLLATE SQL_Latin1_General_CP1_CS_AS";
+		private const string IGNORECASE = "COLLATE SQL_Latin1_General_CP1_CI_AS";
 		#endregion
 
 		#region Constructor
@@ -31,6 +36,11 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 			return _where;
 		}
 
+		private string _getValidationType()
+		{
+			return _where.Contains("WHERE") ? "AND " : "WHERE ";
+		}
+
 		public void AddWhere(string parentTable, string parentField, string childTable, string childField)
 		{
 			_where += string.Format(" {0} [{1}].[{2}] = [{3}].[{4}] ",
@@ -39,11 +49,6 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 						parentField,
 						childTable,
 						childField);
-		}
-
-		private string _getValidationType()
-		{
-			return _where.Contains("WHERE") ? "AND " : "WHERE ";
 		}
 
 		public void AddWhere(string table, string field, ComparisonType type, object equals)
@@ -69,15 +74,40 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 					comparisonType = "LIKE";
 					break;
 				case ComparisonType.EqualsIgnoreCase:
-					startValidationString = " {0} UPPER([{1}].[{2}]) {3} UPPER({4}{5}{6}) ";
+					startValidationString = " {0} [{1}].[{2}] {3} {4}{5}{6} ";
 					break;
 				case ComparisonType.EqualsTruncateTime:
-					startValidationString = " {0} Cast([{1}].[{2}] as date) {3} Cast({4}{5}{6} as date) ";
+					startValidationString = " {0} Cast([{1}].[{2}] as date) {3} Cast({4}{5}{6} as date)";
+					break;
+				case ComparisonType.GreaterThan:
+					comparisonType = ">";
+					break;
+				case ComparisonType.GreaterThanEquals:
+					comparisonType = ">=";
+					break;
+				case ComparisonType.LessThan:
+					comparisonType = "<";
+					break;
+				case ComparisonType.LessThanEquals:
+					comparisonType = "<=";
+					break;
+				case ComparisonType.NotEqual:
+					comparisonType = "!=";
+					break;
+				default:
 					break;
 			}
 
 			var data = GetNextParameter();
-			_where += string.Format(startValidationString, _getValidationType(), table, field, comparisonType, startComparisonType, data, endComparisonType);
+			_where += string.Format(startValidationString, 
+				_getValidationType(), 
+				table, 
+				field, 
+				comparisonType, 
+				startComparisonType, 
+				data, 
+				endComparisonType);
+
 			AddParameter(equals);
 		}
 		#endregion

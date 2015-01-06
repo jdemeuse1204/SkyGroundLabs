@@ -13,6 +13,11 @@ namespace SkyGroundLabs.Data.Sql.Enumeration
 		EndsWith,
 		Equals,
 		EqualsIgnoreCase,
-		EqualsTruncateTime
+		EqualsTruncateTime,
+		GreaterThan,
+		GreaterThanEquals,
+		LessThan,
+		LessThanEquals,
+		NotEqual
 	}
 }

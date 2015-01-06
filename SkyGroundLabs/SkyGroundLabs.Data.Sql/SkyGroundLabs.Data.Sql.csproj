@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Secure\SqlSecureObject.cs" />
     <Compile Include="Connection\IConnectionBuilder.cs" />
     <Compile Include="Connection\SqlServerConnectionBuilder.cs" />
     <Compile Include="Enumeration\ComparisonType.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Mapping\Base\SearchablePrimaryKey.cs" />
     <Compile Include="Mapping\Column.cs" />
     <Compile Include="Mapping\DbGenerationOption.cs" />
+    <Compile Include="Mapping\DbTranslation.cs" />
     <Compile Include="Mapping\Key.cs" />
     <Compile Include="Mapping\Table.cs" />
     <Compile Include="Commands\Support\Field.cs" />

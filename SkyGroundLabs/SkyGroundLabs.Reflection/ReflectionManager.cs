@@ -81,7 +81,10 @@ namespace SkyGroundLabs.Reflection
 				}
 
 				//use the converter to get the correct value
-				found.SetValue(entity, Convert.ChangeType(value, propertyType), null);
+				found.SetValue(
+					entity,
+					propertyType.IsEnum ? Enum.ToObject(propertyType, value) : Convert.ChangeType(value, propertyType),
+					null);
 			}
 		}
 

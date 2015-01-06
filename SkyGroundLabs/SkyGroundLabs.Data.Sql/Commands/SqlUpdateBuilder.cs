@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Commands.Support;
+using SkyGroundLabs.Data.Sql.Mapping;
 
 namespace SkyGroundLabs.Data.Sql.Commands
 {
@@ -49,11 +51,25 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_table = tableName;
 		}
 
-		public void AddUpdate(string fieldName, object value)
+		public void AddUpdate(PropertyInfo property, object entity)
 		{
+			//string fieldName, object value
+			var value = property.GetValue(entity);
+			var fieldName = property.GetDatabaseColumnName();
 			var data = GetNextParameter();
 			_set += string.Format("[{0}] = {1},", fieldName, data);
-			AddParameter(value);
+
+			// check for sql data translation, used mostly for datetime2 inserts and updates
+			var translation = property.GetCustomAttribute<DbTranslationAttribute>();
+
+			if (translation != null)
+			{
+				AddParameter(value, translation.Type);
+			}
+			else
+			{
+				AddParameter(value);
+			}
 		}
 		#endregion
 	}

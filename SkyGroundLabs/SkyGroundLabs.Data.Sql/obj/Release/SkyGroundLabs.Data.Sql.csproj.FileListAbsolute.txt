@@ -2,7 +2,6 @@ C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Data.Sql.pdb
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.dll
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.pdb
-C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.csprojResolveAssemblyReference.cache
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.dll
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.pdb
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Data.Sql.dll
@@ -12,3 +11,4 @@ C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Reflection.dll
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Reflection.pdb
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.csprojResolveAssemblyReference.cache
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.csprojResolveAssemblyReference.cache
