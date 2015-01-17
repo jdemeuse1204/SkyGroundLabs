@@ -12,12 +12,12 @@ namespace Ion.Common.Data
 	{
 		public Contact()
 		{
-			Zip = "";
-			DateEdited = DateTime.Now;
-			DateEntered = DateTime.Now;
-			AppointmentCount = 0;
-			IsLocked = false;
-			LockedByUserID = 0;
+			this.Zip = "";
+			this.DateEdited = DateTime.Now;
+			this.DateEntered = DateTime.Now;
+			this.AppointmentCount = 0;
+			this.IsLocked = false;
+			this.LockedByUserID = 0;
 		}
 
 		public long ID { get; set; }
