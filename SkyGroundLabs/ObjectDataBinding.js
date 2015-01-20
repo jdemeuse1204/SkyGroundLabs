@@ -55,21 +55,25 @@
                     if (key == path) {
 
                         // set the text
-                        setElementValue(element, value, converter, propertyName);
+						if ($(element).is("label")){
+							element.innerHTML = value;
+						}else{
+							setElementValue(element, value, converter, propertyName);
 
-                        // unbind any old bindings
-                        $(element).unbind();
+							// unbind any old bindings
+							$(element).unbind();
 
-                        // bind the key up function to the control
-                        if ($(element).is("input") || $(element).is("textarea")) {
-                            $(element).keyup(function (sender) {
-                                onPropertyChanged(sender, attachElement, key, uniqueName);
-                            });
-                        } else if ($(element).is("select")) {
-                            $(element).change(function (sender) {
-                                onPropertyChanged(sender, attachElement, key, uniqueName);
-                            });
-                        }
+							// bind the key up function to the control
+							if ($(element).is("input") || $(element).is("textarea")) {
+								$(element).keyup(function (sender) {
+									onPropertyChanged(sender, attachElement, key, uniqueName);
+								});
+							} else if ($(element).is("select")) {
+								$(element).change(function (sender) {
+									onPropertyChanged(sender, attachElement, key, uniqueName);
+								});
+							}
+						}
 
                         return false;
                     }
