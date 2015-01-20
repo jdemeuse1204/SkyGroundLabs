@@ -112,6 +112,9 @@
             case "LABEL":
                 element.value = indexOfFromElement(element, value);
                 break;
+            case "SELECTEDINDEX":
+                element.selectedIndex = indexOfFromElement(element, value);
+                break;
         }
     }
 
