@@ -7,7 +7,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using SkyGroundLabs.Data.Sql.Enumeration;
 using SkyGroundLabs.Data.Sql.Mapping;
 using SkyGroundLabs.Reflection;
 

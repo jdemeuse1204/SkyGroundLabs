@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyGroundLabs.Data.Sql.Enumeration
+namespace SkyGroundLabs.Data.Sql.Mapping
 {
 	public enum DbGenerationType
 	{

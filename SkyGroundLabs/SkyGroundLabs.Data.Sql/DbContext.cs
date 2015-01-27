@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Commands;
 using SkyGroundLabs.Data.Sql.Commands.Support;
 using SkyGroundLabs.Data.Sql.Connection;
-using SkyGroundLabs.Data.Sql.Enumeration;
 using SkyGroundLabs.Data.Sql.Mapping;
 using SkyGroundLabs.Data.Sql.Mapping.Base;
 using SkyGroundLabs.Reflection;
@@ -26,6 +25,13 @@ namespace SkyGroundLabs.Data.Sql
 		private SqlConnection _connection { get; set; }
 		private SqlCommand _cmd { get; set; }
 		private SqlDataReader _reader { get; set; }
+
+		public ModificationState ModificationState { get; private set; }
+
+		public event DbContextBeforeSaveHandler OnBeforeSave;
+		public delegate void DbContextBeforeSaveHandler(DbContext e);
+		public event DbContextAfterSaveHandler OnAfterSave;
+		public delegate void DbContextAfterSaveHandler(DbContext e);
 		#endregion
 
 		#region Constructor
@@ -33,12 +39,18 @@ namespace SkyGroundLabs.Data.Sql
 		{
 			_connectionString = connectionString;
 			_connection = new SqlConnection(_connectionString);
+
+			OnBeforeSave = null;
+			OnAfterSave = null;
 		}
 
 		public DbContext(IConnectionBuilder connection)
 		{
 			_connectionString = connection.BuildConnectionString();
 			_connection = new SqlConnection(_connectionString);
+
+			OnBeforeSave = null;
+			OnAfterSave = null;
 		}
 		#endregion
 
@@ -199,15 +211,23 @@ namespace SkyGroundLabs.Data.Sql
 		#endregion
 
 		#region Entity Methods
+		public virtual void Delete<T>(T entity)
+			where T : class
+		{
+
+		}
+
 		/// <summary>
 		/// Saves changes to the database.  If there is a PK match values will be updated,
 		/// otherwise record will be inserted
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="entity"></param>
-		public void SaveChanges<T>(T entity)
+		public virtual void SaveChanges<T>(T entity)
 			where T : class
 		{
+			this.ModificationState = Sql.ModificationState.Insert;
+
 			// Check to see if the PK is defined
 			var tableName = entity.GetDatabaseTableName();
 
@@ -244,12 +264,20 @@ namespace SkyGroundLabs.Data.Sql
 				// break because we are already updating, do not want to set to false
 				if (isUpdating)
 				{
+					this.ModificationState = Sql.ModificationState.Update;
 					break;
 				}
 			}
 
+			// fire on before save handler
+			// can adjust the modified state here to change the insert or update
+			if (OnBeforeSave != null)
+			{
+				OnBeforeSave(this);
+			}
+
 			// Update Or Insert data
-			if (isUpdating)
+			if (this.ModificationState == Sql.ModificationState.Update)
 			{
 				// Update Data
 				var update = new SqlUpdateBuilder();
@@ -277,7 +305,7 @@ namespace SkyGroundLabs.Data.Sql
 
 				this.Execute(update);
 			}
-			else
+			else if (this.ModificationState == Sql.ModificationState.Insert)
 			{
 				// Insert Data
 				var insert = new SqlInsertBuilder();
@@ -300,6 +328,14 @@ namespace SkyGroundLabs.Data.Sql
 					ReflectionManager.SetPropertyValue(entity, _findPropertyName(entity, item.Key), item.Value);
 				}
 			}
+
+			// fire on before save handler
+			if (OnAfterSave != null)
+			{
+				OnAfterSave(this);
+			}
+
+			this.ModificationState = Sql.ModificationState.None;
 		}
 
 		/// <summary>

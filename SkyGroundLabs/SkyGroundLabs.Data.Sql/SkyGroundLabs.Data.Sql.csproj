@@ -45,11 +45,10 @@
     <Compile Include="Commands\Secure\SqlSecureObject.cs" />
     <Compile Include="Connection\IConnectionBuilder.cs" />
     <Compile Include="Connection\SqlServerConnectionBuilder.cs" />
-    <Compile Include="Enumeration\ComparisonType.cs" />
-    <Compile Include="Enumeration\DbGenerationType.cs" />
-    <Compile Include="Enumeration\IdentityType.cs" />
+    <Compile Include="Commands\ComparisonType.cs" />
+    <Compile Include="Mapping\DbGenerationType.cs" />
     <Compile Include="Commands\Support\KeyContainer.cs" />
-    <Compile Include="Enumeration\SearchablePrimaryKeyType.cs" />
+    <Compile Include="Mapping\SearchablePrimaryKeyType.cs" />
     <Compile Include="Mapping\Base\SearchablePrimaryKey.cs" />
     <Compile Include="Mapping\Column.cs" />
     <Compile Include="Mapping\DbGenerationOption.cs" />
@@ -60,7 +59,8 @@
     <Compile Include="Commands\Support\InsertItem.cs" />
     <Compile Include="Commands\Support\ISqlBuilder.cs" />
     <Compile Include="Commands\Secure\SqlSecureExecutable.cs" />
-    <Compile Include="Enumeration\JoinType.cs" />
+    <Compile Include="Commands\JoinType.cs" />
+    <Compile Include="ModificationState.cs" />
     <Compile Include="QueryNotValidException.cs" />
     <Compile Include="Commands\SqlInsertBuilder.cs" />
     <Compile Include="Commands\SqlQueryBuilder.cs" />

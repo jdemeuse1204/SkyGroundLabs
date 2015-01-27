@@ -5,13 +5,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using SkyGroundLabs.Data.Sql.Enumeration;
 using SkyGroundLabs.Data.Sql.Mapping;
 
 namespace SkyGroundLabs.Data.Sql.Commands.Support
 {
 	public class InsertItem
 	{
+		#region Properties
 		public string SqlDataTypeString { get; private set; }
 
 		public string PropertyDataType { get; private set; }
@@ -31,6 +31,7 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 		public object Value { get; private set; }
 
 		public bool TranslateDataType { get; private set; }
+		#endregion
 
 		public InsertItem(PropertyInfo property,object entity)
 		{

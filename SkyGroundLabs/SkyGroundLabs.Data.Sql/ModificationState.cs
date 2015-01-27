@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyGroundLabs.Data.Sql.Enumeration
+namespace SkyGroundLabs.Data.Sql
 {
-	public enum JoinType
+	public enum ModificationState
 	{
-		Equi,
-		Inner,
-		Left
+		None,
+		Insert,
+		Update
 	}
 }

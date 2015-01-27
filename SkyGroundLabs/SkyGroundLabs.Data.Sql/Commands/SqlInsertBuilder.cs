@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
-using SkyGroundLabs.Data.Sql.Enumeration;
 using SkyGroundLabs.Data.Sql.Mapping;
 using SkyGroundLabs.Data.Sql.Commands.Secure;
 using SkyGroundLabs.Data.Sql.Commands.Support;
