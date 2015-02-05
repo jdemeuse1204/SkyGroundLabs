@@ -18,7 +18,7 @@ using SkyGroundLabs.Reflection;
 
 namespace SkyGroundLabs.Data.Sql
 {
-	public class DbContext : IDisposable
+	public class DbSqlContext : IDisposable
 	{
 		#region Properties
 		private string _connectionString { get; set; }
@@ -29,13 +29,13 @@ namespace SkyGroundLabs.Data.Sql
 		public ModificationState ModificationState { get; private set; }
 
 		public event DbContextBeforeSaveHandler OnBeforeSave;
-		public delegate void DbContextBeforeSaveHandler(DbContext e);
+		public delegate void DbContextBeforeSaveHandler(DbSqlContext e);
 		public event DbContextAfterSaveHandler OnAfterSave;
-		public delegate void DbContextAfterSaveHandler(DbContext e);
+		public delegate void DbContextAfterSaveHandler(DbSqlContext e);
 		#endregion
 
 		#region Constructor
-		public DbContext(string connectionString)
+		public DbSqlContext(string connectionString)
 		{
 			_connectionString = connectionString;
 			_connection = new SqlConnection(_connectionString);
@@ -44,7 +44,7 @@ namespace SkyGroundLabs.Data.Sql
 			OnAfterSave = null;
 		}
 
-		public DbContext(IConnectionBuilder connection)
+		public DbSqlContext(IConnectionBuilder connection)
 		{
 			_connectionString = connection.BuildConnectionString();
 			_connection = new SqlConnection(_connectionString);

@@ -11,3 +11,4 @@ C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Reflection.dll
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Reflection.pdb
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.csprojResolveAssemblyReference.cache
+C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.csprojResolveAssemblyReference.cache
