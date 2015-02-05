@@ -5,6 +5,8 @@ James custom framework
 
 #SkygroundLabs.Data.Sql Documentation
 
+-Use DbSqlContext, DbEntityContext is under construction.  DbEntity Context will be a direct mirror of EF, only faster.
+
 -Mapping <br/>
 1. Column (Target: Field or Property)<br/>
 2. DbGenerationOption (Target: Field or Property)<br/>
