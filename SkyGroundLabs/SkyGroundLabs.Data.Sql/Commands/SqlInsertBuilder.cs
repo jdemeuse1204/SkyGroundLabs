@@ -20,7 +20,6 @@ namespace SkyGroundLabs.Data.Sql.Commands
 
 		#region Constructor
 		public SqlInsertBuilder()
-			: base()
 		{
 			_table = string.Empty;
 			_insertItems = new List<InsertItem>();

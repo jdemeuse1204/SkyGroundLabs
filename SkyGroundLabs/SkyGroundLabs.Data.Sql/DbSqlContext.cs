@@ -6,8 +6,6 @@ using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Commands;
 using SkyGroundLabs.Data.Sql.Commands.Support;
 using SkyGroundLabs.Data.Sql.Connection;
@@ -479,7 +477,7 @@ namespace SkyGroundLabs.Data.Sql
 		#region Private Methods
 		private string _findDbColumnName(IEnumerable<PropertyInfo> properties, string propertyName)
 		{
-			var property = properties.Where(w => w.Name == propertyName).FirstOrDefault();
+			var property = properties.FirstOrDefault(w => w.Name == propertyName);
 
 			// property will be in list only if it has a custom attribute
 			if (property != null)
@@ -500,8 +498,8 @@ namespace SkyGroundLabs.Data.Sql
 		private string _findPropertyName(object entity, string lookupName)
 		{
 			var properties = entity.GetType().GetProperties();
-			var column = properties.Where(w => w.GetCustomAttribute<ColumnAttribute>() != null
-				&& w.GetCustomAttribute<ColumnAttribute>().Name == lookupName).FirstOrDefault();
+			var column = properties.FirstOrDefault(w => w.GetCustomAttribute<ColumnAttribute>() != null
+			                                            && w.GetCustomAttribute<ColumnAttribute>().Name == lookupName);
 
 			// check for rename first 
 			if (column != null)
@@ -532,11 +530,11 @@ namespace SkyGroundLabs.Data.Sql
 			var keyList = entity.GetType().GetProperties().Where(w =>
 				(w.GetCustomAttribute<SearchablePrimaryKeyAttribute>() != null
 				&& w.GetCustomAttribute<SearchablePrimaryKeyAttribute>().IsPrimaryKey)
-				|| (w.Name.ToUpper() == "ID"));
+				|| (w.Name.ToUpper() == "ID")).ToList();
 
-			if (keyList != null)
+			if (keyList.Count != 0)
 			{
-				return keyList.ToList();
+				return keyList;
 			}
 
 			throw new Exception("Cannot find PrimaryKey(s)");

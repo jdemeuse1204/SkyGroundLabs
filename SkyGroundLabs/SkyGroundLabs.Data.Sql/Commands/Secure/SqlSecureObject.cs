@@ -29,7 +29,7 @@ namespace SkyGroundLabs.Data.Sql.Commands.Secure
 		private object _value { get; set; }
 		public object Value 
 		{
-			get { return (_value == null ? DBNull.Value : _value); }
+			get { return (_value ?? DBNull.Value); }
 			set { _value = value; }
 		}
 	}

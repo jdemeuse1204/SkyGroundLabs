@@ -1,30 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SkyGroundLabs.Data.Sql
+namespace SkyGroundLabs.Data.Sql.Entity
 {
-	public class DbTable : IDbTable
-	{
-		private string _tableName;
-		private DbSqlContext _context;
-		private IList<object> _collection;
+    public class DbTable<T> : IDbTable<T> where T : class 
+    {
+        protected string tableName { get; set; }
+        private DbSqlContext _context;
+		private IList<T> _collection;
 
 		public DbTable(DbSqlContext context)
 		{
 			_context = context;
-			_collection = new List<object>();
+			_collection = new List<T>();
+		    tableName = Activator.CreateInstance<T>().GetDatabaseTableName();
 		}
 
-		public void Add(object entity)
+		public void Add(T entity)
 		{
 			_collection.Add(entity);
 		}
 
-		public bool Remove(object entity)
+		public bool Remove(T entity)
 		{
 			return _collection.Remove(entity);
 		}
@@ -49,11 +47,12 @@ namespace SkyGroundLabs.Data.Sql
 			return null;
 		}
 
-		public IList<object> All()
+		public IList<T> All()
 		{
-			_context.Execute(string.Format("Select * FROM {0}", _tableName));
+            // loop through properties because names might be different, ie Test as State
+			_context.Execute(string.Format("Select * FROM {0}", tableName));
 
 			return _context.SelectList<T>();
 		}
-	}
+    }
 }

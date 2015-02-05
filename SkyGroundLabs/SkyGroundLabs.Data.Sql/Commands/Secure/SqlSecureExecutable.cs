@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkyGroundLabs.Data.Sql.Commands.Secure
 {
@@ -18,7 +14,7 @@ namespace SkyGroundLabs.Data.Sql.Commands.Secure
 		#endregion
 
 		#region Constructor
-		public SqlSecureExecutable()
+	    protected SqlSecureExecutable()
 		{
 			_parameters = new Dictionary<string, SqlSecureObject>();
 		}

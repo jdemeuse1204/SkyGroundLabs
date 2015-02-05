@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SkyGroundLabs.Data.Sql.Commands.Secure;
-using System.Reflection;
-using System.Linq.Expressions;
-using System.Dynamic;
+﻿using SkyGroundLabs.Data.Sql.Commands.Secure;
 
 namespace SkyGroundLabs.Data.Sql.Commands.Support
 {
@@ -22,8 +14,7 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 		#endregion
 
 		#region Constructor
-		public SqlValidation()
-			: base()
+	    protected SqlValidation()
 		{
 			_where = string.Empty;
 		}

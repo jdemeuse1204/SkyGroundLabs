@@ -20,7 +20,6 @@ namespace SkyGroundLabs.Data.Sql.Commands
 
 		#region Constructor
 		public SqlQueryBuilder()
-			: base()
 		{
 			_select = string.Empty;
 			_columns = string.Empty;

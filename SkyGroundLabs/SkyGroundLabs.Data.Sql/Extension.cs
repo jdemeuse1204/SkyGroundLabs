@@ -5,8 +5,6 @@ using System.Data.SqlClient;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Mapping;
 using SkyGroundLabs.Reflection;
 
@@ -102,9 +100,9 @@ namespace SkyGroundLabs
 
 			var result = new ExpandoObject() as IDictionary<string, Object>;
 
-			IDataRecord rec = (IDataRecord)reader;
+			var rec = (IDataRecord)reader;
 
-			for (int i = 0; i < rec.FieldCount; i++)
+			for (var i = 0; i < rec.FieldCount; i++)
 			{
 				result.Add(rec.GetName(i), rec.GetValue(i));
 			}

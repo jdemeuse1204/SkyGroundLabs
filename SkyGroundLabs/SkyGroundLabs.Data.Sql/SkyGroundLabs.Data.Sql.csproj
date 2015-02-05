@@ -46,8 +46,8 @@
     <Compile Include="Connection\IConnectionBuilder.cs" />
     <Compile Include="Connection\SqlServerConnectionBuilder.cs" />
     <Compile Include="Commands\ComparisonType.cs" />
-    <Compile Include="DbEntityContext.cs" />
-    <Compile Include="IDbTable.cs" />
+    <Compile Include="Entity\DbEntityContext.cs" />
+    <Compile Include="Entity\IDbTable.cs" />
     <Compile Include="Mapping\DbGenerationType.cs" />
     <Compile Include="Commands\Support\KeyContainer.cs" />
     <Compile Include="Mapping\SearchablePrimaryKeyType.cs" />
@@ -72,7 +72,7 @@
     <Compile Include="Mapping\Unmapped.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\Support\SqlValidation.cs" />
-    <Compile Include="DbTable.cs" />
+    <Compile Include="Entity\DbTable.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
