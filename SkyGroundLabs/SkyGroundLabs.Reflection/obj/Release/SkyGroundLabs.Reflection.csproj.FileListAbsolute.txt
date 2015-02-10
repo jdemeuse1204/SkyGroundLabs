@@ -20,3 +20,8 @@ C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Re
 C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Reflection\obj\Release\SkyGroundLabs.Reflection.dll
 C:\Users\sirjosh33\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Reflection\obj\Release\SkyGroundLabs.Reflection.pdb
 >>>>>>> origin/master
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Reflection\bin\Release\SkyGroundLabs.Reflection.dll
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Reflection\bin\Release\SkyGroundLabs.Reflection.pdb
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Reflection\obj\Release\SkyGroundLabs.Reflection.csprojResolveAssemblyReference.cache
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Reflection\obj\Release\SkyGroundLabs.Reflection.dll
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Reflection\obj\Release\SkyGroundLabs.Reflection.pdb

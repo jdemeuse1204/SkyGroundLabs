@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SkyGroundLabs.Net.Google
+﻿namespace SkyGroundLabs.Net.Google
 {
 	public class Address
 	{
@@ -15,11 +9,11 @@ namespace SkyGroundLabs.Net.Google
 
 		public string GetAddressString()
 		{
-			string result = "";
-			bool hasStreet = !string.IsNullOrEmpty(this.Street);
-			bool hasCity = !string.IsNullOrEmpty(this.City);
-			bool hasState = !string.IsNullOrEmpty(this.State);
-			bool hasZip = !string.IsNullOrEmpty(this.ZipCode) && this.ZipCode != "0";
+            var result = "";
+			var hasStreet = !string.IsNullOrEmpty(this.Street);
+            var hasCity = !string.IsNullOrEmpty(this.City);
+            var hasState = !string.IsNullOrEmpty(this.State);
+            var hasZip = !string.IsNullOrEmpty(this.ZipCode) && this.ZipCode != "0";
 
 			if (hasStreet)
 			{

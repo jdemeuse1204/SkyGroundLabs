@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace System
 {
@@ -13,42 +10,21 @@ namespace System
 		{
 			var result = property.GetCustomAttributes(typeof(T), true).FirstOrDefault();
 
-			if (result == null)
-			{
-				return default(T);
-			}
-
-			return (T)result;
+		    return result == null ? default(T) : (T) result;
 		}
 
 		public static List<T> GetCustomAttributes<T>(this PropertyInfo property) where T : Attribute
 		{
 			var find = property.GetCustomAttributes(typeof(T), true).ToList();
-			var result = new List<T>();
 
-			if (find == null)
-			{
-				return new List<T>();
-			}
-
-			foreach (var item in find)
-			{
-				result.Add((T)item);
-			}
-
-			return result;
+		    return find.Cast<T>().ToList();
 		}
 
 		public static T GetCustomAttribute<T>(this Type type) where T : Attribute
 		{
 			var result = type.GetCustomAttributes(typeof(T), true).FirstOrDefault();
 
-			if (result == null)
-			{
-				return default(T);
-			}
-
-			return (T)result;
+            return result == null ? default(T) : (T)result;
 		}
 	}
 }

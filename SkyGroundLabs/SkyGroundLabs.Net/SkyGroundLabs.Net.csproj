@@ -45,6 +45,10 @@
     <Reference Include="Google.GData.Extensions">
       <HintPath>..\..\..\..\DLLs\Google.GData.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SkyGroundLabs.Reflection">
       <HintPath>..\SkyGroundLabs.Reflection\bin\Release\SkyGroundLabs.Reflection.dll</HintPath>
     </Reference>
@@ -66,17 +70,41 @@
     <Compile Include="Ftp\Ftp.cs" />
     <Compile Include="Ftp\FtpCredentials.cs" />
     <Compile Include="Google\Address.cs" />
-    <Compile Include="Google\CalendarEvent.cs" />
-    <Compile Include="Google\CalendarEventReminder.cs" />
-    <Compile Include="Google\CalendarEventReminderType.cs" />
+    <Compile Include="Google\Calendars\ResponseResults\CalendarEvent.cs" />
+    <Compile Include="Google\Calendars\ResponseResults\CalendarEventReminder.cs" />
+    <Compile Include="Google\Calendars\ResponseResults\CalendarEventReminderType.cs" />
     <Compile Include="Google\Calendars\GoogleCalendarCredentials.cs" />
     <Compile Include="Google\Calendars\GoogleCalendars.cs" />
-    <Compile Include="Google\CalendarEventInvitee.cs" />
+    <Compile Include="Google\Calendars\ResponseResults\CalendarEventInvitee.cs" />
+    <Compile Include="Google\GoogleAPISettings.cs" />
     <Compile Include="Google\Maps\GoogleMaps.cs" />
+    <Compile Include="Google\Maps\ResponseResults\GoogleMapLeg.cs" />
+    <Compile Include="Google\Maps\ResponseResults\GoogleMapRoute.cs" />
+    <Compile Include="Google\Maps\ResponseResults\GoogleMapsResponse.cs" />
+    <Compile Include="Google\Maps\ResponseResults\GoogleMapsStep.cs" />
+    <Compile Include="Google\Maps\ResponseResults\MapPair.cs" />
+    <Compile Include="Google\Search\GoogleGeocode.cs" />
+    <Compile Include="Google\Search\ResponseResults\AddressComponent.cs" />
+    <Compile Include="Google\Search\ResponseResults\GeocodeResult.cs" />
+    <Compile Include="Google\GeometryLocation.cs" />
+    <Compile Include="Google\Search\GoogleGeocodeResponse.cs" />
     <Compile Include="Google\Search\GoogleSearch.cs" />
     <Compile Include="Google\Place.cs" />
+    <Compile Include="Google\Search\GoogleSearchResponse.cs" />
+    <Compile Include="Google\Search\ResponseResults\OpeningHours.cs" />
+    <Compile Include="Google\Search\ResponseResults\PlaceGeometry.cs" />
+    <Compile Include="Google\Search\ResponseResults\PlacePhoto.cs" />
+    <Compile Include="Google\Search\ResponseResults\PlaceResult.cs" />
     <Compile Include="InstantMessage\TcpMessenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Usps\UspsAddress.cs" />
+    <Compile Include="Usps\UspsAddressValidateResponse.cs" />
+    <Compile Include="Usps\UspsError.cs" />
+    <Compile Include="Usps\UspsFunctions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Commands.Support;
 
 namespace SkyGroundLabs.Data.Sql.Commands
@@ -15,6 +12,7 @@ namespace SkyGroundLabs.Data.Sql.Commands
 		private string _columns { get; set; }
 		private string _from { get; set; }
 		private string _table { get; set; }
+        private string _straightSelect { get; set; }
 		private Dictionary<string, object> _parameters { get; set; }
 		#endregion
 
@@ -25,6 +23,7 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_columns = string.Empty;
 			_from = string.Empty;
 			_table = string.Empty;
+		    _straightSelect = string.Empty;
 			_parameters = new Dictionary<string, object>();
 		}
 		#endregion
@@ -32,17 +31,20 @@ namespace SkyGroundLabs.Data.Sql.Commands
 		#region Methods
 		public SqlCommand BuildCommand(SqlConnection connection)
 		{
-			if (string.IsNullOrWhiteSpace(_select))
+            if (string.IsNullOrWhiteSpace(_select) && string.IsNullOrWhiteSpace(_straightSelect))
 			{
 				throw new QueryNotValidException("SELECT statement missing");
 			}
 
-			if (string.IsNullOrWhiteSpace(_from))
+            if (string.IsNullOrWhiteSpace(_from) && string.IsNullOrWhiteSpace(_straightSelect))
 			{
 				throw new QueryNotValidException("FROM statement missing");
 			}
 
-			var sql = _select + _columns.TrimEnd(',') + _from + GetValidation();
+			var sql = string.IsNullOrWhiteSpace(_straightSelect) ? 
+                _select + _columns.TrimEnd(',') + _from + GetValidation() : 
+                _straightSelect;
+
 			var cmd = new SqlCommand(sql, connection);
 
 			InsertParameters(cmd);
@@ -73,9 +75,12 @@ namespace SkyGroundLabs.Data.Sql.Commands
 
 		public void SelectAll<T>()
 		{
-			T instance = Activator.CreateInstance<T>();
+			var instance = Activator.CreateInstance<T>();
 			Table(instance.GetDatabaseTableName());
+
+            // destroy
 			instance = default(T);
+
 			_select = " SELECT * ";
 		}
 
@@ -94,6 +99,11 @@ namespace SkyGroundLabs.Data.Sql.Commands
 				_columns += string.Format("[{0}].[{1}]{2},", table, field.ColumnName, alias);
 			}
 		}
+
+	    public void Select(string sql)
+	    {
+	        _straightSelect = sql;
+	    }
 
 		public void AddJoin(JoinType type, string parentTable, string parentField, string childTable, string childField)
 		{
@@ -118,8 +128,6 @@ namespace SkyGroundLabs.Data.Sql.Commands
 						parentField,
 						childTable,
 						childField);
-					break;
-				default:
 					break;
 			}
 		}

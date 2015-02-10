@@ -1,58 +1,92 @@
-﻿using System;
+﻿using SkyGroundLabs.Data.Sql.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace SkyGroundLabs.Data.Sql.Entity
 {
-    public class DbTable<T> : IDbTable<T> where T : class 
+    public class DbTable<T> : IDbTable<T> where T : class
     {
-        protected string tableName { get; set; }
-        private DbSqlContext _context;
-		private IList<T> _collection;
+        public string TableName { get { return _tableName; } }
+        private string _tableName { get; set; }
+        public bool HasChanges
+        {
+            get { return _collection != null && _collection.Count > 0; }
+        }
+        private readonly DbSqlContext _context;
+        private readonly Dictionary<T, SaveAction> _collection;
 
-		public DbTable(DbSqlContext context)
-		{
-			_context = context;
-			_collection = new List<T>();
-		    tableName = Activator.CreateInstance<T>().GetDatabaseTableName();
-		}
+        // Expose for user, not editable
+        public IEnumerable<KeyValuePair<T,SaveAction>> Local { get { return _collection; } } 
 
-		public void Add(T entity)
-		{
-			_collection.Add(entity);
-		}
+        public DbTable(DbSqlContext context)
+        {
+            _context = context;
+            _collection = new Dictionary<T, SaveAction>();
+            _tableName = Activator.CreateInstance<T>().GetDatabaseTableName();
+        }
 
-		public bool Remove(T entity)
-		{
-			return _collection.Remove(entity);
-		}
+        public void Add(T entity)
+        {
+            Add(entity, SaveOption.None);
+        }
 
-		public void Clear()
-		{
-			_collection.Clear();
-		}
+        public void Add(T entity, SaveOption saveOption)
+        {
+            switch (saveOption)
+            {
+                case SaveOption.ForceInsert:
+                    _collection.Add(entity, SaveAction.ForceInsert);
+                    break;
+                case SaveOption.ForceUpdate:
+                    _collection.Add(entity, SaveAction.ForceUpdate);
+                    break;
+                case SaveOption.None:
+                    _collection.Add(entity, SaveAction.Save);
+                    break;
+            }
+            
+        }
 
-		public object Where(Expression<Func<T, bool>> propertyLambda)
-		{
-			return null;
-		}
+        public void Remove(T entity)
+        {
+            _collection.Add(entity, SaveAction.Remove);
+        }
 
-		public object FirstOrDefault(Expression<Func<T, bool>> propertyLambda)
-		{
-			return null;
-		}
+        public bool RemoveLocal(T entity)
+        {
+            return _collection.Remove(entity);
+        }
 
-		public object Find(params object[] pks)
-		{
-			return null;
-		}
+        public void Clear()
+        {
+            _collection.Clear();
+        }
 
-		public IList<T> All()
-		{
-            // loop through properties because names might be different, ie Test as State
-			_context.Execute(string.Format("Select * FROM {0}", tableName));
+        public List<T> Where(Expression<Func<T, bool>> propertyLambda)
+        {
+            return _context.Where(propertyLambda);
+        }
 
-			return _context.SelectList<T>();
-		}
+        public T FirstOrDefault(Expression<Func<T, bool>> propertyLambda)
+        {
+            return _context.First(propertyLambda);
+        }
+
+        public T Find(params object[] pks)
+        {
+            return _context.Find<T>(pks);
+        }
+
+        public List<T> All()
+        {
+            var builder = new SqlQueryBuilder();
+            builder.Table(_tableName);
+            builder.SelectAll();
+
+            _context.Execute(builder);
+
+            return _context.All<T>();
+        }
     }
 }

@@ -27,15 +27,20 @@ namespace SkyGroundLabs.Net.Ftp
 			request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
 			request.Credentials = new NetworkCredential(_credentials.Username, _credentials.Password);
 
-			var response = (FtpWebResponse)request.GetResponse();
-			var responseStream = response.GetResponseStream();
-			var reader = new StreamReader(responseStream);
+		    using (var response = (FtpWebResponse) request.GetResponse())
+		    {
+		        using (var responseStream = response.GetResponseStream())
+		        {
+		            using (var reader = new StreamReader(responseStream))
+		            {
+		                fileString += reader.ReadToEnd();
 
-			fileString += reader.ReadToEnd();
+		                reader.Close();
 
-			reader.Close();
-
-			return fileString;
+		                return fileString;
+		            }
+		        }
+		    }
 		}
 
 		public void Dispose()

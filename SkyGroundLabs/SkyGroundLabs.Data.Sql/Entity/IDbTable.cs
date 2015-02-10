@@ -6,16 +6,26 @@ namespace SkyGroundLabs.Data.Sql.Entity
 {
 	public interface IDbTable<T> 
 	{
+        string TableName { get; }
+
+        bool HasChanges { get; }
+
 		void Add(T entity);
 
-		bool Remove(T entity);
+	    void Add(T entity, SaveOption saveOption);
+
+		void Remove(T entity);
+
+	    bool RemoveLocal(T entity);
 
 		void Clear();
 
-		object Where(Expression<Func<T, bool>> propertyLambda);
+        T Find(params object[] pks);
 
-		object FirstOrDefault(Expression<Func<T, bool>> propertyLambda);
+        List<T> Where(Expression<Func<T, bool>> propertyLambda);
 
-		IList<T> All();
+        T FirstOrDefault(Expression<Func<T, bool>> propertyLambda);
+
+		List<T> All();
 	}
 }

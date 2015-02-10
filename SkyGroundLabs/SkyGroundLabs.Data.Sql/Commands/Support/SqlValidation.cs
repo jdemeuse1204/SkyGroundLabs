@@ -9,8 +9,8 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 	{
 		#region Properties
 		private string _where { get; set; }
-		private const string COMPARECASE = "COLLATE SQL_Latin1_General_CP1_CS_AS";
-		private const string IGNORECASE = "COLLATE SQL_Latin1_General_CP1_CI_AS";
+		//private const string COMPARECASE = "COLLATE SQL_Latin1_General_CP1_CS_AS";
+		//private const string IGNORECASE = "COLLATE SQL_Latin1_General_CP1_CI_AS";
 		#endregion
 
 		#region Constructor
@@ -83,8 +83,6 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 					break;
 				case ComparisonType.NotEqual:
 					comparisonType = "!=";
-					break;
-				default:
 					break;
 			}
 

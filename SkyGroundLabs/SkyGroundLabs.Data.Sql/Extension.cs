@@ -21,14 +21,14 @@ namespace SkyGroundLabs
 		public static T ToObject<T>(this SqlDataReader reader)
 		{
 			// Create instance
-			T obj = Activator.CreateInstance<T>();
+			var obj = Activator.CreateInstance<T>();
 
 			// find any unmapped attributes
 			var properties = obj.GetType().GetProperties().Where(w => w.GetCustomAttribute<UnmappedAttribute>() == null);
 
 			// find any columns that have the column name attribute on them,
 			// we need to swtich the column name to the one in the property
-			var columnRenameProperties = obj.GetType().GetProperties().Where(w => w.GetCustomAttribute<ColumnAttribute>() != null).Select(w => w.Name);
+			var columnRenameProperties = obj.GetType().GetProperties().Where(w => w.GetCustomAttribute<ColumnAttribute>() != null).Select(w => w.Name).ToList();
 
 			foreach (var property in properties)
 			{
@@ -85,6 +85,16 @@ namespace SkyGroundLabs
 
 			return columnAttribute == null ? column.Name : columnAttribute.Name;
 		}
+
+        public static string FindDbColumnName(this IEnumerable<PropertyInfo> properties, string propertyName)
+        {
+            var property = properties.FirstOrDefault(w => w.Name == propertyName);
+
+            // property will be in list only if it has a custom attribute
+            if (property == null) return propertyName;
+            var columnAttribute = property.GetCustomAttribute<ColumnAttribute>();
+            return columnAttribute == null ? propertyName : columnAttribute.Name;
+        }
 
 		/// <summary>
 		/// Turns the DataReader into an object and converts the types for you

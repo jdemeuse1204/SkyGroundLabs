@@ -26,22 +26,22 @@ namespace SkyGroundLabs.Data.Sql.Commands.Secure
 			return string.Format("@DATA{0}", _parameters.Count);
 		}
 
-		protected void AddParameter(object parameterValue)
+        public void AddParameter(object parameterValue)
 		{
 			_parameters.Add(GetNextParameter(), new SqlSecureObject(parameterValue));
 		}
 
-		protected void AddParameter(string parameterKey, object parameterValue)
+        public void AddParameter(string parameterKey, object parameterValue)
 		{
 			_parameters.Add(parameterKey, new SqlSecureObject(parameterValue));
 		}
 
-		protected void AddParameter(object parameterValue, SqlDbType type)
+        public void AddParameter(object parameterValue, SqlDbType type)
 		{
 			_parameters.Add(GetNextParameter(), new SqlSecureObject(parameterValue, type));
 		}
 
-		protected void AddParameter(string parameterKey, object parameterValue, SqlDbType type)
+        public void AddParameter(string parameterKey, object parameterValue, SqlDbType type)
 		{
 			_parameters.Add(parameterKey, new SqlSecureObject(parameterValue, type));
 		}

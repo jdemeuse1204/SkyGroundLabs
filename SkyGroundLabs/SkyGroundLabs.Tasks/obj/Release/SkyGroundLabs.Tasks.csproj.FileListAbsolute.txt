@@ -16,3 +16,8 @@ C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Tasks
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Tasks\obj\Release\SkyGroundLabs.Tasks.dll
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Tasks\obj\Release\SkyGroundLabs.Tasks.pdb
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Tasks\obj\Release\SkyGroundLabs.Tasks.csprojResolveAssemblyReference.cache
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Tasks\bin\Release\SkyGroundLabs.Tasks.dll
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Tasks\bin\Release\SkyGroundLabs.Tasks.pdb
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Tasks\obj\Release\SkyGroundLabs.Tasks.csprojResolveAssemblyReference.cache
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Tasks\obj\Release\SkyGroundLabs.Tasks.dll
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Tasks\obj\Release\SkyGroundLabs.Tasks.pdb
