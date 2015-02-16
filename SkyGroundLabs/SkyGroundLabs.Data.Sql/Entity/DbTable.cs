@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using SkyGroundLabs.Data.Sql.Data;
 
 namespace SkyGroundLabs.Data.Sql.Entity
 {
@@ -23,7 +24,7 @@ namespace SkyGroundLabs.Data.Sql.Entity
         {
             _context = context;
             _collection = new Dictionary<T, SaveAction>();
-            _tableName = Activator.CreateInstance<T>().GetDatabaseTableName();
+            _tableName = DatabaseSchemata.GetTableName(Activator.CreateInstance<T>());
         }
 
         public void Add(T entity)
@@ -80,12 +81,6 @@ namespace SkyGroundLabs.Data.Sql.Entity
 
         public List<T> All()
         {
-            var builder = new SqlQueryBuilder();
-            builder.Table(_tableName);
-            builder.SelectAll();
-
-            _context.Execute(builder);
-
             return _context.All<T>();
         }
     }

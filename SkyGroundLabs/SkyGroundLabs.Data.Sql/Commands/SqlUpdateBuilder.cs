@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Commands.Support;
+using SkyGroundLabs.Data.Sql.Data;
 using SkyGroundLabs.Data.Sql.Mapping;
 
 namespace SkyGroundLabs.Data.Sql.Commands
@@ -26,7 +27,7 @@ namespace SkyGroundLabs.Data.Sql.Commands
 		#endregion
 
 		#region Methods
-		public SqlCommand BuildCommand(SqlConnection connection)
+		public SqlCommand Build(SqlConnection connection)
 		{
 			if (string.IsNullOrWhiteSpace(_table))
 			{
@@ -55,7 +56,7 @@ namespace SkyGroundLabs.Data.Sql.Commands
 		{
 			//string fieldName, object value
 			var value = property.GetValue(entity);
-			var fieldName = property.GetDatabaseColumnName();
+            var fieldName = DatabaseSchemata.GetColumnName(property);
 			var data = GetNextParameter();
 			_set += string.Format("[{0}] = {1},", fieldName, data);
 

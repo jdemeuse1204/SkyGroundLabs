@@ -46,55 +46,12 @@ namespace SkyGroundLabs
 			return obj;
 		}
 
-		/// <summary>
-		/// Checks to see if the column is the primary key
-		/// </summary>
-		/// <param name="column">PropertyInfo</param>
-		/// <returns>bool</returns>
-		public static bool IsPrimaryKey(this PropertyInfo column)
-		{
-			return column.Name.ToUpper() == "ID "
-				|| column.GetDatabaseColumnName().ToUpper() == "ID"
-				|| column.GetCustomAttribute<KeyAttribute>() != null;
-		}
-
 		public static bool IsNumeric(this object o)
 		{
 			var result = 0L;
 
 			return long.TryParse(o.ToString(), out result);
 		}
-
-		public static string GetDatabaseTableName(this object o)
-		{
-			// check for table name attribute
-			var tableAttribute = o.GetType().GetCustomAttribute<TableAttribute>();
-
-			return tableAttribute == null ? o.GetType().Name : tableAttribute.Name;
-		}
-
-		public static DbGenerationType GetDatabaseGenerationType(this PropertyInfo column)
-		{
-			var dbGenerationColumn = column.GetCustomAttribute<DbGenerationOptionAttribute>();
-			return dbGenerationColumn == null ? DbGenerationType.None : dbGenerationColumn.Option;
-		}
-
-		public static string GetDatabaseColumnName(this PropertyInfo column)
-		{
-			var columnAttribute = column.GetCustomAttribute<ColumnAttribute>();
-
-			return columnAttribute == null ? column.Name : columnAttribute.Name;
-		}
-
-        public static string FindDbColumnName(this IEnumerable<PropertyInfo> properties, string propertyName)
-        {
-            var property = properties.FirstOrDefault(w => w.Name == propertyName);
-
-            // property will be in list only if it has a custom attribute
-            if (property == null) return propertyName;
-            var columnAttribute = property.GetCustomAttribute<ColumnAttribute>();
-            return columnAttribute == null ? propertyName : columnAttribute.Name;
-        }
 
 		/// <summary>
 		/// Turns the DataReader into an object and converts the types for you
@@ -118,6 +75,21 @@ namespace SkyGroundLabs
 			}
 
 			return result;
+		}
+	}
+
+	public static class StringExtension
+	{
+		public static string ReplaceFirst(this string text, string search, string replace)
+		{
+			var pos = text.IndexOf(search);
+
+			if (pos < 0)
+			{
+				return text;
+			}
+
+			return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
 		}
 	}
 }

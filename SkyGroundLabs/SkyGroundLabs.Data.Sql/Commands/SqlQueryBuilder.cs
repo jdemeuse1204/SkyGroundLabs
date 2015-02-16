@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using SkyGroundLabs.Data.Sql.Commands.Support;
+using SkyGroundLabs.Data.Sql.Data;
+using SkyGroundLabs.Data.Sql.Mapping;
 
 namespace SkyGroundLabs.Data.Sql.Commands
 {
@@ -29,7 +31,7 @@ namespace SkyGroundLabs.Data.Sql.Commands
 		#endregion
 
 		#region Methods
-		public SqlCommand BuildCommand(SqlConnection connection)
+		public SqlCommand Build(SqlConnection connection)
 		{
             if (string.IsNullOrWhiteSpace(_select) && string.IsNullOrWhiteSpace(_straightSelect))
 			{
@@ -75,11 +77,9 @@ namespace SkyGroundLabs.Data.Sql.Commands
 
 		public void SelectAll<T>()
 		{
-			var instance = Activator.CreateInstance<T>();
-			Table(instance.GetDatabaseTableName());
+		    var tableName = DatabaseSchemata.GetTableName(Activator.CreateInstance<T>());
 
-            // destroy
-			instance = default(T);
+            Table(tableName);
 
 			_select = " SELECT * ";
 		}

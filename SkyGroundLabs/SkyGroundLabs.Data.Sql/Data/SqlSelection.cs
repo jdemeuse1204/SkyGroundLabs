@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyGroundLabs.Data.Sql.Mapping
+namespace SkyGroundLabs.Data.Sql.Data
 {
-	public enum DbGenerationType
+	public enum SqlSelection
 	{
-		None,
-		IdentitySpecification,
-		Generate
+		All = -1,
+		Top_1 = 1,
+		Top_10 = 10,
+		Top_100 = 100
 	}
 }

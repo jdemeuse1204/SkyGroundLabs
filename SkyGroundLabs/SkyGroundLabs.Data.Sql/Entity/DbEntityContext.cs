@@ -26,14 +26,9 @@ namespace SkyGroundLabs.Data.Sql.Entity
 
         public void SaveChanges()
         {
-            foreach (var propertyInfo in _tables)
+            foreach (var propertyInfo in _tables.Where(w => ((dynamic)w.GetValue(this)).HasChanges))
             {
                 var table = propertyInfo.GetValue(this) as dynamic;
-
-                if (!table.HasChanges)
-                {
-                    continue;
-                }
 
                 foreach (var entity in table.Local)
                 {

@@ -22,14 +22,14 @@ namespace SkyGroundLabs.Data.Sql.Commands
         #endregion
 
         #region Methods
-        public SqlCommand BuildCommand(SqlConnection connection)
+        public SqlCommand Build(SqlConnection connection)
         {
             if (string.IsNullOrWhiteSpace(_delete))
             {
                 throw new QueryNotValidException("DELETE statement missing");
             }
 
-            var sql = _delete + GetValidation();
+            var sql = _delete + GetValidation() + ";Select @@ROWCOUNT as 'int';";
             var cmd = new SqlCommand(sql, connection);
 
             InsertParameters(cmd);

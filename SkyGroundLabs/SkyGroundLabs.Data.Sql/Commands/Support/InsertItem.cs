@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using SkyGroundLabs.Data.Sql.Data;
 using SkyGroundLabs.Data.Sql.Mapping;
 
 namespace SkyGroundLabs.Data.Sql.Commands.Support
@@ -26,21 +23,21 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 
 		public bool IsPrimaryKey { get; private set; }
 
-		public DbGenerationType Generation { get; private set; }
+        public DbGenerationOption Generation { get; private set; }
 
 		public object Value { get; private set; }
 
 		public bool TranslateDataType { get; private set; }
 		#endregion
 
-		public InsertItem(PropertyInfo property,object entity)
+		public InsertItem(PropertyInfo property, object entity)
 		{
 			PropertyName = property.Name;
-			DatabaseColumnName = property.GetDatabaseColumnName();
-			IsPrimaryKey = property.IsPrimaryKey();
+            DatabaseColumnName = DatabaseSchemata.GetColumnName(property);
+            IsPrimaryKey = DatabaseSchemata.IsPrimaryKey(property);
 			Value = property.GetValue(entity);
 			PropertyDataType = property.PropertyType.Name.ToUpper();
-			Generation = property.GetDatabaseGenerationType();
+            Generation = IsPrimaryKey ? DatabaseSchemata.GetGenerationOption(property) : DbGenerationOption.None;
 
 			// check for sql data translation, used mostly for datetime2 inserts and updates
 			var translation = property.GetCustomAttribute<DbTranslationAttribute>();
@@ -53,13 +50,13 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 
 			switch (Generation)
 			{
-				case DbGenerationType.None:
+				case DbGenerationOption.None:
 					KeyName = "";
 					break;
-				case DbGenerationType.IdentitySpecification:
+                case DbGenerationOption.IdentitySpecification:
 					KeyName = "@@IDENTITY";
 					break;
-				case DbGenerationType.Generate:
+                case DbGenerationOption.Generate:
 					KeyName = string.Format("@{0}", PropertyName);
 					// set as the property name so we can pull the value back out
 					break;
@@ -69,16 +66,16 @@ namespace SkyGroundLabs.Data.Sql.Commands.Support
 			switch (property.PropertyType.Name.ToUpper())
 			{
 				case "INT16":
-					this.SqlDataTypeString = "smallint";
+					SqlDataTypeString = "smallint";
 					break;
 				case "INT64":
-					this.SqlDataTypeString = "bigint";
+					SqlDataTypeString = "bigint";
 					break;
 				case "INT32":
-					this.SqlDataTypeString = "int";
+					SqlDataTypeString = "int";
 					break;
 				case "GUID":
-					this.SqlDataTypeString = "uniqueidentifier";
+					SqlDataTypeString = "uniqueidentifier";
 					break;
 			}
 		}

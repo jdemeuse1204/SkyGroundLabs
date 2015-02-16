@@ -10,21 +10,22 @@
     // This will return your observable object
     // We use a unique name in case more than one object is bound an the same time
     //----------------------------------------------------
-    $.fn.getObserveObject = function getObserveObject(uniqueName) {
+    $.fn.getObserveObject = function getObserveObject(uniqueName, ID) {
 
         // return the observe object
-        return $(this[0]).data('DataBind' + uniqueName);
+        return $(this[0]).data('DataBind' + uniqueName + ID);
 
     }
 
     // Get the Observable Object - Name is the identifier to link back to your object
     // This will set your observable object
     //----------------------------------------------------
-    $.fn.observe = function observe(object, uniqueName) {
+    $.fn.observe = function observe(object, uniqueName, ID) {
         // attach DOM node
         var attachElement = this[0];
+        var dataBindObjectID = 'DataBind' + uniqueName + ID;
 
-        $(attachElement).data('DataBind' + uniqueName, object);
+        $(attachElement).data(dataBindObjectID, object);
 
         // get all elements from the DOM
         var items = document.getElementsByTagName("*");
@@ -51,12 +52,12 @@
                 }
 
                 // loop through the objects properties
-                $.each($(attachElement).data('DataBind' + uniqueName), function (key, value) {
+                $.each(object, function (key, value) {
                     if (key == path) {
 
                         // set the text
-						if ($(element).is("label")){
-							element.innerHTML = value;
+                        if ($(element).is("label") || $(element).is("span")) {
+                            element.innerHTML = value;
 						}else{
 							setElementValue(element, value, converter, propertyName);
 
@@ -80,6 +81,8 @@
                 });
             }
         }
+
+        return dataBindObjectID;
     }
 
     // Supporting Functions
