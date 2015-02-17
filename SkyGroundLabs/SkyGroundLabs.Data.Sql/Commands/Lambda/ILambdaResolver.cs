@@ -11,6 +11,6 @@ namespace SkyGroundLabs.Data.Sql.Commands.Lambda
 {
 	public interface ILambdaResolver
 	{
-		LambdaResolutionResult Resolve<T>(Expression<Func<T, bool>> expression, SqlSelection sqlSelection);
+		LambdaResolutionResult Resolve<T>(Expression<Func<T, bool>> expression);
 	}
 }

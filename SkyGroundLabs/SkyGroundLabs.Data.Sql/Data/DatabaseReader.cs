@@ -21,7 +21,7 @@ namespace SkyGroundLabs.Data.Sql.Data
         /// Used for looping through results
         /// </summary>
         /// <returns></returns>
-        public bool Read()
+		protected bool Read()
         {
             if (Reader.Read())
             {
@@ -38,7 +38,7 @@ namespace SkyGroundLabs.Data.Sql.Data
         /// Converts an object to a dynamic
         /// </summary>
         /// <returns></returns>
-        public dynamic Select()
+		protected dynamic Select()
         {
             return Reader.ToObject();
         }
@@ -48,7 +48,7 @@ namespace SkyGroundLabs.Data.Sql.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Select<T>()
+		protected T Select<T>()
         {
             return Reader.ToObject<T>();
         }
@@ -57,7 +57,7 @@ namespace SkyGroundLabs.Data.Sql.Data
         /// Execute the SqlBuilder on the database
         /// </summary>
         /// <param name="builder"></param>
-        public void Execute(ISqlBuilder builder)
+		protected void Execute(ISqlBuilder builder)
         {
             Command = builder.Build(Connection);
 
@@ -71,7 +71,7 @@ namespace SkyGroundLabs.Data.Sql.Data
         /// are executed
         /// </summary>
         /// <param name="sql"></param>
-        public void Execute(string sql)
+		protected void Execute(string sql)
         {
             Command = new SqlCommand(sql, Connection);
 
@@ -79,12 +79,12 @@ namespace SkyGroundLabs.Data.Sql.Data
             Reader = Command.ExecuteReader();
         }
 
-        protected void Execute<T>(Expression<Func<T, bool>> propertyLambda, SqlSelection sqlSelection)
+		protected void Execute<T>(Expression<Func<T, bool>> propertyLambda)
             where T : class
         {
             var resolver = new LambdaResolver();
 			var builder = new SqlQueryBuilder();
-			var result = resolver.Resolve(propertyLambda, sqlSelection);
+			var result = resolver.Resolve(propertyLambda);
 			builder.Select(result.QueryString);
 
 			foreach (var pair in result.QueryParameters)
@@ -95,5 +95,26 @@ namespace SkyGroundLabs.Data.Sql.Data
             // Execute the sql on the db
             Execute(builder);
         }
+
+		public DataReader<T> ExecuteQuery<T>(string sql)
+		{
+			Execute(sql);
+
+			return new DataReader<T>(Reader);
+		}
+
+		public DataReader<T> ExecuteQuery<T>(ISqlBuilder builder)
+		{
+			Execute(builder);
+
+			return new DataReader<T>(Reader);
+		}
+
+		public DataReader<T> ExecuteQuery<T>(Expression<Func<T, bool>> propertyLambda) where T : class
+		{
+			Execute(propertyLambda);
+
+			return new DataReader<T>(Reader);
+		}
     }
 }

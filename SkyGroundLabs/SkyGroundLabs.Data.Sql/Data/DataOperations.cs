@@ -213,13 +213,13 @@ namespace SkyGroundLabs.Data.Sql.Data
 
             Execute(builder);
 
-            return First<T>();
+            return null;
         }
 
         public List<T> Where<T>(Expression<Func<T, bool>> expression)
             where T : class
         {
-            Execute(expression, SqlSelection.All);
+            Execute(expression);
 
             return All<T>();
         }

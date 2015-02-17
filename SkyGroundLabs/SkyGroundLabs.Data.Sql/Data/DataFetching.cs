@@ -46,19 +46,20 @@ namespace SkyGroundLabs.Data.Sql.Data
             return new KeyContainer();
         }
 
-        public T First<T>(Expression<Func<T, bool>> propertyLambda)
+		#region First
+		public T First<T>(Expression<Func<T, bool>> propertyLambda)
             where T : class
         {
-			Execute(propertyLambda, SqlSelection.Top_1);
+			Execute(propertyLambda);
 
-            return First<T>();
+            return null;
         }
 
         /// <summary>
         /// Converts the first row to type T
         /// </summary>
         /// <returns></returns>
-        public T First<T>()
+        public T First<T>(string sql)
         {
             Reader.Read();
 
@@ -77,6 +78,28 @@ namespace SkyGroundLabs.Data.Sql.Data
 
             return default(T);
         }
+
+		public T First<T>(SqlQueryBuilder builder)
+		{
+			Execute(builder);
+
+			Reader.Read();
+
+			if (Reader.HasRows)
+			{
+				var result = Reader.ToObject<T>();
+
+				Reader.Close();
+				Reader.Dispose();
+
+				return result;
+			}
+
+			Reader.Close();
+			Reader.Dispose();
+
+			return default(T);
+		}
 
         /// <summary>
         /// Converts the first row to a dynamic
@@ -104,7 +127,31 @@ namespace SkyGroundLabs.Data.Sql.Data
             return null;
         }
 
-        /// <summary>
+		public dynamic First(string sql)
+		{
+			Execute(sql);
+
+			Reader.Read();
+
+			if (Reader.HasRows)
+			{
+				var result = Reader.ToObject();
+
+				Reader.Close();
+				Reader.Dispose();
+
+				return result;
+			}
+
+			Reader.Close();
+			Reader.Dispose();
+
+			return null;
+		}
+		#endregion
+
+		#region All
+		/// <summary>
         /// Return list of items
         /// </summary>
         /// <returns>List of type T</returns>
@@ -164,6 +211,7 @@ namespace SkyGroundLabs.Data.Sql.Data
             Reader.Dispose();
 
             return result;
-        }
-    }
+		}
+		#endregion
+	}
 }
