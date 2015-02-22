@@ -12,8 +12,6 @@ namespace SkyGroundLabs.Data.Sql.Entity
 
 		void Add(T entity);
 
-	    void Add(T entity, SaveOption saveOption);
-
 		void Remove(T entity);
 
 	    bool RemoveLocal(T entity);

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using SkyGroundLabs.Data.Sql.Expressions;
 
 namespace SkyGroundLabs.Data.Sql.Data
 {
-    public abstract class Database : IDisposable
+    public abstract class Database : ExpressionResolver, IDisposable
     {
         protected string ConnectionString { get; private set; }
         protected SqlConnection Connection { get; set; }

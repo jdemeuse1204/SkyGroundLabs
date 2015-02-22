@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq.Expressions;
 using SkyGroundLabs.Data.Sql.Commands;
 using SkyGroundLabs.Data.Sql.Commands.Support;
+using SkyGroundLabs.Data.Sql.Expressions;
 
 namespace SkyGroundLabs.Data.Sql.Data
 {
@@ -47,21 +48,27 @@ namespace SkyGroundLabs.Data.Sql.Data
         }
 
 		#region First
-		public T First<T>(Expression<Func<T, bool>> propertyLambda)
+        protected T First<T>(Expression<Func<T, bool>> propertyLambda)
             where T : class
         {
-			Execute(propertyLambda);
+			var result = Execute(propertyLambda, this);
 
-            return null;
+            // Select All
+            result.Select<T>();
+
+            return result.First<T>();
         }
 
         /// <summary>
         /// Converts the first row to type T
         /// </summary>
         /// <returns></returns>
-        public T First<T>(string sql)
+        protected T First<T>()
         {
-            Reader.Read();
+            var builder = new SqlQueryBuilder();
+            builder.SelectTopOneAll<T>();
+
+            Execute(builder);
 
             if (Reader.HasRows)
             {
@@ -78,76 +85,6 @@ namespace SkyGroundLabs.Data.Sql.Data
 
             return default(T);
         }
-
-		public T First<T>(SqlQueryBuilder builder)
-		{
-			Execute(builder);
-
-			Reader.Read();
-
-			if (Reader.HasRows)
-			{
-				var result = Reader.ToObject<T>();
-
-				Reader.Close();
-				Reader.Dispose();
-
-				return result;
-			}
-
-			Reader.Close();
-			Reader.Dispose();
-
-			return default(T);
-		}
-
-        /// <summary>
-        /// Converts the first row to a dynamic
-        /// </summary>
-        /// <returns></returns>
-        public dynamic First(SqlQueryBuilder builder)
-        {
-            Execute(builder);
-
-            Reader.Read();
-
-            if (Reader.HasRows)
-            {
-                var result = Reader.ToObject();
-
-                Reader.Close();
-                Reader.Dispose();
-
-                return result;
-            }
-
-            Reader.Close();
-            Reader.Dispose();
-
-            return null;
-        }
-
-		public dynamic First(string sql)
-		{
-			Execute(sql);
-
-			Reader.Read();
-
-			if (Reader.HasRows)
-			{
-				var result = Reader.ToObject();
-
-				Reader.Close();
-				Reader.Dispose();
-
-				return result;
-			}
-
-			Reader.Close();
-			Reader.Dispose();
-
-			return null;
-		}
 		#endregion
 
 		#region All
@@ -175,43 +112,20 @@ namespace SkyGroundLabs.Data.Sql.Data
             return result;
         }
 
-		public List<T> All<T>(string sql)
-		{
-			Execute(sql);
-
-			var result = new List<T>();
-
-			while (Reader.Read())
-			{
-				result.Add(Reader.ToObject<T>());
-			}
-
-			Reader.Close();
-			Reader.Dispose();
-
-			return result;
-		}
-
-        /// <summary>
-        /// Return list of items
-        /// </summary>
-        /// <returns>List of dynamics</returns>
-        public List<dynamic> All(SqlQueryBuilder builder)
+        public ExpressionQuery Where<T>(Expression<Func<T, bool>> propertyLambda) where T : class
         {
-            var result = new List<dynamic>();
+            var result = Execute(propertyLambda, this);
 
-            Execute(builder);
-
-            while (Reader.Read())
-            {
-                result.Add(Reader.ToObject());
-            }
-
-            Reader.Close();
-            Reader.Dispose();
+            // Select All
+            result.Select<T>();
 
             return result;
-		}
+        }
+
+        public ExpressionQuery From<T>() where T : class
+        {
+            return new ExpressionQuery(DatabaseSchemata.GetTableName<T>(), this);
+        }
 		#endregion
 	}
 }

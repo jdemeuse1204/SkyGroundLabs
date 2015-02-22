@@ -18,10 +18,20 @@ namespace SkyGroundLabs.Data.Sql.Data
 
         public static string GetTableName(object entity)
         {
-            // check for table name attribute
-            var tableAttribute = entity.GetType().GetCustomAttribute<TableAttribute>();
+            return GetTableName(entity.GetType());
+        }
 
-            return tableAttribute == null ? entity.GetType().Name : tableAttribute.Name;
+        public static string GetTableName(Type type)
+        {
+            // check for table name attribute
+            var tableAttribute = type.GetCustomAttribute<TableAttribute>();
+
+            return tableAttribute == null ? type.Name : tableAttribute.Name;
+        }
+
+        public static string GetTableName<T>()
+        {
+            return GetTableName(typeof(T));
         }
 
         public static DbGenerationOption GetGenerationOption(PropertyInfo column)

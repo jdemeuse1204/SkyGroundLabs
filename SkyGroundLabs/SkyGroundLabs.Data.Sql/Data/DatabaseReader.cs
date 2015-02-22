@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq.Expressions;
-using SkyGroundLabs.Data.Sql.Commands;
-using SkyGroundLabs.Data.Sql.Commands.Lambda;
 using SkyGroundLabs.Data.Sql.Commands.Support;
+using SkyGroundLabs.Data.Sql.Expressions;
 
 namespace SkyGroundLabs.Data.Sql.Data
 {
@@ -12,11 +12,14 @@ namespace SkyGroundLabs.Data.Sql.Data
     /// </summary>
     public abstract class DatabaseReader : Database
     {
+        #region Constructor
         protected DatabaseReader(string connectionString) 
             : base(connectionString)
         {
         }
+        #endregion
 
+        #region Reader Methods
         /// <summary>
         /// Used for looping through results
         /// </summary>
@@ -52,7 +55,9 @@ namespace SkyGroundLabs.Data.Sql.Data
         {
             return Reader.ToObject<T>();
         }
+        #endregion
 
+        #region Data Execution
         /// <summary>
         /// Execute the SqlBuilder on the database
         /// </summary>
@@ -79,42 +84,48 @@ namespace SkyGroundLabs.Data.Sql.Data
             Reader = Command.ExecuteReader();
         }
 
-		protected void Execute<T>(Expression<Func<T, bool>> propertyLambda)
-            where T : class
+        protected void Execute(string sql, Dictionary<string, object> parameters)
         {
-            var resolver = new LambdaResolver();
-			var builder = new SqlQueryBuilder();
-			var result = resolver.Resolve(propertyLambda);
-			builder.Select(result.QueryString);
+            Command = new SqlCommand(sql, Connection);
 
-			foreach (var pair in result.QueryParameters)
+            foreach (var item in parameters)
             {
-                builder.AddParameter(string.Format("@{0}", pair.Key), pair.Value);
+                Command.Parameters.Add(Command.CreateParameter()).ParameterName = item.Key;
+                Command.Parameters[item.Key].Value = item.Value;
             }
 
-            // Execute the sql on the db
-            Execute(builder);
+            Connect();
+            Reader = Command.ExecuteReader();
         }
 
-		public DataReader<T> ExecuteQuery<T>(string sql)
+        protected ExpressionQuery Execute<T>(Expression<Func<T, bool>> propertyLambda, DataFetching fetching)
+            where T : class
+        {
+            return new ExpressionQuery(DatabaseSchemata.GetTableName<T>(), fetching);
+        }
+        #endregion
+
+        #region Query Execution
+        public DataReader<T> ExecuteQuery<T>(string sql)
 		{
 			Execute(sql);
 
 			return new DataReader<T>(Reader);
 		}
 
-		public DataReader<T> ExecuteQuery<T>(ISqlBuilder builder)
-		{
-			Execute(builder);
+        public DataReader<T> ExecuteQuery<T>(string sql, Dictionary<string,object> parameters)
+        {
+            Execute(sql, parameters);
 
-			return new DataReader<T>(Reader);
-		}
+            return new DataReader<T>(Reader);
+        }
 
-		public DataReader<T> ExecuteQuery<T>(Expression<Func<T, bool>> propertyLambda) where T : class
-		{
-			Execute(propertyLambda);
+        public DataReader<T> ExecuteQuery<T>(ISqlBuilder builder)
+        {
+            Execute(builder);
 
-			return new DataReader<T>(Reader);
-		}
+            return new DataReader<T>(Reader);
+        }
+        #endregion
     }
 }

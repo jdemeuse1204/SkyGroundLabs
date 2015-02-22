@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LambdaSqlBuilder">
-      <HintPath>..\packages\LambdaSqlBuilder.0.9\lib\net40\LambdaSqlBuilder.dll</HintPath>
-    </Reference>
     <Reference Include="SkyGroundLabs.Reflection">
       <HintPath>..\SkyGroundLabs.Reflection\bin\Release\SkyGroundLabs.Reflection.dll</HintPath>
     </Reference>
@@ -45,9 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Lambda\ILambdaResolver.cs" />
-    <Compile Include="Commands\Lambda\LambdaResolutionResult.cs" />
-    <Compile Include="Commands\Lambda\LambdaResolver.cs" />
+    <Compile Include="Expressions\ExpressionQuery.cs" />
+    <Compile Include="Expressions\ExpressionResolutionResult.cs" />
+    <Compile Include="Expressions\ExpressionResolver.cs" />
+    <Compile Include="Data\DatabaseEntity.cs" />
     <Compile Include="Commands\Secure\SqlSecureObject.cs" />
     <Compile Include="Commands\SqlDeleteBuilder.cs" />
     <Compile Include="Connection\IConnectionBuilder.cs" />
@@ -62,8 +60,9 @@
     <Compile Include="Entity\DbEntityContext.cs" />
     <Compile Include="Entity\IDbTable.cs" />
     <Compile Include="Entity\SaveAction.cs" />
-    <Compile Include="Entity\SaveOption.cs" />
     <Compile Include="Commands\Support\KeyContainer.cs" />
+    <Compile Include="Expressions\ExpressionSelectResult.cs" />
+    <Compile Include="Expressions\ExpressionWhereResult.cs" />
     <Compile Include="Mapping\SearchablePrimaryKeyType.cs" />
     <Compile Include="Mapping\Base\SearchablePrimaryKey.cs" />
     <Compile Include="Mapping\Column.cs" />
@@ -88,9 +87,7 @@
     <Compile Include="Commands\Support\SqlValidation.cs" />
     <Compile Include="Entity\DbTable.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\Lambda\Builder\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

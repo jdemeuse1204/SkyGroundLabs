@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using SkyGroundLabs.Data.Sql.Commands.Support;
 using SkyGroundLabs.Data.Sql.Data;
 using SkyGroundLabs.Data.Sql.Mapping;

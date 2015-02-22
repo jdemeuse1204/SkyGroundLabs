@@ -89,6 +89,15 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			_select = " SELECT TOP 1 * ";
 		}
 
+        public void SelectTopOneAll<T>()
+        {
+            var tableName = DatabaseSchemata.GetTableName(Activator.CreateInstance<T>());
+
+            Table(tableName);
+
+            _select = " SELECT TOP 1 * ";
+        }
+
 		public void SelectTop(int rows, string table, params Field[] fields)
 		{
 			_select = string.Format(" SELECT TOP {0} ", rows);

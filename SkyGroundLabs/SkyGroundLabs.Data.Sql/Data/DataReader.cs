@@ -1,16 +1,49 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Runtime.InteropServices;
+
 namespace SkyGroundLabs.Data.Sql.Data
 {
-	public class DataReader<T> : IEnumerable
-	{
-		private SqlDataReader _reader;
+	public class DataReader<T> : IEnumerable, IDisposable
+    {
+        #region Properties and Fields
+        private readonly SqlDataReader _reader;
 
-		public DataReader(SqlDataReader reader)
+        public bool IsEOF {
+            get { return !_reader.HasRows; }
+        }
+        #endregion
+
+        #region Constructor
+        public DataReader(SqlDataReader reader)
 		{
 			_reader = reader;
 		}
+        #endregion
+
+        #region Methods
+        public T Select()
+	    {
+	        _reader.Read();
+
+            return _reader.ToObject<T>();
+	    }
+
+	    public List<T> All()
+	    {
+	        var result = new List<T>();
+
+	        while (_reader.Read())
+	        {
+	            result.Add(_reader.ToObject<T>());
+	        }
+
+            Dispose();
+
+	        return result;
+	    } 
 
 		// IEnumerable Member
 		public IEnumerator<T> GetEnumerator()
@@ -19,12 +52,22 @@ namespace SkyGroundLabs.Data.Sql.Data
 			{
 				yield return _reader.ToObject<T>();
 			}
+
+            // close when done enumerating
+            Dispose();
 		}
 
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		IEnumerator IEnumerable.GetEnumerator()
 		{
 			// Lets call the generic version here
-			return this.GetEnumerator();
+			return GetEnumerator();
 		}
-	}
+
+	    public void Dispose()
+	    {
+	        _reader.Close();
+            _reader.Dispose();
+        }
+        #endregion
+    }
 }

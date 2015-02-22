@@ -45,65 +45,68 @@ namespace SkyGroundLabs.Data.Sql.Commands
 			//  NOTE:  Alias any Identity specification and generate columns with their property
 			// name not db column name so we can set the property when we return the values back.
 
-			foreach (var item in _insertItems)
-			{
-                switch (item.Generation)
-                {
-                    case DbGenerationOption.None:
-                    {
-                        //Value is simply inserted
-                        var data = GetNextParameter();
-                        fields += string.Format("[{0}],", item.DatabaseColumnName);
-                        values += string.Format("{0},", data);
+		    for (var i = 0; i < _insertItems.Count; i++)
+		    {
+		        var item = _insertItems[i];
 
-                        if (item.TranslateDataType)
-                        {
-                            AddParameter(item.Value, item.DbTranslationType);
-                        }
-                        else
-                        {
-                            AddParameter(item.Value);
-                        }
-                    }
-                        break;
-                    case DbGenerationOption.Generate:
-                    {
-                        // Value is generated from the database
-                        var key = string.Format("@{0}", item.PropertyName);
+		        switch (item.Generation)
+		        {
+		            case DbGenerationOption.None:
+		            {
+		                //Value is simply inserted
+		                var data = GetNextParameter();
+		                fields += string.Format("[{0}],", item.DatabaseColumnName);
+		                values += string.Format("{0},", data);
 
-                        // alias as the property name so we can set the property
-                        var variable = string.Format("{0} as {1}", key, item.PropertyName);
+		                if (item.TranslateDataType)
+		                {
+		                    AddParameter(item.Value, item.DbTranslationType);
+		                }
+		                else
+		                {
+		                    AddParameter(item.Value);
+		                }
+		            }
+		                break;
+		            case DbGenerationOption.Generate:
+		            {
+		                // Value is generated from the database
+		                var key = string.Format("@{0}", item.PropertyName);
 
-                        // make our set statement
-                        if (item.SqlDataTypeString.ToUpper() == "UNIQUEIDENTIFIER")
-                        {
-                            // GUID
-                            set += string.Format("SET {0} = NEWID();", key);
-                        }
-                        else
-                        {
-                            // INTEGER
-                            set += string.Format("SET {0} = (Select ISNULL(MAX({1}),0) + 1 From {2});", key, item.DatabaseColumnName, _table);
-                        }
+		                // alias as the property name so we can set the property
+		                var variable = string.Format("{0} as {1}", key, item.PropertyName);
 
-                        fields += string.Format("[{0}],", item.DatabaseColumnName);
-                        values += string.Format("{0},", key);
-                        declare += string.Format("{0} as {1},", key, item.SqlDataTypeString);
-                        identity += variable + ",";
+		                // make our set statement
+		                if (item.SqlDataTypeString.ToUpper() == "UNIQUEIDENTIFIER")
+		                {
+		                    // GUID
+		                    set += string.Format("SET {0} = NEWID();", key);
+		                }
+		                else
+		                {
+		                    // INTEGER
+		                    set += string.Format("SET {0} = (Select ISNULL(MAX({1}),0) + 1 From {2});", key,
+		                        item.DatabaseColumnName, _table);
+		                }
 
-                        // Do not add as a parameter because the parameter will be converted to a string to
-                        // be inserted in to the database
-                    }
-                        break;
-                    case DbGenerationOption.IdentitySpecification:
-                    {
-                        identity = string.Format("@@IDENTITY as {0},", item.PropertyName);
-                    }
-                        break;
-                }
-			}
+		                fields += string.Format("[{0}],", item.DatabaseColumnName);
+		                values += string.Format("{0},", key);
+		                declare += string.Format("{0} as {1},", key, item.SqlDataTypeString);
+		                identity += variable + ",";
 
-			var sql = string.Format("{0} {1} INSERT INTO {2} ({3}) VALUES ({4});{5}",
+		                // Do not add as a parameter because the parameter will be converted to a string to
+		                // be inserted in to the database
+		            }
+		                break;
+		            case DbGenerationOption.IdentitySpecification:
+		            {
+		                identity = string.Format("@@IDENTITY as {0},", item.PropertyName);
+		            }
+		                break;
+		        }
+		    }
+
+		    var sql = string.Format("{0} {1} INSERT INTO {2} ({3}) VALUES ({4});{5}",
 				string.IsNullOrWhiteSpace(declare) ? "" : string.Format("DECLARE {0}", declare.TrimEnd(',')),
 				set,
 				_table, fields.TrimEnd(','),

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using SkyGroundLabs.Data.Sql.Commands;
-using SkyGroundLabs.Data.Sql.Mapping;
 using SkyGroundLabs.Reflection;
 
 namespace SkyGroundLabs.Data.Sql.Data
@@ -11,7 +8,7 @@ namespace SkyGroundLabs.Data.Sql.Data
     /// <summary>
     /// This class uses all data fetching functions to create their own functions
     /// </summary>
-    public class DataOperations : DataFetching
+    public abstract class DataOperations : DataFetching
     {
         #region Constructor
         protected DataOperations(string connectionString) 
@@ -74,52 +71,11 @@ namespace SkyGroundLabs.Data.Sql.Data
             // ID is the default primary key name
             var primaryKeys = DatabaseSchemata.GetPrimaryKeys(entity);
 
-            // Tells us whether to insert or update
-            var isUpdating = false;
-
             // all table properties
             var tableColumns = DatabaseSchemata.GetTableFields(entity);
 
-            // grab the mod state
-            // if there are
-            var state = ModificationState.Insert;
-
             // check to see whether we have an insert or update
-            foreach (var key in primaryKeys)
-            {
-                var pkValue = key.GetValue(entity);
-                var generationOption = DatabaseSchemata.GetGenerationOption(key);
-
-                if (generationOption != DbGenerationOption.None)
-                {
-                    // If Db generation option is set to none, we always do an insert
-
-                    switch (pkValue.GetType().Name.ToUpper())
-                    {
-                        case "INT16":
-                            isUpdating = Convert.ToInt16(pkValue) != 0;
-                            break;
-                        case "INT32":
-                            isUpdating = Convert.ToInt32(pkValue) != 0;
-                            break;
-                        case "INT64":
-                            isUpdating = Convert.ToInt64(pkValue) != 0;
-                            break;
-                        case "GUID":
-                            isUpdating = (Guid)pkValue != Guid.Empty;
-                            break;
-                    }
-                }
-
-                // break because we are already updating, do not want to set to false
-                if (!isUpdating)
-                {
-                    continue;
-                }
-
-                state = ModificationState.Update;
-                break;
-            }
+            var state = DatabaseEntity.GetState(entity,primaryKeys);
 
             // Update Or Insert data
             switch (state)
@@ -213,15 +169,7 @@ namespace SkyGroundLabs.Data.Sql.Data
 
             Execute(builder);
 
-            return null;
-        }
-
-        public List<T> Where<T>(Expression<Func<T, bool>> expression)
-            where T : class
-        {
-            Execute(expression);
-
-            return All<T>();
+            return First<T>();
         }
         #endregion
     }

@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Dynamic;
 using System.Linq;
-using System.Reflection;
 using SkyGroundLabs.Data.Sql.Mapping;
 using SkyGroundLabs.Reflection;
 
@@ -20,8 +19,22 @@ namespace SkyGroundLabs
 		/// <returns></returns>
 		public static T ToObject<T>(this SqlDataReader reader)
 		{
+            if (!reader.HasRows) return default(T);
+
 			// Create instance
 			var obj = Activator.CreateInstance<T>();
+
+		    if (typeof (T).IsValueType)
+		    {
+		        obj = (T)reader[0];
+
+		        return obj;
+		    }
+
+            if (typeof(T) == typeof(IDynamicMetaObjectProvider))
+		    {
+		        return reader.ToObject();
+		    }
 
 			// find any unmapped attributes
 			var properties = obj.GetType().GetProperties().Where(w => w.GetCustomAttribute<UnmappedAttribute>() == null);

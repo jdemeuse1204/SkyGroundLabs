@@ -1,5 +1,4 @@
-﻿using SkyGroundLabs.Data.Sql.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using SkyGroundLabs.Data.Sql.Data;
@@ -29,25 +28,9 @@ namespace SkyGroundLabs.Data.Sql.Entity
 
         public void Add(T entity)
         {
-            Add(entity, SaveOption.None);
+            _collection.Add(entity, SaveAction.Save);
         }
 
-        public void Add(T entity, SaveOption saveOption)
-        {
-            switch (saveOption)
-            {
-                case SaveOption.ForceInsert:
-                    _collection.Add(entity, SaveAction.ForceInsert);
-                    break;
-                case SaveOption.ForceUpdate:
-                    _collection.Add(entity, SaveAction.ForceUpdate);
-                    break;
-                case SaveOption.None:
-                    _collection.Add(entity, SaveAction.Save);
-                    break;
-            }
-            
-        }
 
         public void Remove(T entity)
         {
@@ -66,12 +49,23 @@ namespace SkyGroundLabs.Data.Sql.Entity
 
         public List<T> Where(Expression<Func<T, bool>> propertyLambda)
         {
-            return _context.Where(propertyLambda);
+            //using (var reader = _context.ExecuteQuery(propertyLambda, _context))
+            //{
+            //    return reader.All();
+            //}
+
+            // TODO FIX ME
+            return null;
         }
 
         public T FirstOrDefault(Expression<Func<T, bool>> propertyLambda)
         {
-            return _context.First(propertyLambda);
+            //using (var reader = _context.ExecuteQuery(propertyLambda))
+            //{
+            //    return reader.Select();;
+            //}
+            // TODO FIX ME
+            return null;
         }
 
         public T Find(params object[] pks)

@@ -3,8 +3,6 @@
     public enum SaveAction
     {
         Save,
-        Remove,
-        ForceInsert,
-        ForceUpdate
+        Remove
     }
 }

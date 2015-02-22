@@ -19,9 +19,8 @@ namespace SkyGroundLabs.Data.Sql.Entity
         }
 
         protected DbEntityContext(IConnectionBuilder connection)
+            : this(connection.BuildConnectionString())
         {
-            _context = new DbSqlContext(connection);
-            OnModelCreating();
         }
 
         public void SaveChanges()
@@ -34,12 +33,6 @@ namespace SkyGroundLabs.Data.Sql.Entity
                 {
                     switch ((SaveAction)entity.Value)
                     {
-                        case SaveAction.ForceInsert:
-                            
-                            break;
-                        case SaveAction.ForceUpdate:
-
-                            break;
                         case SaveAction.Remove:
                             _context.Delete(entity.Key);
                             break;
