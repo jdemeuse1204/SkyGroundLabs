@@ -3,100 +3,31 @@ SkyGroundLabs
 
 James custom framework
 
-#SkygroundLabs.Data.Sql Documentation
+Entity Framework is currently being reworked and readied for nuget.
 
--Use DbSqlContext, DbEntityContext is under construction.  DbEntity Context will be a direct mirror of EF, only faster.
+#Highlights
 
--Mapping <br/>
-1. Column (Target: Field or Property)<br/>
-2. DbGenerationOption (Target: Field or Property)<br/>
-3. Key (Target: Field or Property)<br/>
-4. Table (Target: Class)<br/>
-5. Unmapped (Target: Field or Property)<br/>
+1. Currently integrating lambda and custom methods for more natural Sql writing in .NET.  I am in the testing phase right now.
 
-##Attribures
-####Column<br/>
-     [Column("Test")]
-     public string Testing { get; set; }
+Once done queries will look like this:
 
-<i>Description:</i>  Use if you want to rename the Database Column Name.  "Test" refers to the Database Column Name and "Testing" is the new property name
-
-####DbGenerationOption<br/>
--Options (Generate,IdentitySpecification,None)<br/>
-    [DbGenerationOption(DbGenerationType.Generate)]
-    public Guid ID { get; set; }
-
-<i>Description:</i>  The first property that is a primary key will automatically use Identity Specification, no attribute is needed.  Any secondary keys or after that need the DbGenerationOption set.  If the first property that is a primary key does not use Identity Specification then the DbGenerationOption must be set to Generate.  This attribute can also be used for other columns that need ID's generated that are not primary keys.  The Generate option will work with numbers (Int16,Int32,Int64) and uniqueidentifiers (Guid).
-
-####Key<br/>
-
-    [Key]
-    public Guid ID { get; set; }
-    [Key]
-    public int PersonID { get; set; }
-	
-<i>Description:</i>  If one primary key is used then this attribute is not needed, if two or more primary keys are used then this attribute must be set on EACH primary key property.  If this attribute is not used the insert and find functions will not work properly.
-	
-####Table <br/>
-
-    [Table("TEMP_Test3")]
-    public class TEMP_Test
-    {
-        public Guid ID { get; set; }
-        
-        [Column("Test")]
-        public string Testing { get; set; }
-    }
-
-<i>Description:</i>  This attribute only needs to be used when the class name and the table name are different.  In the above example my database table name is TEMP_Test3, but I am renaming it in code to TEMP_Test
-
-####Unmapped <br/>
-
-    [Table("TEMP_Test3")]
-    public class TEMP_Test
-    {
-        public Guid ID { get; set; }
-        
-        [Column("Test")]
-        public string Testing { get; set; }
-       
-        [Unmapped]
-        public string DoNotMapThisColumn { get; set; }
-    }
-
-<i>Description:</i>  This attribute only needs to be used when you do not want the column to be mapped to the database.  When its not mapped this column will not be saved/updated or retreived from the database.
-
-##Returning Data <br/>
-
-####Find<br/>
-
-    var next = context.Find<TEMP_Test>(new Guid("A73D317B-273C-48E3-B963-953FDFEC6D89"), 1);
+    var context = new DbSqlContext("your connection string");
+    var query = context.From<MyClass>().Where<MyClass>(w => w.MyProp == "Test").Select<MyClass>();
+    // query is a type of ExpressionQuery.  The behavior is just like IQueryable, the enumeration happens when First or All is called.
+    var result = query.First();
     
-<i>Description:</i>  In the above example the find function is looking for a matching Guid and Integer.  Note that the keys must be put into the find function in the order they appear in the class.  TEMP_Test is my return class type.
+You must pass in the types in the From, Where, and Select methods.  The reason is speed.  Its much faster not having to evaulate the expression each time you want to select a type.  This is where the query builders speed comes from.
 
-####Select<br/>
+Also, joins are more intuitive.  A join looks like this, Join<ParentTable, ChildTable>((p,c) => p.ChildId == c.Id).  A left join is the same code, you just call LeftJoin instead.
 
-    while (context.HasNext())
-    {
-        var item = context.Select<TEMP_Test>();
-    }
-    
-<i>Description:</i>  Select is meant to be used with HasNext() to loop through results.
+##Functions Available:
+1. From
+2. Where
+3. Select
+4. Join
+5. Left Join
+6. Casting
+7. Converting
 
-####SelectList<br/>
 
-    var lst = context.SelectList<TEMP_Test>();
-
-    
-<i>Description:</i>  SelectList will return a list of your results
-
-####First<br/>
-
-    var item = context.First<TEMP_Test>();
-    
-<i>Description:</i>  First is meant to be used to return the first result from a query, DO NOT use with HasNext().
-
-NOTE:  All data returning functions do not need to be used with classes, they can return dynamic entities, just omit the description brackets.  
-
-    Dynamic Functions: Find(),Select(), SelectList(), First()
-    Class Functions: Find<MyClass>(),Select<MyClass>(), SelectList<MyClass>(), First<MyClass>()
+This is temporary documentation, permanent documentation will come once completed.
