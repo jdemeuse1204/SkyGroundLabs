@@ -5,7 +5,7 @@ using SkyGroundLabs.Data.Sql.Data;
 
 namespace SkyGroundLabs.Data.Sql.Entity
 {
-    public class DbTable<T> : IDbTable<T> where T : class
+    public sealed class DbTable<T> : IDbTable<T> where T : class
     {
         public string TableName { get { return _tableName; } }
         private string _tableName { get; set; }

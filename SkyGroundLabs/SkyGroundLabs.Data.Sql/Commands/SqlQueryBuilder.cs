@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using SkyGroundLabs.Data.Sql.Commands.Support;
 using SkyGroundLabs.Data.Sql.Data;
-using SkyGroundLabs.Data.Sql.Mapping;
 
 namespace SkyGroundLabs.Data.Sql.Commands
 {
-	public class SqlQueryBuilder : SqlValidation, ISqlBuilder
+    public sealed class SqlQueryBuilder : SqlValidation, ISqlBuilder
 	{
 		#region Properties
 		private string _select { get; set; }

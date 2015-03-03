@@ -42,9 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Transform\Cast.cs" />
+    <Compile Include="Commands\Transform\Conversion.cs" />
+    <Compile Include="Commands\Transform\DataTransform.cs" />
+    <Compile Include="Commands\Transform\DataTransformContainer.cs" />
     <Compile Include="Expressions\ExpressionQuery.cs" />
-    <Compile Include="Expressions\ExpressionResolutionResult.cs" />
-    <Compile Include="Expressions\ExpressionResolver.cs" />
+    <Compile Include="Expressions\Resolver\ExpressionResolutionResult.cs" />
+    <Compile Include="Expressions\Resolver\ExpressionResolver.cs" />
     <Compile Include="Data\DatabaseEntity.cs" />
     <Compile Include="Commands\Secure\SqlSecureObject.cs" />
     <Compile Include="Commands\SqlDeleteBuilder.cs" />
@@ -61,8 +65,9 @@
     <Compile Include="Entity\IDbTable.cs" />
     <Compile Include="Entity\SaveAction.cs" />
     <Compile Include="Commands\Support\KeyContainer.cs" />
-    <Compile Include="Expressions\ExpressionSelectResult.cs" />
-    <Compile Include="Expressions\ExpressionWhereResult.cs" />
+    <Compile Include="Expressions\Resolver\ExpressionSelectResult.cs" />
+    <Compile Include="Expressions\Resolver\ExpressionTypeTransform.cs" />
+    <Compile Include="Expressions\Resolver\ExpressionWhereResult.cs" />
     <Compile Include="Mapping\SearchablePrimaryKeyType.cs" />
     <Compile Include="Mapping\Base\SearchablePrimaryKey.cs" />
     <Compile Include="Mapping\Column.cs" />

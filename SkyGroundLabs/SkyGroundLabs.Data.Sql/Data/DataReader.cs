@@ -2,11 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Runtime.InteropServices;
 
 namespace SkyGroundLabs.Data.Sql.Data
 {
-	public class DataReader<T> : IEnumerable, IDisposable
+	public sealed class DataReader<T> : IEnumerable, IDisposable
     {
         #region Properties and Fields
         private readonly SqlDataReader _reader;

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SkyGroundLabs.Data.Sql.Connection
+﻿namespace SkyGroundLabs.Data.Sql.Connection
 {
-	public class SqlServerConnectionBuilder : IConnectionBuilder
+	public sealed class SqlServerConnectionBuilder : IConnectionBuilder
 	{
 		public string Username { get; set; }
 		public string Password { get; set; }

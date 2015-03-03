@@ -4,7 +4,7 @@ using SkyGroundLabs.Data.Sql.Commands.Support;
 
 namespace SkyGroundLabs.Data.Sql.Commands
 {
-    public class SqlDeleteBuilder : SqlValidation, ISqlBuilder
+    public sealed class SqlDeleteBuilder : SqlValidation, ISqlBuilder
     {
         #region Properties
         private string _delete { get; set; }

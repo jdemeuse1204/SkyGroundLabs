@@ -7,7 +7,7 @@ using SkyGroundLabs.Data.Sql.Commands.Support;
 
 namespace SkyGroundLabs.Data.Sql.Commands
 {
-	public class SqlInsertBuilder : SqlSecureExecutable, ISqlBuilder
+    public sealed class SqlInsertBuilder : SqlSecureExecutable, ISqlBuilder
 	{
 		#region Properties
 		private string _table { get; set; }

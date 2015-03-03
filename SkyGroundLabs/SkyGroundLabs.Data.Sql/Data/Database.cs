@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using SkyGroundLabs.Data.Sql.Expressions;
+using SkyGroundLabs.Data.Sql.Expressions.Resolver;
 
 namespace SkyGroundLabs.Data.Sql.Data
 {

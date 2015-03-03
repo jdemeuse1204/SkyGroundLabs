@@ -6,7 +6,7 @@ using SkyGroundLabs.Data.Sql.Mapping;
 
 namespace SkyGroundLabs.Data.Sql.Commands.Support
 {
-	public class InsertItem
+	public sealed class InsertItem
 	{
 		#region Properties
 		public string SqlDataTypeString { get; private set; }

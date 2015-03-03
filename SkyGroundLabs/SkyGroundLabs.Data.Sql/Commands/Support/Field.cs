@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SkyGroundLabs.Data.Sql.Commands.Support
+﻿namespace SkyGroundLabs.Data.Sql.Commands.Support
 {
-	public class Field
+	public sealed class Field
 	{
 		public string ColumnName { get; set; }
 		public string Alias { get; set; }

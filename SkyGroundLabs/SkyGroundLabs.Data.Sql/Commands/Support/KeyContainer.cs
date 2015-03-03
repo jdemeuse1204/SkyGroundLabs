@@ -2,7 +2,7 @@
 
 namespace SkyGroundLabs.Data.Sql.Commands.Support
 {
-	public class KeyContainer
+	public sealed class KeyContainer
 	{
 		public KeyContainer()
 		{

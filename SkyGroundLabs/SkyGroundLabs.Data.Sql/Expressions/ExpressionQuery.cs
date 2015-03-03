@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using SkyGroundLabs.Data.Sql.Commands;
+using SkyGroundLabs.Data.Sql.Commands.Transform;
 using SkyGroundLabs.Data.Sql.Data;
+using SkyGroundLabs.Data.Sql.Expressions.Resolver;
 
 namespace SkyGroundLabs.Data.Sql.Expressions
 {
-    public sealed class ExpressionQuery : ExpressionResolver, IEnumerable
+    public sealed class ExpressionQuery : DataTransform, IEnumerable
     {
         #region Properties
         private string _from { get; set; }
@@ -163,21 +167,33 @@ namespace SkyGroundLabs.Data.Sql.Expressions
         }
 
         #region Helpers
-        private string _enumerateList(IEnumerable<object> list)
+        private string _enumerateList(ICollection list)
         {
-            return list.Aggregate(string.Empty, (current, item) => current + (item.ToString() + ",")).TrimEnd(',');
+            var result = "";
+
+            foreach (var item in list)
+            {
+                var parameter = _getNextParameter();
+                _parameters.Add(parameter, item);
+
+                result += parameter + ",";
+            }
+
+            return result.TrimEnd(',');
         }
 
-        private string _getComparisonString(ComparisonType comparison)
+        private string _getComparisonString(ExpressionWhereResult expressionWhereResult)
         {
-            switch (comparison)
+            if (expressionWhereResult.ComparisonType == ComparisonType.Contains)
             {
-                case ComparisonType.Contains:
-                    return " {0} IN ({1}) ";
+                return ExpressionTypeTransform.IsList(expressionWhereResult.CompareValue) ? " {0} IN ({1}) " : " {0} LIKE {1}";
+            }
+
+            switch (expressionWhereResult.ComparisonType)
+            {
                 case ComparisonType.BeginsWith:
-                    return " {0} LIKE '{1}%'";
                 case ComparisonType.EndsWith:
-                    return " {0} LIKE '%{1}'";
+                    return " {0} LIKE {1}";
                 case ComparisonType.Equals:
                     return "{0} = {1}";
                 case ComparisonType.EqualsIgnoreCase:
@@ -202,8 +218,31 @@ namespace SkyGroundLabs.Data.Sql.Expressions
 
         #endregion
 
+        private object _resolveCompareValue(ExpressionWhereResult expressionWhereResult)
+        {
+            if (expressionWhereResult.ComparisonType == ComparisonType.Contains
+                && ExpressionTypeTransform.IsList(expressionWhereResult.CompareValue))
+            {
+                return expressionWhereResult.CompareValue;
+            }
+
+            switch (expressionWhereResult.ComparisonType)
+            {
+                case ComparisonType.Contains:
+                    return "%" + Convert.ToString(expressionWhereResult.CompareValue) + "%";
+                case ComparisonType.BeginsWith:
+                    return Convert.ToString(expressionWhereResult.CompareValue) + "%";
+                case ComparisonType.EndsWith:
+                    return "%" + Convert.ToString(expressionWhereResult.CompareValue);
+                default:
+                    return expressionWhereResult.CompareValue;
+            }
+        }
+
         private ExpressionResolutionResult ResolveExpression()
         {
+            if (_select.Count == 0 ) throw new ArgumentException("No columns selected, please use .Select<T>() to select columns.");
+
             _sql = string.Empty;
 
             var where = new List<ExpressionWhereResult>();
@@ -223,7 +262,7 @@ namespace SkyGroundLabs.Data.Sql.Expressions
                 }
                 else
                 {
-                    @innerJoin.AddRange(ResolveWhere(item as dynamic));
+                    @innerJoin.AddRange(ResolveJoin(item as dynamic));
                 }               
             }
 
@@ -237,7 +276,7 @@ namespace SkyGroundLabs.Data.Sql.Expressions
                 }
                 else
                 {
-                    @leftJoin.AddRange(ResolveWhere(item as dynamic));
+                    @leftJoin.AddRange(ResolveJoin(item as dynamic));
                 }
             }
 
@@ -258,7 +297,7 @@ namespace SkyGroundLabs.Data.Sql.Expressions
             // add the select modifier
             _sql += string.Format(" SELECT {0}{1} ",selectDistinctModifier, selectModifier);
 
-            foreach (var item in @select.Select(entity => entity as ExpressionSelectResult))
+            foreach (var item in @select)
             {
                 _sql += string.Format("[{0}].{1} ",
                     item.TableName,
@@ -271,7 +310,7 @@ namespace SkyGroundLabs.Data.Sql.Expressions
             {
                 if (hasInnerJoins)
                 {
-                    foreach (var item in @innerJoin.Select(entity => entity as ExpressionWhereResult))
+                    foreach (var item in @innerJoin)
                     {
                         var joinData = item.CompareValue as ExpressionSelectResult;
                         var parentTable = item.TableName.ToUpper() == _from ? joinData.TableName : item.TableName;
@@ -301,7 +340,7 @@ namespace SkyGroundLabs.Data.Sql.Expressions
 
                 if (hasLeftJoins)
                 {
-                    foreach (var item in @leftJoin.Select(entity => entity as ExpressionWhereResult))
+                    foreach (var item in @leftJoin)
                     {
                         var joinData = item.CompareValue as ExpressionSelectResult;
 
@@ -314,30 +353,41 @@ namespace SkyGroundLabs.Data.Sql.Expressions
                 }
             }
 
-            foreach (var item in @where.Select(entity => entity as ExpressionWhereResult))
+            foreach (var item in @where)
             {
-                var partOfValidation = _getComparisonString(item.ComparisonType);
-                var leftSide = string.Format(" [{0}].[{1}] ",
-                    item.TableName,
-                    item.PropertyName);
+                var partOfValidation = _getComparisonString(item);
+                var leftSide = !item.ShouldCast
+                    ? string.Format(" [{0}].[{1}] ",
+                        item.TableName,
+                        item.PropertyName)
+                    : Cast(item);
 
                 var rightSide = "";
 
                 if (item.CompareValue is ExpressionSelectResult)
                 {
                     var compareValue = item.CompareValue as ExpressionSelectResult;
-                    rightSide = string.Format("[{0}].[{1}]", compareValue.TableName, compareValue.ColumnName);
+                    rightSide = !compareValue.ShouldCast
+                        ? string.Format("[{0}].[{1}]", compareValue.TableName, compareValue.ColumnName)
+                        : Cast(compareValue, false);
                 }
-                else if (item.CompareValue.GetType() == typeof(List<>))
+                else if (ExpressionTypeTransform.IsList(item.CompareValue))
                 {
-                    rightSide = _enumerateList(item.CompareValue as List<object>);
+                    rightSide = _enumerateList(item.CompareValue as ICollection);
                 }
                 else
                 {
-                    var parameter = string.Format("@Param{0}", _parameters.Count);
-
+                    var parameter = _getNextParameter();
+                    var compareValue = _resolveCompareValue(item);
                     rightSide = parameter;
-                    _parameters.Add(parameter, item.CompareValue);
+
+                    if (item.CompareValue is DataTransformContainer)
+                    {
+                        rightSide = Cast(parameter, ((DataTransformContainer)item.CompareValue).Transform);
+                        compareValue = ((DataTransformContainer) item.CompareValue).Value;
+                    }
+
+                    _parameters.Add(parameter, compareValue);
                 }
 
                 validationStatements.Add(string.Format(partOfValidation, leftSide, rightSide));
@@ -350,6 +400,11 @@ namespace SkyGroundLabs.Data.Sql.Expressions
             }
 
             return new ExpressionResolutionResult(_sql, _parameters);
+        }
+
+        private string _getNextParameter()
+        {
+            return string.Format("@Param{0}", _parameters.Count);
         }
 
         #region Data Retrieval
@@ -390,7 +445,7 @@ namespace SkyGroundLabs.Data.Sql.Expressions
             }
         }
 
-        public ICollection ToList()
+        public ICollection All()
         {
             // inject the generic type here
             var method = typeof(ExpressionQuery).GetMethods().FirstOrDefault(w => w.Name == "ToList" && w.ReturnType != typeof(ICollection));
@@ -400,7 +455,7 @@ namespace SkyGroundLabs.Data.Sql.Expressions
             return result as dynamic;
         }
 
-        public List<T> ToList<T>()
+        public List<T> All<T>()
         {
             if (_hasQueryBeenExecuted) return _results as List<T>;
 

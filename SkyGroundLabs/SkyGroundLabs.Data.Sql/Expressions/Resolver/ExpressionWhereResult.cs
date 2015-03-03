@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Data;
 using SkyGroundLabs.Data.Sql.Commands;
 
-namespace SkyGroundLabs.Data.Sql.Expressions
+namespace SkyGroundLabs.Data.Sql.Expressions.Resolver
 {
-    public class ExpressionWhereResult
+    public sealed class ExpressionWhereResult
     {
         public string PropertyName { get; set; }
+        public Type PropertyType { get; set; }
         public string TableName { get; set; }
 
         private object _compareValue;
@@ -15,6 +17,10 @@ namespace SkyGroundLabs.Data.Sql.Expressions
             set { _compareValue = (value ?? DBNull.Value); }
         }
 
+        public SqlDbType Transform { get; set; }
+
         public ComparisonType ComparisonType { get; set; }
+
+        public bool ShouldCast { get; set; }
     }
 }

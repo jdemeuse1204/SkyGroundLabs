@@ -12,12 +12,6 @@ C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Reflection.pdb
 C:\Users\jdemeuse\Desktop\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.csprojResolveAssemblyReference.cache
 C:\Users\Jimmer\Documents\GitHub\SkyGroundLabs\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.csprojResolveAssemblyReference.cache
-C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.dll
-C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.pdb
-C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Data.Sql.dll
-C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Data.Sql.pdb
-C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Reflection.dll
-C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Reflection.pdb
 C:\Users\jdemeuse\Downloads\SkyGroundLabs-Refactored\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Data.Sql.dll
 C:\Users\jdemeuse\Downloads\SkyGroundLabs-Refactored\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Data.Sql.pdb
 C:\Users\jdemeuse\Downloads\SkyGroundLabs-Refactored\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\LambdaSqlConverter.dll
@@ -26,3 +20,9 @@ C:\Users\jdemeuse\Downloads\SkyGroundLabs-Refactored\SkyGroundLabs-master\SkyGro
 C:\Users\jdemeuse\Downloads\SkyGroundLabs-Refactored\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Reflection.pdb
 C:\Users\jdemeuse\Downloads\SkyGroundLabs-Refactored\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.dll
 C:\Users\jdemeuse\Downloads\SkyGroundLabs-Refactored\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.pdb
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Data.Sql.dll
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Data.Sql.pdb
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Reflection.dll
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\bin\Release\SkyGroundLabs.Reflection.pdb
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.dll
+C:\Users\jdemeuse\Downloads\SkyGroundLabs-master\SkyGroundLabs-master\SkyGroundLabs\SkyGroundLabs.Data.Sql\obj\Release\SkyGroundLabs.Data.Sql.pdb

@@ -12,6 +12,7 @@
 		GreaterThanEquals,
 		LessThan,
 		LessThanEquals,
-		NotEqual
+		NotEqual,
+        Between
 	}
 }

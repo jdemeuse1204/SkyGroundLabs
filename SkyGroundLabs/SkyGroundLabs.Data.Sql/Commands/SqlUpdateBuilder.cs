@@ -7,7 +7,7 @@ using SkyGroundLabs.Data.Sql.Mapping;
 
 namespace SkyGroundLabs.Data.Sql.Commands
 {
-	public class SqlUpdateBuilder : SqlValidation, ISqlBuilder
+    public sealed class SqlUpdateBuilder : SqlValidation, ISqlBuilder
 	{
 		#region Properties
 		private string _table { get; set; }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace SkyGroundLabs.Data.Sql.Expressions
+namespace SkyGroundLabs.Data.Sql.Expressions.Resolver
 {
-    public class ExpressionResolutionResult
+    public sealed class ExpressionResolutionResult
     {
         public ExpressionResolutionResult(string sql, Dictionary<string, object> parameters)
         {

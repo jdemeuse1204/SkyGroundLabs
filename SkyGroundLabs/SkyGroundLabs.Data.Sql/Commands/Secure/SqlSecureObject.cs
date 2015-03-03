@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkyGroundLabs.Data.Sql.Commands.Secure
 {
-	public class SqlSecureObject
+	public sealed class SqlSecureObject
 	{
 		public SqlSecureObject(object value)
 		{
